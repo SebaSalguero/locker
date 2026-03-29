@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>LOCKER | Tienda Oficial</title>
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="container">
+      <h1 class="logo">LOCKER</h1>
+      <p class="subtitle">
+        Accesorios & Delantales · Venta minorista y mayorista
+      </p>
+
+      <div class="header-top">
+
+  <div class="search-input">
+
+    <span class="search-icon">🔎</span>
+
+    <input
+      type="text"
+      id="searchInput"
+      name="search_random_987"
+      placeholder="Buscar productos..."
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="false"
+    >
+
+  </div>
+
+  <div class="header-right">
+
+    <div id="userBar"></div>
+
+    <div class="cart-icon cart-button" onclick="openCart()">
+      🛒 <span id="cartCount">0</span>
+    </div>
+
+  </div>
+
+</div>
+      
+    </div>
+
+    <div class="header-actions">
+
+      
+
+      
+
+    </div>
+    
+  </header>
+
+  <nav id="categoriesNav" class="categories"></nav>
+
+  
+
+
+  <!-- ===== PRODUCTOS ===== -->
+  <main class="container">
+    <h2>Productos</h2>
+    
+    <div id="products" class="products-grid"></div>
+  </main>
+
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <p>© 2026 LOCKER · Tienda oficial</p>
+  </footer>
+
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="login-box" onclick="event.stopPropagation()">
+    <h2>Iniciar sesión</h2>
+
+    <input id="username" placeholder="Email">
+    <input id="password" type="password" placeholder="Contraseña">
+
+    <button onclick="login()">Ingresar</button>
+    <button onclick="showLogin()">Cancelar</button>
+    <button onclick="openRegister()">Registrarse</button>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div id="register">
+  <div class="login-box" onclick="event.stopPropagation()">
+    <h2>Crear cuenta</h2>
+
+    <input id="regNombre" placeholder="Nombre">
+    <input id="regEmail" placeholder="Email">
+    <input id="regPass" type="password" placeholder="Contraseña">
+
+
+    <button onclick="register()">Registrarse</button>
+    <button onclick="closeRegister()">Cancelar</button>
+  </div>
+</div>
+
+
+<!-- CARRITO LATERAL -->
+<div id="cartPanel" class="cart-panel">
+
+  <div class="cart-header">
+    <h3>Tu carrito</h3>
+    <button onclick="toggleCart()">✕</button>
+  </div>
+
+  <div id="cartItemsPanel" class="cart-items"></div>
+
+  <div class="cart-footer">
+    <button onclick="sendOrder()">Finalizar por WhatsApp</button>
+  </div>
+
+</div>
+  <div id="toast" class="toast"></div>
+  <!-- JS SIEMPRE AL FINAL -->
+  <script src="js/app.js"></script>
+  
+</body>
+</html>

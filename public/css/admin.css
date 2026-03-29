@@ -1,0 +1,437 @@
+body, html{
+  margin:0;
+  padding:0;
+  height:100%;
+}
+
+body{
+font-family:Inter, sans-serif;
+margin:0;
+background:#f4f6f9;
+}
+
+/* LOGIN */
+
+.loginBox{
+max-width:350px;
+margin:120px auto;
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.loginBox input{
+padding:10px;
+border:1px solid #ddd;
+border-radius:6px;
+}
+
+.loginBox button{
+padding:10px;
+background:black;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+/* DASHBOARD */
+
+.dashboard{
+  display:flex;
+  height:100vh;
+  width:100%;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:220px;
+min-width:220px;
+background:#111;
+color:white;
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.sidebar h2{
+margin-bottom:20px;
+}
+
+.sidebar button{
+background:none;
+border:none;
+color:white;
+text-align:left;
+padding:10px;
+border-radius:6px;
+cursor:pointer;
+font-size:15px;
+}
+
+.sidebar button:hover{
+background:#222;
+}
+
+/* CONTENIDO */
+
+.content{
+flex:1;
+padding:30px;
+overflow:auto;
+}
+
+/* HEADER */
+
+.adminHeader{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.adminHeader button{
+background:black;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:6px;
+cursor:pointer;
+}
+
+/* PRODUCTOS */
+
+.productRow{
+display:flex;
+align-items:center;
+gap:15px;
+padding:12px;
+background:white;
+border-radius:8px;
+margin-bottom:10px;
+}
+
+.productThumb{
+width:60px;
+height:60px;
+object-fit:cover;
+border-radius:6px;
+}
+
+.productInfo{
+flex:1;
+display:flex;
+flex-direction:column;
+font-size:14px;
+}
+
+.productInfo span{
+color:#666;
+}
+
+.productActions{
+display:flex;
+gap:8px;
+}
+
+.productActions button{
+border:none;
+padding:6px 10px;
+border-radius:6px;
+cursor:pointer;
+background:#e60023;
+color:white;
+}
+
+/* CATEGORIAS */
+
+.categoryForm{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+}
+
+.categoryForm input{
+flex:1;
+padding:10px;
+border:1px solid #ddd;
+border-radius:6px;
+}
+
+.categoryForm button{
+background:black;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:6px;
+cursor:pointer;
+}
+
+/* MODAL */
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+display:none;
+justify-content:center;
+align-items:center;
+}
+
+.modalContent{
+background:white;
+padding:25px;
+border-radius:10px;
+width:350px;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.modalContent input,
+.modalContent select{
+padding:10px;
+border:1px solid #ddd;
+border-radius:6px;
+}
+
+.modalContent button{
+padding:10px;
+border:none;
+background:black;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+.categoryRow{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:white;
+padding:10px;
+border-radius:6px;
+margin-bottom:8px;
+}
+
+.categoryActions button{
+background:#e60023;
+border:none;
+color:white;
+padding:6px 10px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.userTable{
+width:100%;
+border-collapse:collapse;
+background:white;
+border-radius:10px;
+overflow:hidden;
+}
+
+.userTable th{
+background:#f1f5f9;
+text-align:left;
+padding:12px;
+font-size:14px;
+}
+
+.userTable td{
+padding:12px;
+border-bottom:1px solid #eee;
+font-size:14px;
+}
+
+.userTable tr:hover{
+background:#f9fafb;
+}
+
+/* BADGES */
+
+.badge{
+padding:4px 8px;
+border-radius:6px;
+font-size:12px;
+font-weight:600;
+}
+
+.badge.active{
+background:#dcfce7;
+color:#166534;
+}
+
+.badge.inactive{
+background:#fee2e2;
+color:#991b1b;
+}
+
+.badge.role{
+background:#e0f2fe;
+color:#0369a1;
+}
+
+/* BOTONES */
+
+.userTable button{
+border:none;
+padding:6px 10px;
+border-radius:6px;
+cursor:pointer;
+margin-right:5px;
+}
+
+.userTable button:first-child{
+background:#22c55e;
+color:white;
+}
+
+.userTable button:last-child{
+background:#ef4444;
+color:white;
+}
+
+
+/* HEADER */
+
+.pageHeader h2{
+  margin:0;
+  font-size:26px;
+}
+
+.pageHeader p{
+  color:#666;
+  margin-bottom:20px;
+}
+
+/* CARDS */
+
+.statsGrid{
+  display:grid;
+  grid-template-columns: repeat(3,1fr);
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.statCard{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.05);
+}
+
+.statCard h4{
+  margin:0;
+  font-size:14px;
+  color:#666;
+}
+
+.statCard span{
+  font-size:26px;
+  font-weight:bold;
+}
+
+/* TABLA PRO */
+
+.tableContainer{
+  background:white;
+  border-radius:12px;
+  padding:10px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.05);
+}
+
+.userTable{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.userTable th{
+  text-transform:uppercase;
+  font-size:12px;
+  color:#888;
+}
+
+.userTable td{
+  font-size:14px;
+}
+
+/* BOTONES MEJORADOS */
+
+.userTable button{
+  transition:0.2s;
+}
+
+.userTable button:hover{
+  transform:scale(1.1);
+}
+
+.toolbar{
+  display:flex;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.toolbar input{
+  flex:1;
+  padding:10px;
+  border:1px solid #ddd;
+  border-radius:8px;
+}
+
+.toolbar select{
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #ddd;
+}
+
+#toastContainer{
+  position:fixed;
+  top:20px;
+  right:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  z-index:9999;
+}
+
+.toast{
+  padding:12px 18px;
+  border-radius:8px;
+  color:white;
+  font-size:14px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.15);
+  animation:fadeIn 0.3s ease;
+}
+
+.toast.success{
+  background:#22c55e;
+}
+
+.toast.error{
+  background:#ef4444;
+}
+
+.toast.info{
+  background:#3b82f6;
+}
+
+@keyframes fadeIn{
+  from{
+    opacity:0;
+    transform:translateY(-10px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}

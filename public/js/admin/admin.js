@@ -1,0 +1,605 @@
+let editingId = null;
+let productsCache = [];
+let currentImage = "";
+let usersCache = [];
+let editingUserId = null;
+
+console.log("admin.js cargado");
+
+document.addEventListener("DOMContentLoaded", () => {
+  document
+    .getElementById("btnLogin")
+    .addEventListener("click", login);
+});
+
+function login() {
+  console.log("click en login");
+
+  const userInput = document.getElementById("user");
+  const passInput = document.getElementById("pass");
+
+  fetch("http://localhost:3000/api/admin/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      user: userInput.value,
+      pass: passInput.value
+    })
+  })
+    .then(res => {
+      if (!res.ok) throw new Error();
+      return res.json();
+    })
+    .then(() => {
+      document.getElementById("loginBox").style.display = "none";
+      document.getElementById("panel").style.display = "flex";
+      loadProducts();
+      loadCategories()
+    })
+    .catch(() => {
+      msg.textContent = "Login incorrecto";
+    });
+}
+
+async function addProduct(){
+
+  const fileInput = document.getElementById("image");
+
+  let imageName = "";
+
+  if(fileInput.files.length > 0){
+
+    const formData = new FormData();
+    formData.append("image", fileInput.files[0]);
+
+    const uploadRes = await fetch(
+      "http://localhost:3000/api/admin/upload",
+      {
+        method:"POST",
+        body:formData
+      }
+    );
+
+    const data = await uploadRes.json();
+    imageName = data.filename;
+
+  }
+
+  const product = {
+  name: document.getElementById("name").value,
+  description: document.getElementById("description").value,
+  price_minor: document.getElementById("price_minor").value,
+  price_major: document.getElementById("price_major").value,
+  category_id: document.getElementById("category").value,
+  image: imageName
+};
+
+  await fetch("http://localhost:3000/api/admin/products",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify(product)
+  });
+
+  showToast("Producto agregado");
+
+  loadProducts();
+
+}
+
+
+function loadProducts(){
+
+  fetch("http://localhost:3000/api/products")
+
+  .then(res => res.json())
+
+  .then(products => {
+
+  productsCache = products
+
+  const container = document.getElementById("productList");
+
+  container.innerHTML = "";
+
+  products.forEach((p,index) => {
+
+      const div = document.createElement("div");
+
+div.className = "productRow";
+
+div.innerHTML = `
+
+<img class="productThumb" src="/uploads/${p.image}">
+
+<div class="productInfo">
+
+<strong>${p.name}</strong>
+
+<span>${p.description}</span>
+
+<span>Minorista: $${p.price_minor}</span>
+
+<span>Mayorista: $${p.price_major}</span>
+
+<span>Categoría: ${p.category}</span>
+
+</div>
+
+<div class="productActions">
+
+<button onclick="editProductByIndex(${index})">✏️</button>
+
+<button onclick="deleteProduct(${p.id})">
+🗑
+</button>
+
+</div>
+
+`;
+
+      container.appendChild(div);
+
+    });
+
+  });
+
+
+
+}
+
+function deleteProduct(id){
+
+  if(!confirm("Eliminar producto?")) return;
+
+  fetch("http://localhost:3000/api/admin/products/" + id,{
+    method:"DELETE"
+  })
+
+  .then(() => {
+    loadProducts();
+  });
+
+}
+
+async function editProduct(product){
+
+editingId = product.id
+currentImage = product.image
+
+await loadCategoriesSelect()
+
+document.getElementById("name").value = product.name
+document.getElementById("description").value = product.description
+document.getElementById("price_minor").value = product.price_minor
+document.getElementById("price_major").value = product.price_major
+
+document.getElementById("preview").src = "/uploads/" + product.image
+
+document.getElementById("category").value = product.category_id
+
+document.getElementById("productModal").style.display = "flex"
+
+}
+
+document.getElementById("image").addEventListener("change", e => {
+
+  const file = e.target.files[0]
+
+  if(file){
+    document.getElementById("preview").src = URL.createObjectURL(file)
+  }
+
+})
+
+function openProductModal(){
+
+  editingId = null
+
+  document.getElementById("name").value=""
+  document.getElementById("description").value=""
+  document.getElementById("price_minor").value=""
+  document.getElementById("price_major").value=""
+  document.getElementById("image").value=""
+  document.getElementById("preview").src=""
+
+  loadCategoriesSelect()
+
+  document.getElementById("productModal").style.display="flex"
+
+}
+
+function closeProductModal(){
+
+  document.getElementById("productModal").style.display = "none";
+
+}
+
+async function saveProduct(){
+
+const fileInput = document.getElementById("image");
+
+let imageName = currentImage;
+
+// subir imagen nueva si hay
+if(fileInput.files.length > 0){
+
+const formData = new FormData();
+formData.append("image", fileInput.files[0]);
+
+const uploadRes = await fetch("/api/admin/upload",{
+method:"POST",
+body:formData
+});
+
+const data = await uploadRes.json();
+imageName = data.filename;
+
+}
+
+const product = {
+
+name: document.getElementById("name").value,
+description: document.getElementById("description").value,
+price_minor: document.getElementById("price_minor").value,
+price_major: document.getElementById("price_major").value,
+category_id: document.getElementById("category").value,
+image: imageName
+
+};
+
+if(editingId){
+
+await fetch("/api/admin/products/"+editingId,{
+method:"PUT",
+headers:{ "Content-Type":"application/json" },
+body: JSON.stringify(product)
+});
+
+showToast("Producto actualizado");
+
+}else{
+
+await fetch("/api/admin/products",{
+method:"POST",
+headers:{ "Content-Type":"application/json" },
+body: JSON.stringify(product)
+});
+
+alert("Producto creado");
+
+}
+
+editingId = null
+
+closeProductModal()
+
+loadProducts()
+
+}
+
+async function loadCategoriesList(){
+
+  const res = await fetch("http://localhost:3000/api/categories")
+
+  const categories = await res.json()
+
+  const select = document.getElementById("category")
+
+  select.innerHTML = ""
+
+  categories.forEach(c => {
+
+    const option = document.createElement("option")
+
+    option.value = c.id
+    option.textContent = c.name
+
+    select.appendChild(option)
+
+  })
+
+}
+
+function showSection(section){
+
+  document.querySelectorAll(".section").forEach(s=>{
+    s.style.display="none"
+  })
+
+  document.getElementById(section+"Section").style.display="block"
+
+  if(section === "categories"){
+    loadCategoriesList()
+  }
+
+  if(section === "users"){
+    loadUsers()
+  }
+
+}
+
+async function loadCategories(){
+
+const res = await fetch("/api/categories")
+
+const categories = await res.json()
+
+const container = document.getElementById("categoryList")
+
+container.innerHTML = ""
+
+categories.forEach(cat => {
+
+const div = document.createElement("div")
+
+div.className = "categoryRow"
+
+div.innerHTML = `
+<span>${cat.name}</span>
+
+<div class="categoryActions">
+
+<button onclick="deleteCategory(${cat.id})">🗑</button>
+
+</div>
+`
+
+container.appendChild(div)
+
+})
+
+}
+
+async function createCategory(){
+
+const name = document.getElementById("newCategoryName").value
+
+if(!name){
+alert("Ingrese nombre de categoría")
+return
+}
+
+await fetch("/api/categories",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body: JSON.stringify({name})
+
+})
+
+document.getElementById("newCategoryName").value=""
+
+loadCategories()
+
+}
+
+async function deleteCategory(id){
+
+if(!confirm("Eliminar categoría?")) return
+
+await fetch("/api/categories/"+id,{
+method:"DELETE"
+})
+
+loadCategories()
+
+}
+
+async function loadCategoriesSelect(){
+
+const res = await fetch("/api/categories")
+
+const categories = await res.json()
+
+const select = document.getElementById("category")
+
+select.innerHTML = ""
+
+categories.forEach(cat => {
+
+const option = document.createElement("option")
+
+option.value = cat.id
+option.textContent = cat.name
+
+select.appendChild(option)
+
+})
+
+}
+
+function editProductByIndex(index){
+
+const product = productsCache[index]
+
+editProduct(product)
+
+}
+
+async function loadUsers(){
+
+  const res = await fetch("/api/users");
+  const users = await res.json();
+
+  console.log("USERS:", users);
+
+  usersCache = users;
+
+  updateStats(users);
+  renderUsers();
+}
+
+function renderUsers(){
+
+  const search = document.getElementById("searchUser").value.toLowerCase();
+  const filter = document.getElementById("filterStatus").value;
+
+  const tbody = document.getElementById("userTableBody");
+  tbody.innerHTML = "";
+
+  let filtered = usersCache;
+
+  // 🔍 BUSQUEDA
+  if(search){
+    filtered = filtered.filter(u =>
+      u.name.toLowerCase().includes(search) ||
+      u.email.toLowerCase().includes(search)
+    );
+  }
+
+  // 🎯 FILTRO
+  if(filter === "active"){
+    filtered = filtered.filter(u => u.approved);
+  }
+
+  if(filter === "pending"){
+    filtered = filtered.filter(u => !u.approved);
+  }
+
+  // 🧱 RENDER
+  filtered.forEach(u => {
+
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${u.id}</td>
+      <td>${u.name}</td>
+      <td>${u.email}</td>
+      <td><span class="badge role">${u.role}</span></td>
+      <td>
+        <span class="badge ${u.approved ? "active" : "inactive"}">
+          ${u.approved ? "Activo" : "Pendiente"}
+        </span>
+      </td>
+      <td>
+        <button onclick="editUserById(${u.id})">✏️</button>
+        <button onclick="approveUser(${u.id})">✔</button>
+        <button onclick="deleteUser(${u.id})">🗑</button>
+        <button onclick="resetPassword(${u.id})">🔑 Reset </button>
+      </td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+
+}
+
+function updateStats(users){
+
+  document.getElementById("totalUsers").textContent = users.length;
+
+  document.getElementById("activeUsers").textContent =
+    users.filter(u => u.approved).length;
+
+  document.getElementById("pendingUsers").textContent =
+    users.filter(u => !u.approved).length;
+
+}
+
+async function resetPassword(userId) {
+
+  const confirmReset = confirm("¿Resetear contraseña a 123456?");
+
+  if (!confirmReset) return;
+
+  const res = await fetch(`/api/admin/users/${userId}/reset-password`, {
+    method: "PUT"
+  });
+
+  const data = await res.json();
+
+  if (data.success) {
+    alert("Contraseña reseteada a: 123456");
+  } else {
+    alert("Error al resetear");
+  }
+}
+
+async function approveUser(id){
+
+  await fetch("/api/admin/approve-user/" + id,{
+    method:"PUT"
+  });
+
+  showToast("Usuario aprobado");
+  loadUsers();
+}
+
+async function deleteUser(id){
+
+  if(!confirm("Eliminar usuario?")) return;
+
+  await fetch("/api/admin/users/" + id,{
+    method:"DELETE"
+  });
+
+  showToast("Usuario eliminado","error");
+  loadUsers();
+}
+
+function showToast(message, type="success"){
+
+  const container = document.getElementById("toastContainer");
+
+  const toast = document.createElement("div");
+  toast.className = "toast " + type;
+  toast.textContent = message;
+
+  container.appendChild(toast);
+
+  setTimeout(()=>{
+    toast.remove();
+  },3000);
+}
+
+function editUser(user){
+
+  editingUserId = user.id;
+
+  document.getElementById("editName").value = user.name;
+  document.getElementById("editEmail").value = user.email;
+  document.getElementById("editRole").value = user.role;
+  document.getElementById("editApproved").value = user.approved ? "1" : "0";
+
+  document.getElementById("userModal").style.display = "flex";
+}
+
+async function saveUser(){
+
+  const user = {
+    name: document.getElementById("editName").value,
+    email: document.getElementById("editEmail").value,
+    role: document.getElementById("editRole").value,
+    approved: document.getElementById("editApproved").value
+  };
+  const validRoles = ["administrador","minorista","mayorista"];
+  if(!validRoles.includes(user.role)){
+  showToast("Rol inválido","error");
+  return;
+  }else{
+    await fetch("/api/admin/users/" + editingUserId,{
+      method:"PUT",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify(user)
+    });
+
+    showToast("Usuario actualizado");
+}
+  
+
+  closeUserModal();
+  loadUsers();
+}
+
+function closeUserModal(){
+  document.getElementById("userModal").style.display = "none";
+}
+
+function editUserById(id){
+  const user = usersCache.find(u => u.id === id);
+  editUser(user);
+}

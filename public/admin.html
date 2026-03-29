@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Admin LOCKER</title>
+<link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+
+<!-- LOGIN -->
+
+<section id="loginBox" class="loginBox">
+
+<h2>Admin LOCKER</h2>
+
+<input id="user" placeholder="Usuario">
+<input id="pass" type="password" placeholder="Contraseña">
+
+<button id="btnLogin">Ingresar</button>
+
+<p id="msg"></p>
+
+</section>
+
+
+<!-- DASHBOARD -->
+
+<div id="panel" class="dashboard" style="display:none">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<h2>LOCKER</h2>
+
+<button onclick="showSection('products')">📦 Productos</button>
+
+<button onclick="showSection('categories')">🗂 Categorías</button>
+
+<button onclick="showSection('users')">👤 Usuarios</button>
+
+<button onclick="showSection('reports')">📊 Reportes</button>
+
+</div>
+
+
+<!-- CONTENIDO -->
+
+<div class="content">
+
+<!-- PRODUCTOS -->
+
+<div id="productsSection" class="section">
+
+<div class="adminHeader">
+
+<h3>Productos</h3>
+
+<button onclick="openProductModal()">+ Agregar producto</button>
+
+</div>
+
+<div id="productList"></div>
+
+</div>
+
+
+<!-- CATEGORIAS -->
+
+<div id="categoriesSection" class="section" style="display:none">
+
+<h3>Categorías</h3>
+
+<div class="categoryForm">
+
+<input id="newCategoryName" placeholder="Nueva categoría">
+
+<button onclick="createCategory()">Crear</button>
+
+</div>
+
+<div id="categoryList"></div>
+
+</div>
+
+
+<!-- USUARIOS -->
+
+
+
+<div id="usersSection" class="section" style="display:none">
+
+  <div class="pageHeader">
+    <h2>Usuarios</h2>
+    <p>Administración de clientes</p>
+  </div>
+
+  <div class="statsGrid">
+    <div class="statCard">
+      <h4>Total usuarios</h4>
+      <span id="totalUsers">0</span>
+    </div>
+
+    <div class="statCard">
+      <h4>Activos</h4>
+      <span id="activeUsers">0</span>
+    </div>
+
+    <div class="statCard">
+      <h4>Pendientes</h4>
+      <span id="pendingUsers">0</span>
+    </div>
+  </div>
+
+  <div class="toolbar">
+
+  <input 
+    type="text" 
+    id="searchUser" 
+    placeholder="Buscar por nombre o email..."
+    oninput="renderUsers()"
+  >
+
+  <select id="filterStatus" onchange="renderUsers()">
+    <option value="all">Todos</option>
+    <option value="active">Activos</option>
+    <option value="pending">Pendientes</option>
+  </select>
+
+</div>
+
+  <div class="tableContainer">
+    <table class="userTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody id="userTableBody"></tbody>
+    </table>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- REPORTES -->
+
+<div id="reportsSection" class="section" style="display:none">
+
+<h3>Reportes</h3>
+
+<button onclick="loadTopProducts()">Top 10 productos</button>
+
+<button onclick="loadTopClients()">Top 10 clientes</button>
+
+<div id="reportContent"></div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- MODAL PRODUCTO -->
+
+<div id="productModal" class="modal">
+
+<div class="modalContent">
+
+<h3>Producto</h3>
+
+<input id="name" placeholder="Nombre">
+
+<input id="description" placeholder="Descripción">
+
+<input id="price_minor" placeholder="Precio minorista">
+
+<input id="price_major" placeholder="Precio mayorista">
+
+<select id="category"></select>
+
+<input type="file" id="image">
+
+<img id="preview" width="120">
+
+<button onclick="saveProduct()">Guardar</button>
+
+<button onclick="closeProductModal()">Cancelar</button>
+
+</div>
+
+</div>
+
+<!-- MODAL USUARIO -->
+
+<div id="userModal" class="modal">
+
+  <div class="modalContent">
+
+    <h3>Editar usuario</h3>
+
+    <input id="editName" placeholder="Nombre">
+    <input id="editEmail" placeholder="Email">
+
+    <select id="editRole">
+        <option value="administrador">Administrador</option>
+        <option value="minorista">Minorista</option>
+        <option value="mayorista">Mayorista</option>
+    </select>
+
+    <select id="editApproved">
+      <option value="1">Activo</option>
+      <option value="0">Pendiente</option>
+    </select>
+
+    <button onclick="saveUser()">Guardar</button>
+    <button onclick="closeUserModal()">Cancelar</button>
+
+  </div>
+
+</div>
+
+<div id="toastContainer"></div>
+
+<script src="/js/admin/admin.js"></script>
+
+
+
+</body>
+</html>
