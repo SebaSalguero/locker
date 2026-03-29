@@ -18,7 +18,7 @@ function login() {
   const userInput = document.getElementById("user");
   const passInput = document.getElementById("pass");
 
-  fetch("http://localhost:3000/api/admin/login", {
+  fetch("/api/admin/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -53,7 +53,7 @@ async function addProduct(){
     formData.append("image", fileInput.files[0]);
 
     const uploadRes = await fetch(
-      "http://localhost:3000/api/admin/upload",
+      "/api/admin/upload",
       {
         method:"POST",
         body:formData
@@ -74,7 +74,7 @@ async function addProduct(){
   image: imageName
 };
 
-  await fetch("http://localhost:3000/api/admin/products",{
+  await fetch("/api/admin/products",{
     method:"POST",
     headers:{ "Content-Type":"application/json" },
     body: JSON.stringify(product)
@@ -89,7 +89,7 @@ async function addProduct(){
 
 function loadProducts(){
 
-  fetch("http://localhost:3000/api/products")
+  fetch("/api/products")
 
   .then(res => res.json())
 
@@ -151,7 +151,7 @@ function deleteProduct(id){
 
   if(!confirm("Eliminar producto?")) return;
 
-  fetch("http://localhost:3000/api/admin/products/" + id,{
+  fetch("/api/admin/products/" + id,{
     method:"DELETE"
   })
 
@@ -279,7 +279,7 @@ loadProducts()
 
 async function loadCategoriesList(){
 
-  const res = await fetch("http://localhost:3000/api/categories")
+  const res = await fetch("/api/categories")
 
   const categories = await res.json()
 
