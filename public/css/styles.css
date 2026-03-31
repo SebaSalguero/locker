@@ -685,40 +685,48 @@ border:1px solid #ddd;
 
 /* CATEGORIAS */
 
-.categories{
+.categories {
 
-display:flex;
-gap:15px;
+  display: flex;
+  gap: 10px;
 
-padding:12px 20px;
+  padding: 12px 15px;
 
-background:white;
+  background: white;
+  border-bottom: 1px solid #eee;
 
-border-bottom:1px solid #eee;
+  overflow-x: auto;        
+  white-space: nowrap;     
 
-justify-content:center;
+  justify-content: flex-start; 
 
+  -webkit-overflow-scrolling: touch; 
 }
 
-.categories button{
+.categories button {
 
-background:none;
-border:none;
+  flex: 0 0 auto;
 
-font-size:14px;
+  background: #f5f5f5;
+  border: none;
 
-cursor:pointer;
+  font-size: 14px;
+  cursor: pointer;
 
-padding:8px 12px;
+  padding: 8px 14px;
+  border-radius: 20px;
 
-border-radius:6px;
-
+  white-space: nowrap;
 }
 
 .categories button:hover{
 
 background:#f2f2f2;
 
+}
+
+.categories::-webkit-scrollbar {
+  display: none;
 }
 
 /* ===== TOAST AGREGADO AL CARRITO ===== */
