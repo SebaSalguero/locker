@@ -824,3 +824,50 @@ transform:translateX(-50%) translateY(0);
   }
 
 }
+
+.cart-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 90%;
+  max-width: 400px;
+  height: 100vh;
+  background: white;
+  z-index: 9999; /* MÁS ALTO QUE TODO */
+  overflow-y: auto;
+}
+
+.header {
+  position: relative; /* o sticky si querés */
+  z-index: 10;
+}
+
+.categories {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 10px;
+  scrollbar-width: none; /* Firefox */
+}
+
+.categories::-webkit-scrollbar {
+  display: none; /* Chrome */
+}
+
+.category-item {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  background: #f2f2f2;
+  padding: 8px 14px;
+  border-radius: 20px;
+}
+
+.cart-panel {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.whatsapp-btn {
+  position: sticky;
+  bottom: 10px;
+}
