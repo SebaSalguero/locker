@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  
   <title>LOCKER | Tienda Oficial</title>
 
   <link rel="stylesheet" href="css/styles.css">
@@ -24,34 +24,36 @@
 
       <div class="header-top">
 
-  <div class="search-input">
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
 
-    <span class="search-icon">🔎</span>
+        <div class="search-input">
 
-    <input
-      type="text"
-      id="searchInput"
-      name="search_random_987"
-      placeholder="Buscar productos..."
-      autocomplete="off"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="false"
-    >
+          <span class="search-icon">🔎</span>
 
-  </div>
+          <input
+            type="text"
+            id="searchInput"
+            name="search_random_987"
+            placeholder="Buscar productos..."
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+          >
 
-  <div class="header-right">
+        </div>
 
-    <div id="userBar"></div>
+    <div class="header-right">
 
-    <div class="cart-icon cart-button" onclick="openCart()">
-      🛒 <span id="cartCount">0</span>
+      <div id="userBar"></div>
+
+      <div class="cart-icon cart-button" onclick="openCart()">
+        🛒 <span id="cartCount">0</span>
+      </div>
+
     </div>
 
   </div>
-
-</div>
       
     </div>
 
@@ -67,7 +69,21 @@
 
   <nav id="categoriesNav" class="categories"></nav>
 
-  
+  <!-- MENÚ HAMBURGUESA -->
+<div id="sideMenu" class="side-menu">
+
+  <div class="menu-header">
+    <span>Menú</span>
+    <button onclick="toggleMenu()">✕</button>
+  </div>
+
+  <button onclick="filterCategory('all')">Todos</button>
+
+  <div id="menuCategories"></div>
+
+</div>
+
+<div id="menuOverlay" class="menu-overlay" onclick="toggleMenu()"></div>
 
 
   <!-- ===== PRODUCTOS ===== -->

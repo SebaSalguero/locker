@@ -523,6 +523,14 @@ btnAll.onclick = () => filterCategory("all")
 
 nav.appendChild(btnAll)
 
+const btnAllMenu = document.createElement("button");
+btnAllMenu.textContent = "Todos";
+btnAllMenu.onclick = () => {
+  filterCategory("all");
+  toggleMenu();
+};
+menu.appendChild(btnAllMenu);
+
 // categorías de la base de datos
 categories.forEach(cat => {
 
@@ -535,6 +543,26 @@ btn.onclick = () => filterCategory(cat.id)
 nav.appendChild(btn)
 
 })
+
+const menu = document.getElementById("menuCategories");
+
+if(menu){
+  menu.innerHTML = "";
+
+  categories.forEach(cat => {
+
+    const btn = document.createElement("button");
+
+    btn.textContent = cat.name;
+
+    btn.onclick = () => {
+      filterCategory(cat.id);
+      toggleMenu();
+    };
+
+    menu.appendChild(btn);
+  });
+}
 
 }
 
@@ -586,6 +614,16 @@ async function register() {
 
 }
 
+function toggleMenu(){
+
+  const menu = document.getElementById("sideMenu");
+  const overlay = document.getElementById("menuOverlay");
+
+  menu.classList.toggle("active");
+  overlay.classList.toggle("active");
+
+}
+
 // cerrar modal clickeando el fondo oscuro
 
 
@@ -608,6 +646,14 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     input.value = "";
   }, 100);
+
+  const icon = document.querySelector('.cart-icon');
+if(icon){
+  icon.classList.add('bump');
+  setTimeout(() => {
+    icon.classList.remove('bump');
+  }, 400);
+}
 
     registerModal.addEventListener("click", function(e) {
       if (e.target === registerModal) {
@@ -691,4 +737,3 @@ document.addEventListener("keydown", function (e) {
     login();
   }
 });
-
