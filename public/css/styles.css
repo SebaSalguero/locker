@@ -440,12 +440,13 @@ html {
 @media (max-width: 768px) {
 
   .logo {
-    font-size: 28px;
+    font-size: 20px;
   }
 
   .header-top {
     display: grid;
     grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
     align-items: center;
     gap: 10px;
   }
@@ -463,6 +464,11 @@ html {
 
   .search-input {
     width: 100%;
+  }
+
+  .search-input input {
+    padding: 12px;
+    font-size: 16px;
   }
 
   .products-grid {
@@ -575,4 +581,27 @@ html {
 .menu-overlay.active {
   opacity: 1;
   pointer-events: all;
+}
+
+.menu-toggle {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.logo {
+  grid-column: 2;
+  grid-row: 1;
+  text-align: center;
+}
+
+.header-right {
+  grid-column: 3;
+  grid-row: 1;
+  justify-content: flex-end;
+}
+
+.search-input {
+  grid-column: 1 / 4;
+  grid-row: 2;
+  width: 100%;
 }

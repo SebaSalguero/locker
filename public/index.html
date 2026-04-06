@@ -24,36 +24,40 @@
 
       <div class="header-top">
 
-        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  <!-- IZQUIERDA -->
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
 
-        <div class="search-input">
+  <!-- CENTRO -->
+  <div class="logo-mobile">LOCKER</div>
 
-          <span class="search-icon">🔎</span>
+  <!-- DERECHA -->
+  <div class="header-right">
+    <div id="userBar"></div>
 
-          <input
-            type="text"
-            id="searchInput"
-            name="search_random_987"
-            placeholder="Buscar productos..."
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
-          >
-
-        </div>
-
-    <div class="header-right">
-
-      <div id="userBar"></div>
-
-      <div class="cart-icon cart-button" onclick="openCart()">
-        🛒 <span id="cartCount">0</span>
-      </div>
-
+    <div class="cart-icon cart-button" onclick="openCart()">
+      🛒 <span id="cartCount">0</span>
     </div>
-
   </div>
+
+</div>
+
+<!-- BUSCADOR ABAJO (IMPORTANTE) -->
+<div class="search-container">
+
+  <span class="search-icon">🔎</span>
+
+  <input
+    type="text"
+    id="searchInput"
+    name="search_random_987"
+    placeholder="Buscar productos..."
+    autocomplete="off"
+    autocorrect="off"
+    autocapitalize="off"
+    spellcheck="false"
+  >
+
+</div>
       
     </div>
 
