@@ -509,60 +509,54 @@ setTimeout(()=>{
 
 async function loadCategories(){
 
-const res = await fetch("/api/categories")
-const categories = await res.json()
+  const res = await fetch("/api/categories")
+  const categories = await res.json()
 
-const nav = document.getElementById("categoriesNav")
+  const nav = document.getElementById("categoriesNav")
+  const menu = document.getElementById("menuCategories");
 
-nav.innerHTML = ""
+  nav.innerHTML = ""
+  if(menu) menu.innerHTML = ""
 
-// botón TODOS
-const btnAll = document.createElement("button")
-btnAll.textContent = "Todos"
-btnAll.onclick = () => filterCategory("all")
+  // ===== BOTÓN TODOS =====
 
-nav.appendChild(btnAll)
+  const btnAll = document.createElement("button")
+  btnAll.textContent = "Todos"
+  btnAll.onclick = () => filterCategory("all")
+  nav.appendChild(btnAll)
 
-const btnAllMenu = document.createElement("button");
-btnAllMenu.textContent = "Todos";
-btnAllMenu.onclick = () => {
-  filterCategory("all");
-  toggleMenu();
-};
-menu.appendChild(btnAllMenu);
+  if(menu){
+    const btnAllMenu = document.createElement("button");
+    btnAllMenu.textContent = "Todos";
+    btnAllMenu.onclick = () => {
+      filterCategory("all");
+      toggleMenu();
+    };
+    menu.appendChild(btnAllMenu);
+  }
 
-// categorías de la base de datos
-categories.forEach(cat => {
-
-const btn = document.createElement("button")
-
-btn.textContent = cat.name
-
-btn.onclick = () => filterCategory(cat.id)
-
-nav.appendChild(btn)
-
-})
-
-const menu = document.getElementById("menuCategories");
-
-if(menu){
-  menu.innerHTML = "";
+  // ===== CATEGORÍAS =====
 
   categories.forEach(cat => {
 
-    const btn = document.createElement("button");
+    // NAV NORMAL
+    const btn = document.createElement("button")
+    btn.textContent = cat.name
+    btn.onclick = () => filterCategory(cat.id)
+    nav.appendChild(btn)
 
-    btn.textContent = cat.name;
+    // MENÚ HAMBURGUESA
+    if(menu){
+      const btnMenu = document.createElement("button");
+      btnMenu.textContent = cat.name;
+      btnMenu.onclick = () => {
+        filterCategory(cat.id);
+        toggleMenu();
+      };
+      menu.appendChild(btnMenu);
+    }
 
-    btn.onclick = () => {
-      filterCategory(cat.id);
-      toggleMenu();
-    };
-
-    menu.appendChild(btn);
-  });
-}
+  })
 
 }
 
