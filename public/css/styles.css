@@ -444,13 +444,21 @@ html {
   }
 
   .header-top {
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
     gap: 10px;
   }
 
+  .menu-toggle {
+    display: block;
+    font-size: 26px;
+  }
+
+
   .header-right {
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: end;
   }
 
   .search-input {
@@ -470,14 +478,16 @@ html {
     width: 100%;
   }
 
-  .menu-toggle {
-  display: block;
-  }
+  
 
   /* ocultamos categorías horizontales */
   .categories {
     display: none;
   }
+
+  .menu-toggle {
+  display: block !important;
+}
 
 }
 
