@@ -14,58 +14,51 @@
 
 <body>
 
+
   <!-- ===== HEADER ===== -->
   <header class="header">
     <div class="container">
-      <h1 class="logo">LOCKER</h1>
-      <p class="subtitle">
-        Accesorios & Regalos · Venta minorista y mayorista
-      </p>
+      <h1 class="logo"></h1>
+      
+      <p class="subtitle"></p>
 
-      <div class="header-top">
+      <div class="header-main">
 
-  <!-- IZQUIERDA -->
-  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+          <!-- IZQUIERDA -->
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
 
-  <!-- CENTRO -->
-  <div class="logo-mobile">LOCKER</div>
+          <!-- CENTRO -->
+        <div class="logo-mobile">LOCKER</div>
 
-  <!-- DERECHA -->
-  <div class="header-right">
-    <div id="userBar"></div>
-    <div class="login-icon">👤</div>
-    <div class="cart-icon cart-button" onclick="openCart()">
-      🛒 <span id="cartCount">0</span>
-    </div>
-  </div>
+          <!-- DERECHA -->
+        <div class="header-right">
+          <div id="userBar"></div>
+          <div class="login-icon" onclick="showLogin()">👤</div>
+          <div class="cart-icon cart-button" onclick="openCart()">
+          🛒 <span id="cartCount">0</span>
+          </div>
+        </div>
 
-</div>
+      </div>
 
-<!-- BUSCADOR ABAJO (IMPORTANTE) -->
-<div class="search-container">
-
-  <span class="search-icon">🔎</span>
-
-  <input
-    type="text"
-    id="searchInput"
-    name="search_random_987"
-    placeholder="Buscar productos..."
-    autocomplete="off"
-    autocorrect="off"
-    autocapitalize="off"
-    spellcheck="false"
-  >
-
-</div>
+        <!-- BUSCADOR ABAJO (IMPORTANTE) -->
+      <div class="search-input">
+        <input
+          type="text"
+          id="searchInput"
+          name="search_random_987"
+          placeholder="Buscar productos..."
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+        >
+        <div id="suggestions" class="suggestions-box"></div>
+      </div>
       
     </div>
 
     <div class="header-actions">
-
-      
-
-      
 
     </div>
     

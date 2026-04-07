@@ -77,7 +77,7 @@ function renderUserBar() {
   if (!user) {
     userBar.innerHTML = `
       <div class="user-bar">
-        <button onclick="showLogin()">Iniciar sesión</button>
+        
 
       </div>
     `;
@@ -121,20 +121,38 @@ async function loadProducts() {
 
 }
 
-function filterProducts(){
+function filterProducts() {
 
   const text = document
-  .getElementById("searchInput")
-  .value
-  .toLowerCase();
+    .getElementById("searchInput")
+    .value
+    .toLowerCase()
+    .trim();
 
-  const filtered = allProducts.filter(p =>
-    p.name.toLowerCase().includes(text) ||
-    p.description.toLowerCase().includes(text)
-  );
+  if (!text) {
+    renderProducts(allProducts);
+    return;
+  }
 
-  renderProducts(filtered);
+  const results = allProducts
+    .map(p => {
 
+      const name = (p.name || "").toLowerCase();
+      const desc = (p.description || "").toLowerCase();
+
+      let score = 0;
+
+      if (name.includes(text)) score += 3;
+      if (name.startsWith(text)) score += 5;
+      if (desc.includes(text)) score += 1;
+
+      return { ...p, score };
+
+    })
+    .filter(p => p.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  renderProducts(results);
 }
 
 function filterCategory(cat){
@@ -150,6 +168,13 @@ function filterCategory(cat){
 
 }
 
+function highlight(text, search) {
+  if (!search) return text;
+
+  const regex = new RegExp(`(${search})`, "gi");
+  return text.replace(regex, "<mark>$1</mark>");
+}
+
 function renderProducts(products){
 
 const container = document.getElementById("products");
@@ -160,6 +185,8 @@ products.forEach(p => {
 
 const card = document.createElement("div");
 
+const search = document.getElementById("searchInput").value;
+
 card.className = "product-card";
 
 card.innerHTML = `
@@ -169,10 +196,10 @@ card.innerHTML = `
 
 <div class="product-info">
 
-<h3>${p.name}</h3>
+<h3>${highlight(p.name, search)}</h3>
 
 <p class="desc">
-${p.description}
+${highlight(p.description, search)}
 </p>
 
 <div class="price">
@@ -331,7 +358,7 @@ function closeCart(){
 function sendOrder() {
 
   const cart = getCart();
-  const user = getUser(); // 👈 CLAVE
+  const user = getUser(); 
 
   if (cart.length === 0) {
     alert("El carrito está vacío");
@@ -618,6 +645,43 @@ function toggleMenu(){
 
 }
 
+function showSuggestions(text) {
+
+  const box = document.getElementById("suggestions");
+
+  if (!text) {
+    box.innerHTML = "";
+    return;
+  }
+
+  const matches = allProducts
+    .filter(p =>
+      (p.name || "").toLowerCase().includes(text)
+    )
+    .slice(0, 5);
+
+  box.innerHTML = "";
+
+  matches.forEach(p => {
+
+    const div = document.createElement("div");
+    div.className = "suggestion-item";
+    div.innerText = p.name;
+
+    div.onclick = () => {
+      document.getElementById("searchInput").value = p.name;
+      box.innerHTML = "";
+      filterProducts();
+    };
+
+    box.appendChild(div);
+
+  });
+}
+
+
+
+
 // cerrar modal clickeando el fondo oscuro
 
 
@@ -678,7 +742,12 @@ if(icon){
 
   document
   .getElementById("searchInput")
-  .addEventListener("input", filterProducts);
+  
+  .addEventListener("input", (e) => {
+    const text = e.target.value.toLowerCase();
+    filterProducts();
+    showSuggestions(text);
+  });
 
   const modal = document.getElementById("login");
 
@@ -693,23 +762,14 @@ if(icon){
 });
 
 document.addEventListener("keydown", function (e) {
-
   if (e.key === "Escape") {
-
     closeCart();
 
+    const modal = document.getElementById("login");
+    if (modal.classList.contains("active")) {
+      showLogin();
+    }
   }
-
-});
-
-document.addEventListener("keydown", function (e) {
-
-  const modal = document.getElementById("login");
-
-  if (e.key === "Escape" && modal.classList.contains("active")) {
-    showLogin();
-  }
-
 });
 
 window.showLogin = showLogin;
@@ -729,5 +789,12 @@ document.addEventListener("keydown", function (e) {
   // si presiona ENTER
   if (e.key === "Enter") {
     login();
+  }
+});
+
+
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".search-container")) {
+    document.getElementById("suggestions").innerHTML = "";
   }
 });
