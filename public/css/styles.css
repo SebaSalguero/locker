@@ -748,3 +748,112 @@ mark {
   }
 
 }
+
+
+/* ===== NUEVO CARRITO PRO ===== */
+
+.cart-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: #fafafa;
+  padding: 10px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  position: relative;
+  animation: fadeCart 0.3s ease;
+}
+
+/* imagen */
+.cart-img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 10px;
+}
+
+/* info */
+.cart-info {
+  flex: 1;
+}
+
+.cart-info h4 {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.cart-price {
+  color: #999;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+/* controles */
+.cart-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cart-controls button {
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: #eee;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cart-controls span {
+  font-size: 14px;
+}
+
+/* derecha */
+.cart-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.cart-subtotal {
+  font-weight: bold;
+  color: #e60023;
+}
+
+/* eliminar */
+.cart-remove {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #999;
+}
+
+.cart-remove:hover {
+  color: red;
+}
+
+/* animación */
+@keyframes fadeCart {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.cart-total-box {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+.cart-total-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+}

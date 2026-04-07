@@ -18,12 +18,13 @@ function addToCart(product) {
   if (existing) {
     existing.qty += 1;
   } else {
-    cart.push({
-      id: product.id,
-      name: product.name,
-      price: price,
-      qty: 1
-    });
+      cart.push({
+        id: product.id,
+        name: product.name,
+        price: price,
+        image: product.image, // 👈 CLAVE
+        qty: 1
+      });
   }
 
   saveCart(cart);
@@ -474,31 +475,41 @@ function renderCart(){
 
     const item = document.createElement("div");
 
-    item.className = "cart-item";
+item.className = "cart-item";
 
-    item.innerHTML = `
+item.innerHTML = `
 
-      <div>
+  <img src="/uploads/${p.image || 'default.png'}" class="cart-img">
 
-        <strong>${p.name}</strong>
+  <div class="cart-info">
 
-        <div class="cart-controls">
+    <h4>${p.name}</h4>
 
-          <button onclick="decreaseQty(${index})">-</button>
+    <p class="cart-price">$${p.price}</p>
 
-          <span>${p.qty}</span>
+    <div class="cart-controls">
 
-          <button onclick="increaseQty(${index})">+</button>
+      <button onclick="decreaseQty(${index})">−</button>
 
-          <button onclick="removeItem(${index})">🗑</button>
+      <span>${p.qty}</span>
 
-        </div>
+      <button onclick="increaseQty(${index})">+</button>
 
-      </div>
+    </div>
 
-      <div>$${subtotal}</div>
+  </div>
 
-    `;
+  <div class="cart-right">
+
+    <span class="cart-subtotal">$${subtotal}</span>
+
+    <button class="cart-remove" onclick="removeItem(${index})">
+      ✕
+    </button>
+
+  </div>
+
+`;
 
     container.appendChild(item);
 
@@ -506,14 +517,13 @@ function renderCart(){
 
   const totalBox = document.createElement("div");
 
-  totalBox.className = "cart-total";
+  totalBox.className = "cart-total-box";
 
   totalBox.innerHTML = `
-
-    <hr>
-
-    <strong>Total: $${total}</strong>
-
+    <div class="cart-total-line">
+      <span>Total</span>
+      <strong>$${total}</strong>
+    </div>
   `;
 
   container.appendChild(totalBox);
