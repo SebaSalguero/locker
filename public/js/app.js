@@ -22,7 +22,7 @@ function addToCart(product) {
         id: product.id,
         name: product.name,
         price: price,
-        image: product.image, // 👈 CLAVE
+        image: product.image,
         qty: 1
       });
   }
@@ -715,13 +715,7 @@ document.addEventListener("DOMContentLoaded", () => {
     input.value = "";
   }, 100);
 
-  const icon = document.querySelector('.cart-icon');
-if(icon){
-  icon.classList.add('bump');
-  setTimeout(() => {
-    icon.classList.remove('bump');
-  }, 400);
-}
+  
 
     registerModal.addEventListener("click", function(e) {
       if (e.target === registerModal) {
