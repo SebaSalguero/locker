@@ -989,3 +989,7 @@ mark {
 .login-icon:hover .login-img-icon {
   transform: scale(1.1);
 }
+
+.product-image img {
+  will-change: transform;
+}
