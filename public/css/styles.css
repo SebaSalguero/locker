@@ -935,3 +935,57 @@ mark {
   width: 18px;
   height: 18px;
 }
+
+.cart-icon {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.cart-img-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+/* contador */
+#cartCount {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: red;
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
+
+.cart-img-icon {
+  transition: transform 0.2s ease;
+}
+
+.cart-icon:hover .cart-img-icon {
+  transform: scale(1.1);
+}
+
+.login-icon {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-img-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.login-img-icon {
+  transition: transform 0.2s ease;
+}
+
+.login-icon:hover .login-img-icon {
+  transform: scale(1.1);
+}
