@@ -1,5 +1,5 @@
 const mysql = require("mysql2");
-
+console.log("MYSQL_PUBLIC_URL:", process.env.MYSQL_PUBLIC_URL);
 const db = mysql.createConnection(process.env.MYSQL_PUBLIC_URL);
 
 db.connect(err => {
