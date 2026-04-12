@@ -3,28 +3,20 @@ const router = express.Router();
 const db = require("../db");
 const bcrypt = require("bcrypt");
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
+  try {
+    const { username, password } = req.body;
 
-  const { username, password } = req.body;
-
-  console.log("📥 INPUT:", { username, password });
-
-  if (!username || !password) {
-    return res.status(400).json({ error: "Faltan datos" });
-  }
-
-  const sql = "SELECT * FROM users WHERE email = ?";
-
-  db.query(sql, [username], async (err, result) => {
-
-    if (err) {
-      console.error("❌ DB ERROR:", err);
-      return res.status(500).json(err);
+    if (!username || !password) {
+      return res.status(400).json({ error: "Faltan datos" });
     }
 
-    console.log("📦 RESULT:", result);
+    const [result] = await db.query(
+      "SELECT * FROM users WHERE email=?",
+      [username]
+    );
 
-    if (!result || result.length === 0) {
+    if (!result.length) {
       return res.status(401).json({ error: "Usuario no existe" });
     }
 
@@ -34,41 +26,24 @@ router.post("/", (req, res) => {
       return res.status(500).json({ error: "Usuario sin contraseña válida" });
     }
 
-    const hash = user.password.toString();
+    const match = await bcrypt.compare(password, user.password);
 
-    try {
-      const match = await bcrypt.compare(password, hash);
-
-      console.log("✅ MATCH:", match);
-
-      if (!match) {
-        return res.status(401).json({ error: "Contraseña incorrecta" });
-      }
-
-      if (user.force_password_change) {
-        return res.json({
-          force_password_change: true,
-          id: user.id,
-          email: user.email,
-          nombre: user.name,
-          tipo: user.role
-        });
-      }
-
-res.json({
-  id: user.id,
-  nombre: user.name,
-  email: user.email,
-  tipo: user.role
-});
-
-    } catch (error) {
-      console.error("💥 BCRYPT ERROR:", error);
-      return res.status(500).json({ error: "Error interno" });
+    if (!match) {
+      return res.status(401).json({ error: "Contraseña incorrecta" });
     }
 
-  });
+    res.json({
+      id: user.id,
+      nombre: user.name,
+      email: user.email,
+      tipo: user.role,
+      force_password_change: user.force_password_change
+    });
 
+  } catch (err) {
+    console.error("LOGIN ERROR:", err);
+    res.status(500).json({ error: "Error interno" });
+  }
 });
 
 module.exports = router;

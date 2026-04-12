@@ -1,253 +1,175 @@
 const multer = require("multer");
 const path = require("path");
-
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
+const bcrypt = require("bcrypt");
 
+// storage imágenes
 const storage = multer.diskStorage({
-
-  destination: function (req, file, cb) {
+  destination: (req, file, cb) => {
     cb(null, path.join(__dirname, "../../public/uploads"));
   },
-
-  filename: function (req, file, cb) {
-
-    const unique =
-      Date.now() + "-" + Math.round(Math.random() * 1E9);
-
+  filename: (req, file, cb) => {
+    const unique = Date.now() + "-" + Math.round(Math.random() * 1E9);
     cb(null, unique + path.extname(file.originalname));
-
   }
-
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
-// login admin simple
+// LOGIN ADMIN
 router.post("/login", (req, res) => {
-  console.log("BODY:", req.body);
-
   const { user, pass } = req.body;
-
   if (user === "admin" && pass === "admin123") {
     return res.json({ success: true });
   }
-
   res.status(401).json({ success: false });
 });
 
-// agregar producto
-router.post("/products", (req, res) => {
-  const { name, description, price_minor, price_major, image, category_id } = req.body;
+// CREAR PRODUCTO
+router.post("/products", upload.array("images", 5), async (req, res) => {
+  try {
+    const { name, description, price_minor, price_major, category_id } = req.body;
 
-  const sql = `
-  INSERT INTO products (name, description, price_minor, price_major, image, category_id)
-  VALUES (?, ?, ?, ?, ?, ?)
-  `;
+    // 🧾 insertar producto (imagen principal opcional)
+    const [result] = await db.query(
+      `INSERT INTO products (name, description, price_minor, price_major, image, category_id)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [
+        name,
+        description,
+        price_minor,
+        price_major,
+        req.files[0]?.filename || null, // 👈 imagen principal
+        category_id
+      ]
+    );
 
-  db.query(
-    sql,
-    [name, description, price_minor, price_major, image, category_id],
-    (err) => {
-      if (err) return res.status(500).json(err);
-      res.json({ success: true });
-    }
-  );
-});
+    const productId = result.insertId;
 
-router.delete("/products/:id", (req, res) => {
-
-  const id = req.params.id;
-
-  const sql = "DELETE FROM products WHERE id = ?";
-
-  db.query(sql, [id], (err, result) => {
-
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: "Error eliminando producto" });
+    // 🖼 guardar TODAS las imágenes
+    if (req.files && req.files.length > 0) {
+      for (const file of req.files) {
+        await db.query(
+          "INSERT INTO product_images (product_id, image) VALUES (?, ?)",
+          [productId, file.filename]
+        );
+      }
     }
 
     res.json({ success: true });
 
-  });
-
+  } catch (err) {
+    console.error("ERROR CREANDO PRODUCTO:", err);
+    res.status(500).json(err);
+  }
 });
 
-router.put("/products/:id", (req, res) => {
-
-  const id = req.params.id;
-
-  const { name, description, price_minor, price_major, image, category_id } = req.body;
-
-  const sql = `
-  UPDATE products
-  SET name=?, description=?, price_minor=?, price_major=?, image=?, category_id=?
-  WHERE id=?
-  `;
-
-  db.query(
-    sql,
-    [name, description, price_minor, price_major, image, category_id, id],
-    (err) => {
-
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ error: "Error actualizando producto" });
-      }
-
-      res.json({ success: true });
-
-    }
-  );
-
+// DELETE PRODUCTO
+router.delete("/products/:id", async (req, res) => {
+  try {
+    await db.query("DELETE FROM products WHERE id = ?", [req.params.id]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
-router.post("/upload", upload.single("image"), (req, res) => {
+// UPDATE PRODUCTO
+router.put("/products/:id", async (req, res) => {
+  try {
+    const { name, description, price_minor, price_major, image, category_id } = req.body;
 
-  if (!req.file) {
-    return res.status(400).json({ error: "No file uploaded" });
+    await db.query(
+      `UPDATE products SET name=?, description=?, price_minor=?, price_major=?, image=?, category_id=? WHERE id=?`,
+      [name, description, price_minor, price_major, image, category_id, req.params.id]
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// UPLOAD
+router.post("/upload", upload.array("images", 5), (req, res) => {
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).json({ error: "No files uploaded" });
   }
 
-  res.json({
-    filename: req.file.filename
-  });
+  const filenames = req.files.map(f => f.filename);
 
+  res.json({ filenames });
 });
 
-const bcrypt = require("bcrypt");
-
-// LISTAR
-router.get("/users", (req, res) => {
-
-  db.query(
-    "SELECT id, name, email, role, approved FROM users",
-    (err, result) => {
-
-      if (err) return res.status(500).json(err);
-
-      res.json(result);
-    }
-  );
-
+// USERS LIST
+router.get("/users", async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT id,name,email,role,approved FROM users");
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
-// CREAR
+// CREATE USER
 router.post("/users", async (req, res) => {
+  try {
+    const { name, email, password, role } = req.body;
+    const hash = await bcrypt.hash(password, 10);
 
-  const { name, email, password, role } = req.body;
+    await db.query(
+      "INSERT INTO users (name,email,password,role,approved) VALUES (?,?,?,?,1)",
+      [name, email, hash, role]
+    );
 
-  const hash = await bcrypt.hash(password, 10);
-
-  db.query(
-    "INSERT INTO users (name,email,password,role,approved) VALUES (?,?,?,?,1)",
-    [name, email, hash, role],
-    err => {
-
-      if (err) return res.status(500).json(err);
-
-      res.json({ success: true });
-
-    }
-  );
-
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
-// EDITAR
-router.put("/users/:id", (req, res) => {
+// UPDATE USER
+router.put("/users/:id", async (req, res) => {
+  try {
+    const { name, email, role, approved } = req.body;
 
-  const { name, email, role, approved } = req.body;
+    await db.query(
+      "UPDATE users SET name=?, email=?, role=?, approved=? WHERE id=?",
+      [name, email, role, approved, req.params.id]
+    );
 
-  db.query(
-    "UPDATE users SET name=?, email=?, role=?, approved=? WHERE id=?",
-    [name, email, role, approved, req.params.id],
-    err => {
-
-      if (err) return res.status(500).json(err);
-
-      res.json({ success: true });
-
-    }
-  );
-
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
-
-// RESET PASSWORD
-router.put("/users/:id/reset", async (req, res) => {
-
-  const hash = await bcrypt.hash("1234", 10);
-
-  db.query(
-    "UPDATE users SET password=? WHERE id=?",
-    [hash, req.params.id],
-    err => {
-
-      if (err) return res.status(500).json(err);
-
-      res.json({ success: true });
-
-    }
-  );
-
-});
-
-// aprobar usuario
-router.put("/approve-user/:id", (req, res) => {
-
-  const { id } = req.params;
-
-  db.query(
-    "UPDATE users SET approved=1 WHERE id=?",
-    [id],
-    () => res.json({ success:true })
-  );
-
-});
-
-// eliminar usuario
-router.delete("/users/:id", (req, res) => {
-
-  const { id } = req.params;
-
-  db.query(
-    "DELETE FROM users WHERE id=?",
-    [id],
-    () => res.json({ success:true })
-  );
-
-});
-
-
 
 // RESET PASSWORD
 router.put("/users/:id/reset-password", async (req, res) => {
-
-  const userId = req.params.id;
-  const defaultPassword = "123456";
-
   try {
-    const hash = await bcrypt.hash(defaultPassword, 10);
+    const hash = await bcrypt.hash("123456", 10);
 
-    db.query(
-      "UPDATE users SET password = ?, force_password_change = 1 WHERE id = ?",
-      [hash, userId],
-      (err) => {
-
-        if (err) {
-          console.error(err);
-          return res.status(500).json({ error: "Error al resetear contraseña" });
-        }
-
-        res.json({ success: true });
-
-      }
+    await db.query(
+      "UPDATE users SET password=?, force_password_change=1 WHERE id=?",
+      [hash, req.params.id]
     );
 
-  } catch (error) {
-    res.status(500).json({ error: "Error interno" });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json(err);
   }
+});
 
+// DELETE USER
+router.delete("/users/:id", async (req, res) => {
+  try {
+    await db.query("DELETE FROM users WHERE id=?", [req.params.id]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;

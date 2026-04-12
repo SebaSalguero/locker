@@ -209,7 +209,51 @@
 
 </a>
 
-  
+
+<!-- PRODUCT MODAL -->
+<div id="productModal" class="product-modal">
+  <div class="product-modal-content" onclick="event.stopPropagation()">
+
+    <span class="close-modal" onclick="closeProductModal()">✕</span>
+
+    <div class="product-modal-body">
+
+      <div class="product-modal-images">
+        <img id="modalMainImage" src="" alt="">
+      </div>
+
+      <div class="product-modal-info">
+        <h2 id="modalName"></h2>
+
+        <p id="modalDesc"></p>
+
+        <div class="modal-price">
+          <span id="modalOldPrice" class="old-price"></span>
+          <span id="modalPrice" class="new-price"></span>
+        </div>
+
+        <button id="modalAddBtn" class="buy-btn">
+          Agregar al carrito
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+  <!-- CHANGE PASSWORD MODAL -->
+<div id="changePasswordModal">
+  <div class="login-box" onclick="event.stopPropagation()">
+    <h2>Cambiar contraseña</h2>
+
+    <input id="newPassword" type="password" placeholder="Nueva contraseña">
+    <input id="confirmPassword" type="password" placeholder="Confirmar contraseña">
+
+    <button onclick="submitNewPassword()">Guardar</button>
+  </div>
+</div>
 
   <!-- JS SIEMPRE AL FINAL -->
   <script src="js/app.js"></script>

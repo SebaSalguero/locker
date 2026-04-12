@@ -8,10 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// servir frontend
-app.use(express.static(path.join(__dirname, "../public")));
-
-// rutas API
+// 🔥 rutas API primero
 app.use("/api/admin", require("./routes/admin"));
 app.use("/api/products", require("./routes/products"));
 app.use("/api/login", require("./routes/login"));
@@ -19,12 +16,23 @@ app.use("/api/categories", require("./routes/categories"));
 app.use("/api/register", require("./routes/register"));
 app.use("/api/users", require("./routes/users"));
 
+// 🔥 ruta SEO (ANTES del static)
+app.get("/producto/:slugId", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/product.html"));
+});
+
+// 🔥 uploads
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// 🔥 static al FINAL
+app.use(express.static(path.join(__dirname, "../public")));
+
 // test
 app.get("/ping", (req, res) => {
   res.send("Servidor OK");
 });
 
-// 🔥 UN SOLO LISTEN (correcto para Render)
+// listen
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {

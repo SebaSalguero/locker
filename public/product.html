@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Producto</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/product.css">
+</head>
+<body>
+
+<!-- ===== HEADER (COPIADO DEL INDEX) ===== -->
+<header class="header">
+  <div class="container">
+    <h1 class="logo"></h1>
+    
+    <p class="subtitle"></p>
+
+    <div class="header-main">
+
+      <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+      <div class="logo-mobile">LOCKER</div>
+
+      <div class="header-right">
+        <div id="userBar"></div>
+
+        <div class="login-icon" onclick="showLogin()">
+          <img src="/images/sesion2.png" class="login-img-icon">
+        </div>
+
+        <div class="cart-icon cart-button" onclick="openCart()">
+          <img src="/images/carrito.png" class="cart-img-icon">
+          <span id="cartCount">0</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="search-input">
+      <input id="searchInput" placeholder="Buscar productos...">
+      <div id="suggestions" class="suggestions-box"></div>
+    </div>
+    
+  </div>
+</header>
+
+<nav id="categoriesNav" class="categories"></nav>
+
+    <div class="product-page">
+
+  <!-- GALERÍA -->
+    <div class="product-gallery">
+
+  <div class="gallery-wrapper">
+
+    <!-- THUMBNAILS -->
+    <div id="thumbnails" class="thumbnails"></div>
+
+    <!-- IMAGEN + LUPA -->
+    <div class="image-container">
+
+        
+
+        <img id="mainImage" src="">
+
+        <img 
+          src="/images/compartir4.png" 
+          class="share-icon-img" 
+          onclick="shareProduct()" 
+          alt="Compartir"
+        >
+
+        <div id="imageDots" class="image-dots"></div>
+        <div id="lens" class="lens"></div>
+        <div class="arrow left" id="prevBtn">❮</div>
+        <div class="arrow right" id="nextBtn">❯</div>
+    </div>
+
+    
+
+    <!-- ZOOM PANEL -->
+    <div id="zoomResult" class="zoom-result"></div>
+
+  </div>
+
+</div>
+  <!-- INFO -->
+  <div class="product-info">
+    <h1 id="name"></h1>
+
+
+    <p id="description"></p>
+  </div>
+
+  <!-- COMPRA -->
+  <div class="buy-box">
+    <div class="price-box">
+      <span id="oldPrice"></span>
+      <span id="price"></span>
+    </div>
+
+    <div class="installments">
+    
+    </div>
+
+    <button id="addBtn" class="buy-btn">
+      Agregar al carrito
+    </button>
+
+    <button id="buyBtn" class="buy-now">
+      Comprar ahora
+    </button>
+
+    <div class="shipping">
+      🚚 Consultar por Envio
+    </div>
+  </div>
+
+</div>
+
+<!-- DESCRIPCIÓN ABAJO -->
+<div class="productExtra">
+  <h3>Descripción</h3>
+  <p id="fullDescription"></p>
+</div>
+
+    <div id="fullscreenViewer" class="fullscreen-viewer">
+        <span id="closeViewer">&times;</span>
+        <img id="fullscreenImage" src="">
+    </div>
+
+    <!-- CARRITO LATERAL -->
+<div id="cartPanel" class="cart-panel">
+
+  <div class="cart-header">
+    <h3>Tu carrito</h3>
+    <button onclick="toggleCart()">✕</button>
+  </div>
+
+  <div id="cartItemsPanel" class="cart-items"></div>
+
+  <div class="cart-footer">
+    <button onclick="sendOrder()">Finalizar por WhatsApp</button>
+  </div>
+
+</div>
+
+  <!-- LOGIN -->
+<div id="login">
+  <div class="login-box" onclick="event.stopPropagation()">
+    <h2>Iniciar sesión</h2>
+
+    <input id="username" placeholder="Email">
+    <input id="password" type="password" placeholder="Contraseña">
+
+    <button onclick="login()">Ingresar</button>
+    <button onclick="showLogin()">Cancelar</button>
+    <button onclick="openRegister()">Registrarse</button>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div id="register">
+  <div class="login-box" onclick="event.stopPropagation()">
+    <h2>Crear cuenta</h2>
+
+    <input id="regNombre" placeholder="Nombre">
+    <input id="regEmail" placeholder="Email">
+    <input id="regPass" type="password" placeholder="Contraseña">
+
+
+    <button onclick="register()">Registrarse</button>
+    <button onclick="closeRegister()">Cancelar</button>
+  </div>
+</div>
+
+  <!-- MENÚ HAMBURGUESA -->
+<div id="sideMenu" class="side-menu">
+
+  <div class="menu-header">
+    <span>Menú</span>
+    <button onclick="toggleMenu()">✕</button>
+  </div>
+
+  <button onclick="filterCategory('all')">Todos</button>
+
+  <div id="menuCategories"></div>
+
+</div>
+
+<div id="menuOverlay" class="menu-overlay" onclick="toggleMenu()"></div>
+
+<div id="toast" class="toast"></div>
+
+    <script src="/js/app.js"></script>
+    <script src="/js/product.js"></script>
+</body>
+</html>

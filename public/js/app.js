@@ -1,4 +1,7 @@
 let allProducts = [];
+let tempUserForPasswordChange = null;
+let tempPassword = null;
+
 function getCart() {
   return JSON.parse(localStorage.getItem("cart")) || [];
 }
@@ -68,7 +71,8 @@ function updateCartCount() {
     total += p.qty;
   });
 
-  document.getElementById("cartCount").innerText = total;
+  const el = document.getElementById("cartCount");
+if (el) el.innerText = total;
 
 }
 
@@ -161,15 +165,19 @@ function filterProducts() {
 
 function filterCategory(cat){
 
+  // si NO estoy en index → redirigir
+  if(!document.getElementById("products")){
+    window.location.href = `/index.html?category=${cat}`;
+    return;
+  }
+
   if(cat === "all"){
     renderProducts(allProducts);
     return;
   }
 
   const filtered = allProducts.filter(p => p.category_id === cat);
-
   renderProducts(filtered);
-
 }
 
 function highlight(text, search) {
@@ -195,7 +203,7 @@ card.className = "product-card";
 
 card.innerHTML = `
 <div class="product-image">
-<img src="/uploads/${p.image}">
+  <img src="/uploads/${p.image}" class="clickable-img">
 </div>
 
 <div class="product-info">
@@ -225,12 +233,19 @@ Agregar al carrito
 </div>
 `;
 
+const imgEl = card.querySelector(".clickable-img");
+
+imgEl.onclick = () => {
+  const slug = slugify(p.name);
+  window.location.href = `/producto/${slug}-${p.id}`;
+};
+
 card.querySelector(".buy-btn").onclick = (e) => {
 
-  const img = card.querySelector("img"); // 👈 imagen del producto
+  const img = card.querySelector("img"); //  imagen del producto
 
-  flyToCart(img);     // ✈️ animación
-  addToCart(p);       // 🛒 lógica real
+  flyToCart(img);     
+  addToCart(p);      
 
 };
 
@@ -274,26 +289,17 @@ async function login() {
 
     const data = await res.json();
 
-    // 🔐 FORZAR CAMBIO DE CONTRASEÑA
+    // FORZAR CAMBIO DE CONTRASEÑA
     if (data.force_password_change) {
 
-      const newPass = prompt("Debes cambiar tu contraseña. Ingresá una nueva:");
+  tempUserForPasswordChange = data;
+  tempPassword = password;
 
-      await fetch("/api/users/change-password", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: data.id,
-          currentPassword: password,
-          newPassword: newPass
-        })
-      });
+  openChangePasswordModal();
+  return;
+}
 
-      alert("Contraseña actualizada. Volvé a iniciar sesión.");
-      return;
-    }
-
-    // ✅ GUARDAR USUARIO COMPLETO
+    //  GUARDAR USUARIO COMPLETO
     localStorage.setItem("user", JSON.stringify(data));
 
     showLogin();
@@ -307,6 +313,63 @@ async function login() {
 
   }
 
+}
+
+function openChangePasswordModal(){
+  document.getElementById("newPassword").value = "";
+  document.getElementById("confirmPassword").value = "";
+  document.getElementById("changePasswordModal").classList.add("active");
+}
+
+function closeChangePasswordModal(){
+  document.getElementById("changePasswordModal").classList.remove("active");
+}
+
+async function submitNewPassword(){
+
+  const newPass = document.getElementById("newPassword").value.trim();
+  const confirmPass = document.getElementById("confirmPassword").value.trim();
+
+  if(!newPass || !confirmPass){
+    alert("Completar ambos campos");
+    return;
+  }
+
+  if(newPass.length < 4){
+    alert("Mínimo 4 caracteres");
+    return;
+  }
+
+  if(newPass !== confirmPass){
+    alert("Las contraseñas no coinciden");
+    return;
+  }
+
+  try {
+
+    await fetch("/api/users/change-password", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: tempUserForPasswordChange.id,
+        currentPassword: tempPassword,
+        newPassword: newPass
+      })
+    });
+
+    alert("Contraseña actualizada");
+
+    // guardar usuario ahora sí
+    localStorage.setItem("user", JSON.stringify(tempUserForPasswordChange));
+
+    closeChangePasswordModal();
+    renderUserBar();
+    loadProducts();
+
+  } catch (err) {
+    console.error(err);
+    alert("Error al cambiar contraseña");
+  }
 }
 
 
@@ -325,7 +388,7 @@ Precio: $${price}
 Cliente: ${user ? user.nombre : "Visitante"}
   `;
 
-  const phone = "5492932618493"; // tu numero
+  const phone = "5492932618493";
 
   const url =
     "https://wa.me/" +
@@ -381,7 +444,9 @@ function sendOrder() {
   if (user) {
     message += `Cliente: ${user.nombre}\n`;
     message += `Email: ${user.email}\n`;
-    message += `Tipo: ${user.tipo}\n`;
+    if (user.tipo=="mayorista"){
+      message += `Tipo: ${user.tipo}\n`;
+    }
     message += `ID: ${user.id}\n\n`;
   } else {
     message += `Cliente: Visitante\n\n`;
@@ -763,8 +828,41 @@ function flyToCart(imgElement) {
 
 
 
-// cerrar modal clickeando el fondo oscuro
+function openProductModal(product){
 
+  const modal = document.getElementById("productModal");
+
+  document.getElementById("modalName").innerText = product.name;
+  document.getElementById("modalDesc").innerText = product.description || "";
+
+  document.getElementById("modalPrice").innerText = "$" + getPrice(product);
+  document.getElementById("modalOldPrice").innerText =
+    "$" + Math.round(product.price_minor * 1.25);
+
+  document.getElementById("modalMainImage").src =
+    "/uploads/" + product.image;
+
+  // botón agregar
+  document.getElementById("modalAddBtn").onclick = () => {
+    addToCart(product);
+  };
+
+  modal.classList.add("active");
+}
+
+function closeProductModal(){
+  document.getElementById("productModal").classList.remove("active");
+}
+
+
+function slugify(text){
+  return text
+    .toLowerCase()
+    .normalize("NFD") // saca acentos
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
 
 
 
@@ -779,7 +877,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("searchInput");
 
   // limpiar al cargar
-  input.value = "";
+  if (input) {
+    input.value = "";
+
+    setTimeout(() => {
+      input.value = "";
+    }, 100);
+  };
 
   // limpiar después de que Chrome meta mano
   setTimeout(() => {
@@ -794,19 +898,24 @@ if(icon){
   }, 400);
 }
 
-    registerModal.addEventListener("click", function(e) {
-      if (e.target === registerModal) {
+    if (registerModal) {
+  registerModal.addEventListener("click", function(e) {
+    if (e.target === registerModal) {
       closeRegister();
-      }
-    });
-
-  cartPanel.addEventListener("click", function(e){
-    e.stopPropagation();
+    }
   });
+}
+
+  if (cartPanel) {
+    cartPanel.addEventListener("click", function(e){
+      e.stopPropagation();
+    });
+  }
 
   document.addEventListener("click", function(e){
 
     if(
+      cartPanel &&
       cartPanel.classList.contains("active") &&
       !cartPanel.contains(e.target) &&
       !e.target.closest(".cart-button")
@@ -817,28 +926,68 @@ if(icon){
 });
 
   renderUserBar();
-  loadProducts();
+  if(document.getElementById("products")){
+    loadProducts();
+  }
   loadCategories();
   updateCartCount();
 
-  document
-  .getElementById("searchInput")
-  
-  .addEventListener("input", (e) => {
+  window.addEventListener("storage", () => {
+  updateCartCount();
+  renderCart();
+});
+
+  const productModal = document.getElementById("productModal");
+
+  if (productModal) {
+    productModal.addEventListener("click", function(e){
+      if(e.target === this){
+        closeProductModal();
+      }
+    });
+  };
+
+
+
+
+if (input) {
+  input.addEventListener("input", (e) => {
     const text = e.target.value.toLowerCase();
     filterProducts();
     showSuggestions(text);
   });
+}
 
   const modal = document.getElementById("login");
 
   
 
-  modal.addEventListener("click", function(e) {
-    if (e.target === modal) {
-      showLogin();
+  if (modal) {
+    modal.addEventListener("click", function(e) {
+      if (e.target === modal) {
+        showLogin();
+      }
+    });
+  };
+
+  const params = new URLSearchParams(window.location.search);
+const search = params.get("search");
+
+if (search) {
+  const input = document.getElementById("searchInput");
+  input.value = search;
+  filterProducts();
+}
+
+const changeModal = document.getElementById("changePasswordModal");
+
+if (changeModal) {
+  changeModal.addEventListener("click", function(e) {
+    if (e.target === changeModal) {
+      // NO cerrar → obligar cambio
     }
   });
+}
 
 });
 
@@ -879,3 +1028,17 @@ document.addEventListener("click", (e) => {
     document.getElementById("suggestions").innerHTML = "";
   }
 });
+
+const input = document.getElementById("searchInput");
+
+if (input) {
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      const value = input.value.trim();
+
+      if (!value) return;
+
+      window.location.href = `/index.html?search=${encodeURIComponent(value)}`;
+    }
+  });
+}

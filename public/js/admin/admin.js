@@ -173,7 +173,15 @@ document.getElementById("description").value = product.description
 document.getElementById("price_minor").value = product.price_minor
 document.getElementById("price_major").value = product.price_major
 
-document.getElementById("preview").src = "/uploads/" + product.image
+const container = document.getElementById("previewContainer");
+container.innerHTML = "";
+
+if(product.image){
+  const img = document.createElement("img");
+  img.className = "previewImage";
+  img.src = "/uploads/" + product.image;
+  container.appendChild(img);
+}
 
 document.getElementById("category").value = product.category_id
 
@@ -183,13 +191,21 @@ document.getElementById("productModal").style.display = "flex"
 
 document.getElementById("image").addEventListener("change", e => {
 
-  const file = e.target.files[0]
+  const container = document.getElementById("previewContainer");
+  container.innerHTML = "";
 
-  if(file){
-    document.getElementById("preview").src = URL.createObjectURL(file)
+  const files = e.target.files;
+
+  for(let i = 0; i < files.length; i++){
+
+    const img = document.createElement("img");
+    img.className = "previewImage";
+    img.src = URL.createObjectURL(files[i]);
+
+    container.appendChild(img);
   }
 
-})
+});
 
 function openProductModal(){
 
@@ -200,7 +216,7 @@ function openProductModal(){
   document.getElementById("price_minor").value=""
   document.getElementById("price_major").value=""
   document.getElementById("image").value=""
-  document.getElementById("preview").src=""
+  document.getElementById("previewContainer").innerHTML = "";
 
   loadCategoriesSelect()
 
@@ -214,67 +230,50 @@ function closeProductModal(){
 
 }
 
-async function saveProduct(){
+async function saveProduct() {
+  const fileInput = document.getElementById("image");
+  const formData = new FormData();
 
-const fileInput = document.getElementById("image");
+  for (let i = 0; i < fileInput.files.length; i++) {
+    formData.append("images", fileInput.files[i]);
+  }
 
-let imageName = currentImage;
+  formData.append("name", document.getElementById("name").value);
+  formData.append("description", document.getElementById("description").value);
+  formData.append("price_minor", document.getElementById("price_minor").value);
+  formData.append("price_major", document.getElementById("price_major").value);
+  formData.append("category_id", Number(document.getElementById("category").value));
 
-// subir imagen nueva si hay
-if(fileInput.files.length > 0){
+  try {
+    const url = editingId
+      ? "/api/admin/products/" + editingId
+      : "/api/admin/products";
 
-const formData = new FormData();
-formData.append("image", fileInput.files[0]);
+    const method = editingId ? "PUT" : "POST";
 
-const uploadRes = await fetch("/api/admin/upload",{
-method:"POST",
-body:formData
-});
+    const res = await fetch(url, {
+      method,
+      body: formData
+    });
 
-const data = await uploadRes.json();
-imageName = data.filename;
+    const data = await res.json();
+    console.log("RESP:", data);
 
-}
+    if (!res.ok) {
+      throw new Error("Error en servidor");
+    }
 
-const product = {
+    showToast(editingId ? "Producto actualizado" : "Producto creado");
 
-name: document.getElementById("name").value,
-description: document.getElementById("description").value,
-price_minor: document.getElementById("price_minor").value,
-price_major: document.getElementById("price_major").value,
-category_id: document.getElementById("category").value,
-image: imageName
+    closeProductModal();
+    loadProducts();
 
-};
+  } catch (err) {
+    console.error(err);
+    alert("Error real al guardar producto");
+  }
 
-if(editingId){
-
-await fetch("/api/admin/products/"+editingId,{
-method:"PUT",
-headers:{ "Content-Type":"application/json" },
-body: JSON.stringify(product)
-});
-
-showToast("Producto actualizado");
-
-}else{
-
-await fetch("/api/admin/products",{
-method:"POST",
-headers:{ "Content-Type":"application/json" },
-body: JSON.stringify(product)
-});
-
-alert("Producto creado");
-
-}
-
-editingId = null
-
-closeProductModal()
-
-loadProducts()
-
+  editingId = null;
 }
 
 async function loadCategoriesList(){

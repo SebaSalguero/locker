@@ -1,11 +1,19 @@
-const mysql = require("mysql2");
+const mysql = require("mysql2/promise");
 
+let db;
 
-const db = mysql.createPool({
-  uri: process.env.MYSQL_PUBLIC_URL,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
+if (process.env.MYSQL_PUBLIC_URL) {
+  db = mysql.createPool(process.env.MYSQL_PUBLIC_URL);
+} else {
+  db = mysql.createPool({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "locker",
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+  });
+}
 
 module.exports = db;
