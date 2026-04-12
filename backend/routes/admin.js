@@ -77,17 +77,63 @@ router.delete("/products/:id", async (req, res) => {
 });
 
 // UPDATE PRODUCTO
-router.put("/products/:id", async (req, res) => {
+router.put("/products/:id", upload.array("images", 5), async (req, res) => {
   try {
-    const { name, description, price_minor, price_major, image, category_id } = req.body;
+
+    const { name, description, price_minor, price_major, category_id } = req.body;
+    const productId = req.params.id;
+
+    // 🧾 actualizar producto (imagen principal opcional)
+    let mainImage;
+
+// si sube nuevas imágenes → usar nueva
+if (req.files && req.files.length > 0) {
+  mainImage = req.files[0].filename;
+} else {
+  // mantener imagen actual
+  const [rows] = await db.query(
+    "SELECT image FROM products WHERE id = ?",
+    [productId]
+  );
+
+  mainImage = rows[0]?.image || null;
+}
 
     await db.query(
-      `UPDATE products SET name=?, description=?, price_minor=?, price_major=?, image=?, category_id=? WHERE id=?`,
-      [name, description, price_minor, price_major, image, category_id, req.params.id]
+      `UPDATE products 
+       SET name=?, description=?, price_minor=?, price_major=?, image=?, category_id=? 
+       WHERE id=?`,
+      [
+        name,
+        description,
+        price_minor,
+        price_major,
+        mainImage,
+        category_id,
+        productId
+      ]
     );
 
+    // 🧹 borrar imágenes anteriores
+    await db.query(
+      "DELETE FROM product_images WHERE product_id = ?",
+      [productId]
+    );
+
+    // 🖼 insertar nuevas imágenes
+    if (req.files && req.files.length > 0) {
+      for (const file of req.files) {
+        await db.query(
+          "INSERT INTO product_images (product_id, image) VALUES (?, ?)",
+          [productId, file.filename]
+        );
+      }
+    }
+
     res.json({ success: true });
+
   } catch (err) {
+    console.error("ERROR ACTUALIZANDO PRODUCTO:", err);
     res.status(500).json(err);
   }
 });
