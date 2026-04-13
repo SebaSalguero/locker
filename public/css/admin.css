@@ -569,3 +569,46 @@ color:white;
 #bannerList .productThumb{
   height:60px;
 }
+
+@media (max-width: 768px){
+
+  .categoryForm{
+    flex-direction: column; /* 🔥 apila todo */
+  }
+
+  .categoryForm input,
+  .categoryForm button{
+    width: 100%;
+  }
+
+}
+
+@media (max-width: 768px){
+
+  .productRow{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .productThumb{
+    width: 100%;
+    height: auto;
+  }
+
+  .productActions{
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .content{
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .categoryForm button{
+    padding: 14px;
+    font-size: 16px;
+  }
+
+}
+
