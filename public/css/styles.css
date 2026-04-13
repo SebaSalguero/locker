@@ -1085,16 +1085,18 @@ mark {
 }
 
 .carousel-slide {
+  min-width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #000; /* o el color de tu marca */
+  background: transparent;
 }
 
 .carousel-slide img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 /* ===== DOTS ===== */
