@@ -1,18 +1,17 @@
 const multer = require("multer");
-const path = require("path");
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
 const bcrypt = require("bcrypt");
+const cloudinary = require("../cloudinary");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
 // storage imágenes
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../../public/uploads"));
-  },
-  filename: (req, file, cb) => {
-    const unique = Date.now() + "-" + Math.round(Math.random() * 1E9);
-    cb(null, unique + path.extname(file.originalname));
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "locker-products",
+    allowed_formats: ["jpg", "png", "jpeg", "webp"]
   }
 });
 
@@ -41,7 +40,7 @@ router.post("/products", upload.array("images", 5), async (req, res) => {
         description,
         price_minor,
         price_major,
-        req.files[0]?.filename || null, // 👈 imagen principal
+        req.files[0]?.path || null, // 👈 imagen principal
         category_id
       ]
     );
@@ -53,7 +52,7 @@ router.post("/products", upload.array("images", 5), async (req, res) => {
       for (const file of req.files) {
         await db.query(
           "INSERT INTO product_images (product_id, image) VALUES (?, ?)",
-          [productId, file.filename]
+          [productId, file.path]
         );
       }
     }
@@ -88,7 +87,7 @@ router.put("/products/:id", upload.array("images", 5), async (req, res) => {
 
 // si sube nuevas imágenes → usar nueva
 if (req.files && req.files.length > 0) {
-  mainImage = req.files[0].filename;
+  mainImage = req.files[0].path;
 } else {
   // mantener imagen actual
   const [rows] = await db.query(
@@ -114,21 +113,22 @@ if (req.files && req.files.length > 0) {
       ]
     );
 
-    // 🧹 borrar imágenes anteriores
-    await db.query(
-      "DELETE FROM product_images WHERE product_id = ?",
-      [productId]
-    );
-
-    // 🖼 insertar nuevas imágenes
     if (req.files && req.files.length > 0) {
-      for (const file of req.files) {
-        await db.query(
-          "INSERT INTO product_images (product_id, image) VALUES (?, ?)",
-          [productId, file.filename]
-        );
-      }
-    }
+
+  // 🧹 borrar imágenes anteriores SOLO si hay nuevas
+  await db.query(
+    "DELETE FROM product_images WHERE product_id = ?",
+    [productId]
+  );
+
+  // 🖼 insertar nuevas imágenes
+  for (const file of req.files) {
+    await db.query(
+      "INSERT INTO product_images (product_id, image) VALUES (?, ?)",
+      [productId, file.path]
+    );
+  }
+}
 
     res.json({ success: true });
 
@@ -144,9 +144,9 @@ router.post("/upload", upload.array("images", 5), (req, res) => {
     return res.status(400).json({ error: "No files uploaded" });
   }
 
-  const filenames = req.files.map(f => f.filename);
+  const paths = req.files.map(f => f.path);
 
-  res.json({ filenames });
+  res.json({ paths });
 });
 
 // USERS LIST
