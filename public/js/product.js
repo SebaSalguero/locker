@@ -180,7 +180,7 @@ if(isDesktop){
   images.forEach((img, index) => {
 
     const thumb = document.createElement("img");
-    thumb.src = + img;
+    thumb.src = img;
 
     if(index === 0){
       thumb.style.border = "2px solid #3483fa";

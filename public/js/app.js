@@ -191,6 +191,8 @@ function renderProducts(products){
 
 const container = document.getElementById("products");
 
+if (!container) return;
+
 container.innerHTML = "";
 
 products.forEach(p => {
@@ -949,7 +951,7 @@ if(icon){
 
 
 
-if (input) {
+if (input && document.getElementById("products")) {
   input.addEventListener("input", (e) => {
     const text = e.target.value.toLowerCase();
     filterProducts();
