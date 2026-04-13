@@ -109,7 +109,7 @@ div.className = "productRow";
 
 div.innerHTML = `
 
-<img class="productThumb" src="/uploads/${p.image}">
+<img class="productThumb" src="${p.image}">
 
 <div class="productInfo">
 
@@ -179,7 +179,7 @@ container.innerHTML = "";
 if(product.image){
   const img = document.createElement("img");
   img.className = "previewImage";
-  img.src = "/uploads/" + product.image;
+  img.src = product.image;
   container.appendChild(img);
 }
 
