@@ -90,4 +90,55 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+// ==========================
+// PUT editar banner
+// ==========================
+router.put("/:id", upload.single("image"), async (req, res) => {
+  try {
+    const { link } = req.body;
+
+    // buscar banner actual
+    const [rows] = await db.query(
+      "SELECT * FROM banners WHERE id = ?",
+      [req.params.id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Banner no encontrado" });
+    }
+
+    const banner = rows[0];
+
+    let image_url = banner.image_url;
+    let public_id = banner.public_id;
+
+    // 👉 si mandan nueva imagen
+    if (req.file) {
+      // borrar anterior de cloudinary
+      if (banner.public_id) {
+        await cloudinary.uploader.destroy(banner.public_id);
+      }
+
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "banners"
+      });
+
+      image_url = result.secure_url;
+      public_id = result.public_id;
+    }
+
+    // 👉 actualizar DB
+    await db.query(
+      "UPDATE banners SET image_url = ?, public_id = ?, link = ? WHERE id = ?",
+      [image_url, public_id, link || null, req.params.id]
+    );
+
+    res.json({ success: true });
+
+  } catch (err) {
+    console.error("Error editando banner:", err);
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;

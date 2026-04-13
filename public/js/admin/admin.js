@@ -3,6 +3,7 @@ let productsCache = [];
 let currentImage = "";
 let usersCache = [];
 let editingUserId = null;
+let editingBannerId = null;
 
 console.log("admin.js cargado");
 
@@ -612,7 +613,7 @@ function editUserById(id){
 
 
 // ==========================
-// 🎡 BANNERS
+//  BANNERS
 // ==========================
 
 async function uploadBanner(){
@@ -620,33 +621,46 @@ async function uploadBanner(){
   const file = document.getElementById("bannerImage").files[0];
   const link = document.getElementById("bannerLink").value;
 
-  if(!file){
-    showToast("Seleccioná una imagen","error");
-    return;
+  const formData = new FormData();
+
+  if(file){
+    formData.append("image", file);
   }
 
-  const formData = new FormData();
-  formData.append("image", file);
   formData.append("link", link);
 
   try{
 
-    const res = await fetch("/api/banners",{
-      method:"POST",
-      body:formData
+    let url = "/api/banners";
+    let method = "POST";
+
+    // 👉 SI ESTÁ EDITANDO
+    if(editingBannerId){
+      url = "/api/banners/" + editingBannerId;
+      method = "PUT";
+    }
+
+    const res = await fetch(url,{
+      method,
+      body: formData
     });
 
     if(!res.ok) throw new Error();
 
-    showToast("Banner subido");
+    showToast(editingBannerId ? "Banner actualizado" : "Banner creado");
 
+    // reset
+    editingBannerId = null;
     document.getElementById("bannerImage").value="";
     document.getElementById("bannerLink").value="";
+    document.getElementById("cancelEditBannerBtn").style.display = "none";
+
+
 
     loadBanners();
 
   }catch{
-    showToast("Error subiendo banner","error");
+    showToast("Error guardando banner","error");
   }
 
 }
@@ -674,6 +688,7 @@ async function loadBanners(){
       </div>
 
       <div class="productActions">
+        <button onclick="editBanner(${b.id}, '${b.image_url}', '${b.link || ""}')">✏️</button>
         <button onclick="deleteBanner(${b.id})">🗑</button>
       </div>
     `;
@@ -684,7 +699,7 @@ async function loadBanners(){
 
 }
 
-// 🗑 eliminar
+// eliminar
 async function deleteBanner(id){
 
   if(!confirm("Eliminar banner?")) return;
@@ -696,6 +711,33 @@ async function deleteBanner(id){
   showToast("Banner eliminado","error");
 
   loadBanners();
+}
+
+// editar Banner
+function editBanner(id, imageUrl, link){
+
+  editingBannerId = id;
+
+  document.getElementById("bannerLink").value = link || "";
+
+  // 👉 mostrar botón cancelar
+  document.getElementById("cancelEditBannerBtn").style.display = "inline-block";
+
+  showToast("Editando banner");
+}
+
+
+function cancelEditBanner(){
+
+  editingBannerId = null;
+
+  document.getElementById("bannerImage").value = "";
+  document.getElementById("bannerLink").value = "";
+
+  
+  document.getElementById("cancelEditBannerBtn").style.display = "none";
+
+  showToast("Edición cancelada","info");
 }
 
 
