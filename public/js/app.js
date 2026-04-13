@@ -203,7 +203,7 @@ card.className = "product-card";
 
 card.innerHTML = `
 <div class="product-image">
-  <img src="/uploads/${p.image}" class="clickable-img">
+  <img src="${p.image}" class="clickable-img">
 </div>
 
 <div class="product-info">
@@ -553,7 +553,7 @@ item.className = "cart-item";
 
 item.innerHTML = `
 
-  <img src="/uploads/${p.image || 'default.png'}" class="cart-img">
+  <img src="${p.image || 'default.png'}" class="cart-img">
 
   <div class="cart-info">
 
@@ -839,8 +839,7 @@ function openProductModal(product){
   document.getElementById("modalOldPrice").innerText =
     "$" + Math.round(product.price_minor * 1.25);
 
-  document.getElementById("modalMainImage").src =
-    "/uploads/" + product.image;
+  document.getElementById("modalMainImage").src = product.image;
 
   // botón agregar
   document.getElementById("modalAddBtn").onclick = () => {
