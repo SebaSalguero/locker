@@ -1069,3 +1069,20 @@ mark {
   display: flex;
 }
 
+.carousel {
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.carousel img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}

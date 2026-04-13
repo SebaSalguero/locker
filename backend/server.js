@@ -15,6 +15,7 @@ app.use("/api/login", require("./routes/login"));
 app.use("/api/categories", require("./routes/categories"));
 app.use("/api/register", require("./routes/register"));
 app.use("/api/users", require("./routes/users"));
+app.use("/api/banners", require("./routes/banners"));
 
 // 🔥 ruta SEO (ANTES del static)
 app.get("/producto/:slugId", (req, res) => {

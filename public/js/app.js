@@ -121,6 +121,8 @@ async function loadProducts() {
 
     renderProducts(products);
 
+    loadBanners();
+
   } catch(err) {
 
     console.error("Error cargando productos:", err);
@@ -866,6 +868,50 @@ function slugify(text){
 }
 
 
+let bannerIndex = 0;
+let bannerData = [];
+
+async function loadBanners() {
+  try {
+    const res = await fetch("/api/banners");
+    bannerData = await res.json();
+
+    const track = document.getElementById("carouselTrack");
+    if (!track) return;
+
+    track.innerHTML = "";
+
+    bannerData.forEach(b => {
+      const img = document.createElement("img");
+      img.src = b.image_url;
+
+      if (b.link) {
+        const a = document.createElement("a");
+        a.href = b.link;
+        a.appendChild(img);
+        track.appendChild(a);
+      } else {
+        track.appendChild(img);
+      }
+    });
+
+    startCarousel();
+
+  } catch (err) {
+    console.error("Error cargando banners:", err);
+  }
+}
+
+function startCarousel() {
+  if (bannerData.length <= 1) return;
+
+  setInterval(() => {
+    bannerIndex = (bannerIndex + 1) % bannerData.length;
+
+    document.getElementById("carouselTrack").style.transform =
+      `translateX(-${bannerIndex * 100}%)`;
+  }, 4000);
+}
 
 
 
