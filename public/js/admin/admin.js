@@ -303,18 +303,21 @@ function showSection(section){
 
   document.querySelectorAll(".section").forEach(s=>{
     s.style.display="none"
-  })
+  });
 
-  document.getElementById(section+"Section").style.display="block"
+  document.getElementById(section+"Section").style.display="block";
 
   if(section === "categories"){
-    loadCategoriesList()
+    loadCategoriesList();
   }
 
   if(section === "users"){
-    loadUsers()
+    loadUsers();
   }
 
+  // 👇 cerrar menú en mobile
+  const sidebar = document.querySelector(".sidebar");
+  sidebar.classList.remove("active");
 }
 
 async function loadCategories(){
@@ -602,3 +605,30 @@ function editUserById(id){
   const user = usersCache.find(u => u.id === id);
   editUser(user);
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  document.getElementById("btnLogin")
+    .addEventListener("click", login);
+
+  const toggle = document.getElementById("menuToggle");
+  const sidebar = document.querySelector(".sidebar");
+
+  toggle.addEventListener("click", () => {
+    sidebar.classList.toggle("active");
+  });
+
+});
+
+document.addEventListener("click", (e) => {
+  const sidebar = document.querySelector(".sidebar");
+  const toggle = document.getElementById("menuToggle");
+
+  if(
+    sidebar.classList.contains("active") &&
+    !sidebar.contains(e.target) &&
+    e.target !== toggle
+  ){
+    sidebar.classList.remove("active");
+  }
+});
