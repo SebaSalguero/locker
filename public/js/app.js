@@ -870,7 +870,7 @@ function slugify(text){
 
 
 
-let bannerIndex = 0;
+let bannerIndex = 1;
 let bannerData = [];
 let bannerInterval;
 
@@ -887,30 +887,31 @@ async function loadBanners() {
     track.innerHTML = "";
     dotsContainer.innerHTML = "";
 
-    bannerData.forEach((b, i) => {
+    const fullData = [
+  bannerData[bannerData.length - 1], // último al inicio
+  ...bannerData,
+  bannerData[0] // primero al final
+];
 
-      const slide = document.createElement("div");
-      slide.className = "carousel-slide";
+fullData.forEach((b, i) => {
 
-      const img = document.createElement("img");
-      img.src = b.image_url;
+  const slide = document.createElement("div");
+  slide.className = "carousel-slide";
 
-      if (b.link) {
-        const a = document.createElement("a");
-        a.href = b.link;
-        a.appendChild(img);
-        slide.appendChild(a);
-      } else {
-        slide.appendChild(img);
-      }
+  const img = document.createElement("img");
+  img.src = b.image_url;
 
-      track.appendChild(slide);
+  if (b.link) {
+    const a = document.createElement("a");
+    a.href = b.link;
+    a.appendChild(img);
+    slide.appendChild(a);
+  } else {
+    slide.appendChild(img);
+  }
 
-      // DOT
-      const dot = document.createElement("span");
-      dot.onclick = () => goToSlide(i);
-      dotsContainer.appendChild(dot);
-    });
+  track.appendChild(slide);
+});
 
     updateDots();
     startCarousel();
@@ -926,7 +927,7 @@ function startCarousel() {
   stopCarousel();
 
   bannerInterval = setInterval(() => {
-    bannerIndex = (bannerIndex + 1) % bannerData.length;
+    bannerIndex++;
     updateCarousel();
   }, 4000);
 }
@@ -938,7 +939,25 @@ function stopCarousel() {
 function updateCarousel() {
   const track = document.getElementById("carouselTrack");
 
+  track.style.transition = "transform 0.8s cubic-bezier(0.77,0,0.175,1)";
   track.style.transform = `translateX(-${bannerIndex * 100}%)`;
+
+  // loop infinito
+  if (bannerIndex === 0) {
+    setTimeout(() => {
+      track.style.transition = "none";
+      bannerIndex = bannerData.length;
+      track.style.transform = `translateX(-${bannerIndex * 100}%)`;
+    }, 800);
+  }
+
+  if (bannerIndex === bannerData.length + 1) {
+    setTimeout(() => {
+      track.style.transition = "none";
+      bannerIndex = 1;
+      track.style.transform = `translateX(-100%)`;
+    }, 800);
+  }
 
   updateDots();
 }
@@ -961,10 +980,22 @@ function addSwipe() {
   const carousel = document.querySelector(".carousel");
 
   let startX = 0;
+  let isDragging = false;
 
   carousel.addEventListener("touchstart", e => {
     startX = e.touches[0].clientX;
+    isDragging = true;
     stopCarousel();
+  });
+
+  carousel.addEventListener("touchmove", e => {
+    if (!isDragging) return;
+
+    const currentX = e.touches[0].clientX;
+    const diff = startX - currentX;
+
+    const track = document.getElementById("carouselTrack");
+    track.style.transform = `translateX(calc(-${bannerIndex * 100}% - ${diff}px))`;
   });
 
   carousel.addEventListener("touchend", e => {
@@ -972,14 +1003,14 @@ function addSwipe() {
     const diff = startX - endX;
 
     if (diff > 50) {
-      bannerIndex = (bannerIndex + 1) % bannerData.length;
+      bannerIndex++;
     } else if (diff < -50) {
-      bannerIndex =
-        (bannerIndex - 1 + bannerData.length) % bannerData.length;
+      bannerIndex--;
     }
 
     updateCarousel();
     startCarousel();
+    isDragging = false;
   });
 }
 
