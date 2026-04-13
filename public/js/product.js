@@ -78,7 +78,7 @@ viewerImg.addEventListener("touchend", (e) => {
     if(currentIndex < 0) currentIndex = images.length - 1;
   }
 
-  const newSrc = "/uploads/" + images[currentIndex];
+  const newSrc = images[currentIndex];
 
   viewerImg.src = newSrc;
   mainImage.src = newSrc;
@@ -106,7 +106,7 @@ viewerImg.addEventListener("touchend", (e) => {
         ? p.images
         : [p.image];
 
-    mainImage.src = "/uploads/" + images[currentIndex];
+    mainImage.src = images[currentIndex];
 
     dotsContainer.innerHTML = "";
 
@@ -180,7 +180,7 @@ if(isDesktop){
   images.forEach((img, index) => {
 
     const thumb = document.createElement("img");
-    thumb.src = "/uploads/" + img;
+    thumb.src = + img;
 
     if(index === 0){
       thumb.style.border = "2px solid #3483fa";
@@ -247,7 +247,7 @@ if(isDesktop){
         if(currentIndex < 0) currentIndex = images.length - 1;
     }
 
-    mainImage.src = "/uploads/" + images[currentIndex];
+    mainImage.src = images[currentIndex];
 
     result.style.backgroundImage = `url(${mainImage.src})`;
 
@@ -263,7 +263,7 @@ if(isDesktop){
 });
 
     function showImage(index){
-  const newSrc = "/uploads/" + images[index];
+  const newSrc = images[index];
 
   mainImage.src = newSrc;
 
