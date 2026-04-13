@@ -6,6 +6,16 @@ const bcrypt = require("bcrypt");
 const cloudinary = require("../cloudinary");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
+function getPublicId(url){
+  try {
+    const parts = url.split("/");
+    const file = parts.slice(-2).join("/"); // folder + filename
+    return file.split(".")[0]; // sin extensión
+  } catch {
+    return null;
+  }
+}
+
 // storage imágenes
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
@@ -68,9 +78,43 @@ router.post("/products", upload.array("images", 5), async (req, res) => {
 // DELETE PRODUCTO
 router.delete("/products/:id", async (req, res) => {
   try {
-    await db.query("DELETE FROM products WHERE id = ?", [req.params.id]);
+
+    const productId = req.params.id;
+
+    // traer producto + imágenes
+    const [products] = await db.query(
+      "SELECT image FROM products WHERE id = ?",
+      [productId]
+    );
+
+    const [images] = await db.query(
+      "SELECT image FROM product_images WHERE product_id = ?",
+      [productId]
+    );
+
+    // juntar TODAS las imágenes
+    const allImages = [
+      ...products.map(p => p.image),
+      ...images.map(i => i.image)
+    ].filter(Boolean);
+
+    // borrar de Cloudinary
+    for (const img of allImages) {
+      const publicId = getPublicId(img);
+
+      if(publicId){
+        await cloudinary.uploader.destroy(publicId);
+      }
+    }
+
+    // borrar de DB
+    await db.query("DELETE FROM product_images WHERE product_id = ?", [productId]);
+    await db.query("DELETE FROM products WHERE id = ?", [productId]);
+
     res.json({ success: true });
+
   } catch (err) {
+    console.error("ERROR BORRANDO PRODUCTO:", err);
     res.status(500).json(err);
   }
 });
