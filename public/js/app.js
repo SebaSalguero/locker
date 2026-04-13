@@ -868,8 +868,11 @@ function slugify(text){
 }
 
 
+
+
 let bannerIndex = 0;
 let bannerData = [];
+let bannerInterval;
 
 async function loadBanners() {
   try {
@@ -877,11 +880,18 @@ async function loadBanners() {
     bannerData = await res.json();
 
     const track = document.getElementById("carouselTrack");
+    const dotsContainer = document.getElementById("carouselDots");
+
     if (!track) return;
 
     track.innerHTML = "";
+    dotsContainer.innerHTML = "";
 
-    bannerData.forEach(b => {
+    bannerData.forEach((b, i) => {
+
+      const slide = document.createElement("div");
+      slide.className = "carousel-slide";
+
       const img = document.createElement("img");
       img.src = b.image_url;
 
@@ -889,13 +899,23 @@ async function loadBanners() {
         const a = document.createElement("a");
         a.href = b.link;
         a.appendChild(img);
-        track.appendChild(a);
+        slide.appendChild(a);
       } else {
-        track.appendChild(img);
+        slide.appendChild(img);
       }
+
+      track.appendChild(slide);
+
+      // DOT
+      const dot = document.createElement("span");
+      dot.onclick = () => goToSlide(i);
+      dotsContainer.appendChild(dot);
     });
 
+    updateDots();
     startCarousel();
+
+    addSwipe(); // 🔥 mobile gesture
 
   } catch (err) {
     console.error("Error cargando banners:", err);
@@ -903,14 +923,64 @@ async function loadBanners() {
 }
 
 function startCarousel() {
-  if (bannerData.length <= 1) return;
+  stopCarousel();
 
-  setInterval(() => {
+  bannerInterval = setInterval(() => {
     bannerIndex = (bannerIndex + 1) % bannerData.length;
-
-    document.getElementById("carouselTrack").style.transform =
-      `translateX(-${bannerIndex * 100}%)`;
+    updateCarousel();
   }, 4000);
+}
+
+function stopCarousel() {
+  clearInterval(bannerInterval);
+}
+
+function updateCarousel() {
+  const track = document.getElementById("carouselTrack");
+
+  track.style.transform = `translateX(-${bannerIndex * 100}%)`;
+
+  updateDots();
+}
+
+function goToSlide(i) {
+  bannerIndex = i;
+  updateCarousel();
+}
+
+function updateDots() {
+  const dots = document.querySelectorAll("#carouselDots span");
+
+  dots.forEach((d, i) => {
+    d.classList.toggle("active", i === bannerIndex);
+  });
+}
+
+
+function addSwipe() {
+  const carousel = document.querySelector(".carousel");
+
+  let startX = 0;
+
+  carousel.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+    stopCarousel();
+  });
+
+  carousel.addEventListener("touchend", e => {
+    const endX = e.changedTouches[0].clientX;
+    const diff = startX - endX;
+
+    if (diff > 50) {
+      bannerIndex = (bannerIndex + 1) % bannerData.length;
+    } else if (diff < -50) {
+      bannerIndex =
+        (bannerIndex - 1 + bannerData.length) % bannerData.length;
+    }
+
+    updateCarousel();
+    startCarousel();
+  });
 }
 
 
