@@ -565,3 +565,7 @@ color:white;
 .sidebar{
   transition: left 0.3s ease;
 }
+
+#bannerList .productThumb{
+  height:60px;
+}

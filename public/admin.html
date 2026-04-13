@@ -44,6 +44,8 @@
 
 <button onclick="showSection('reports')">📊 Reportes</button>
 
+<button onclick="showSection('banners')">🎡 Banners</button>
+
 </div>
 
 
@@ -175,6 +177,25 @@
 <button onclick="loadTopClients()">Top 10 clientes</button>
 
 <div id="reportContent"></div>
+
+</div>
+
+
+<!-- BANNERS -->
+
+<div id="bannersSection" class="section" style="display:none">
+
+  <div class="adminHeader">
+    <h3>Banners</h3>
+  </div>
+
+  <div class="categoryForm">
+    <input type="file" id="bannerImage">
+    <input type="text" id="bannerLink" placeholder="Link opcional">
+    <button onclick="uploadBanner()">Subir</button>
+  </div>
+
+  <div id="bannerList"></div>
 
 </div>
 

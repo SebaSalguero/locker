@@ -315,7 +315,11 @@ function showSection(section){
     loadUsers();
   }
 
-  // 👇 cerrar menú en mobile
+  if(section === "banners"){
+  loadBanners();
+  }
+
+  
   const sidebar = document.querySelector(".sidebar");
   sidebar.classList.remove("active");
 }
@@ -606,6 +610,96 @@ function editUserById(id){
   editUser(user);
 }
 
+
+// ==========================
+// 🎡 BANNERS
+// ==========================
+
+async function uploadBanner(){
+
+  const file = document.getElementById("bannerImage").files[0];
+  const link = document.getElementById("bannerLink").value;
+
+  if(!file){
+    showToast("Seleccioná una imagen","error");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("image", file);
+  formData.append("link", link);
+
+  try{
+
+    const res = await fetch("/api/banners",{
+      method:"POST",
+      body:formData
+    });
+
+    if(!res.ok) throw new Error();
+
+    showToast("Banner subido");
+
+    document.getElementById("bannerImage").value="";
+    document.getElementById("bannerLink").value="";
+
+    loadBanners();
+
+  }catch{
+    showToast("Error subiendo banner","error");
+  }
+
+}
+
+// 🔥 Cargar banners
+async function loadBanners(){
+
+  const res = await fetch("/api/banners");
+  const data = await res.json();
+
+  const container = document.getElementById("bannerList");
+  container.innerHTML = "";
+
+  data.forEach(b => {
+
+    const div = document.createElement("div");
+    div.className = "productRow";
+
+    div.innerHTML = `
+      <img class="productThumb" src="${b.image_url}">
+
+      <div class="productInfo">
+        <strong>Banner</strong>
+        <span>${b.link || "Sin link"}</span>
+      </div>
+
+      <div class="productActions">
+        <button onclick="deleteBanner(${b.id})">🗑</button>
+      </div>
+    `;
+
+    container.appendChild(div);
+
+  });
+
+}
+
+// 🗑 eliminar
+async function deleteBanner(id){
+
+  if(!confirm("Eliminar banner?")) return;
+
+  await fetch("/api/banners/" + id,{
+    method:"DELETE"
+  });
+
+  showToast("Banner eliminado","error");
+
+  loadBanners();
+}
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("btnLogin")
@@ -632,3 +726,5 @@ document.addEventListener("click", (e) => {
     sidebar.classList.remove("active");
   }
 });
+
+
