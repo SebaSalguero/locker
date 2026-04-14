@@ -55,17 +55,25 @@
       
       <div class="search-input">
         
-        <input
-          
-          type="text"
-          id="searchInput"
-          name="search_random_987"
-          placeholder="Buscar productos..."
-          autocomplete="off"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="false"
-        >
+        <form autocomplete="off">
+  
+  
+          <input type="text" style="display:none">
+
+          <input
+            type="search"
+            id="searchInput"
+            name="no-autocomplete-search"
+            placeholder="Buscar productos..."
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+          >
+
+          <div id="suggestions" class="suggestions-box"></div>
+
+        </form>
         <div id="suggestions" class="suggestions-box"></div>
       </div>
       
