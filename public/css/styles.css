@@ -114,7 +114,8 @@ body {
 .categories button {
   background: none;
   border: none;
-  font-family:monospace;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  text-transform: uppercase;
   font-size: 18px;
   font-weight: 500;
   letter-spacing: 0.5px;
