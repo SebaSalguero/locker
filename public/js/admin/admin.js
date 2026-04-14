@@ -103,33 +103,16 @@ function loadProducts(){
 div.className = "productRow";
 
 div.innerHTML = `
+  <img class="productThumb" src="${b.image_url}">
 
-<img class="productThumb" src="${p.image}">
+  <div class="productInfo">
+    <span class="bannerLink">${b.link || "Sin link"}</span>
+  </div>
 
-<div class="productInfo">
-
-<strong>${p.name}</strong>
-
-<span>${p.description}</span>
-
-<span>Minorista: $${p.price_minor}</span>
-
-<span>Mayorista: $${p.price_major}</span>
-
-<span>Categoría: ${p.category}</span>
-
-</div>
-
-<div class="productActions">
-
-<button onclick="editProductByIndex(${index})">✏️</button>
-
-<button onclick="deleteProduct(${p.id})">
-🗑
-</button>
-
-</div>
-
+  <div class="productActions bottom">
+    <button onclick="openBannerModalByIndex(${index})">✏️</button>
+    <button onclick="deleteBanner(${b.id})">🗑</button>
+  </div>
 `;
 
       container.appendChild(div);

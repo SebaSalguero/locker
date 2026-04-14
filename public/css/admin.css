@@ -676,3 +676,36 @@ color:white;
 .bannerItem {
   margin-bottom: 20px;
 }
+
+.productRow {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.productInfo {
+  flex: 1;
+}
+
+.bannerLink {
+  display: block;
+  word-break: break-word;
+}
+
+.productActions.bottom {
+  display: flex;
+  gap: 10px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .productRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .productActions.bottom {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
