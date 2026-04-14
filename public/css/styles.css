@@ -24,7 +24,7 @@ body {
 /* ===== CONTAINER ===== */
 .container {
   width: 90%;
-  max-width: 1200px;
+  max-width: 1300px;
   margin: auto;
 }
 
@@ -1140,4 +1140,27 @@ mark {
 
 .desc {
   display: none; /* opcional, mejora mucho el look */
+}
+
+@media (min-width: 768px) {
+
+  .products-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    padding: 20px 40px;
+  }
+
+  .product-image {
+    height: 220px;
+  }
+
+  .product-info h3 {
+    font-size: 16px;
+    height: 42px;
+  }
+
+  .new-price {
+    font-size: 20px;
+  }
+
 }
