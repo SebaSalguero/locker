@@ -494,7 +494,7 @@ html {
   }
 
   .logo {
-    grid-column: 2;
+    
     font-size: 20px;
     text-align: center;
   }
@@ -520,7 +520,6 @@ html {
 
   .menu-toggle {
     display: block;
-    grid-column: 1;
     font-size: 22px;
     color: #333;
   }
@@ -528,7 +527,7 @@ html {
 
 
   .header-right {
-    grid-column: 3;
+    
     display: flex;
     gap: 15px;
     justify-content: flex-end;
@@ -569,8 +568,7 @@ html {
 }
 
 .header-main {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
   gap: 15px;
 }
@@ -674,29 +672,26 @@ html {
 }
 
 .menu-toggle {
-  grid-column: 1;
   grid-row: 1;
 }
 
 .logo {
-  grid-column: 2;
   grid-row: 1;
   text-align: center;
 }
 
 .header-right {
-  grid-column: 3;
+  
   grid-row: 1;
   justify-content: flex-end;
 }
 
 .search-input {
-  grid-column: 1 / 4;
   grid-row: 2;
   width: 100%;
   flex: 1;
-  max-width: 700px;
-  margin: 0;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .suggestions-box {
@@ -737,7 +732,7 @@ mark {
 /* LOGO */
 .logo-mobile {
   font-weight: 700;
-  font-size: 20px;
+  font-size: 22px;
   grid-column: 2;
   text-align: center;
 }
