@@ -122,8 +122,8 @@ body {
 /* ===== GRID PRODUCTOS ===== */
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
   margin-top: 20px;
 }
 
@@ -163,14 +163,14 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 220px;
+  height: 180px;
   overflow: hidden;
 }
 
 .product-image img {
-  max-height: 90%;
-  max-width: 90%;
-  object-fit: contain;
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: cover;
   transition: transform 0.35s ease;
 }
 
@@ -559,11 +559,6 @@ html {
 
 }
 
-@media (max-width: 500px) {
-  .products-grid {
-    grid-template-columns: 1fr;
-  }
-}
 
 /* ===== HAMBURGUESA ===== */
 
@@ -1135,4 +1130,14 @@ mark {
   width: 100%;
   height: 100%;
   object-fit: cover; /* 🔥 esto arregla TODO */
+}
+
+.product-info h3 {
+  font-size: 14px;
+  height: 36px;
+  overflow: hidden;
+}
+
+.desc {
+  display: none; /* opcional, mejora mucho el look */
 }
