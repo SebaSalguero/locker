@@ -7,12 +7,6 @@ let editingBannerId = null;
 
 console.log("admin.js cargado");
 
-document.addEventListener("DOMContentLoaded", () => {
-  document
-    .getElementById("btnLogin")
-    .addEventListener("click", login);
-});
-
 function login() {
   console.log("click en login");
 
@@ -721,7 +715,9 @@ function openBannerModal(banner = null) {
 }
 
 function closeBannerModal() {
-  document.getElementById("bannerModal").classList.add("hidden");
+  const modal = document.getElementById("bannerModal");
+
+  modal.style.display = "none";
 }
 
 async function loadBanners(){
