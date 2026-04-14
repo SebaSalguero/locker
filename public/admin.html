@@ -198,18 +198,35 @@
 
 <!-- MODAL -->
 <div id="bannerModal" class="modal hidden">
-  <div class="modal-content">
+  <div class="modal-content banner-modal">
 
-    <h2 id="modalTitle">Agregar banner</h2>
+    <div class="modal-header">
+      <h2 id="modalTitle">Agregar banner</h2>
+      <span class="closeModal" onclick="closeBannerModal()">✖</span>
+    </div>
 
-    <div id="bannerPreview" style="margin-bottom:10px;"></div>
+    <div class="modal-body">
 
-    <input type="file" id="bannerImage">
-    <input type="text" id="bannerLink" placeholder="https://...">
+      <!-- PREVIEW -->
+      <div id="bannerPreview" class="bannerPreview"></div>
 
-    <div style="margin-top:10px;">
-      <button onclick="saveBanner()">Guardar</button>
-      <button onclick="closeBannerModal()">Cancelar</button>
+      <!-- CAMPOS -->
+      <div class="formGroup">
+        <label>Imagen</label>
+        <input type="file" id="bannerImage">
+      </div>
+
+      <div class="formGroup">
+        <label>Link del banner</label>
+        <input type="text" id="bannerLink" placeholder="https://...">
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="modal-footer">
+      <button class="btn secondary" onclick="closeBannerModal()">Cancelar</button>
+      <button class="btn primary" onclick="saveBanner()">Guardar</button>
     </div>
 
   </div>
