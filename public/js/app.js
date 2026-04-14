@@ -901,14 +901,17 @@ fullData.forEach((b, i) => {
   const img = document.createElement("img");
   img.src = b.image_url;
 
+img.onclick = () => {
   if (b.link) {
-    const a = document.createElement("a");
-    a.href = b.link;
-    a.appendChild(img);
-    slide.appendChild(a);
-  } else {
-    slide.appendChild(img);
+    const url = b.link.startsWith("http")
+      ? b.link
+      : "https://" + b.link;
+
+    window.open(url, "_blank");
   }
+};
+
+slide.appendChild(img);
 
   track.appendChild(slide);
 });

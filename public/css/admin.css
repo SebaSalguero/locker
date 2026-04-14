@@ -612,3 +612,39 @@ color:white;
 
 }
 
+/* FORM BANNERS MEJORADO */
+.categoryForm{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap; /* 🔥 clave */
+}
+
+.categoryForm input[type="file"]{
+  flex:1 1 200px;
+}
+
+.categoryForm input[type="text"]{
+  flex:2 1 300px;
+}
+
+.categoryForm button{
+  flex:0 0 auto;
+}
+
+#bannerList .productRow{
+  display:grid;
+  grid-template-columns: 100px 1fr auto;
+  align-items:center;
+  gap:15px;
+}
+
+#bannerList .productThumb{
+  width:100px;
+  height:60px;
+  object-fit:cover;
+}
+
+#bannerList .productActions{
+  display:flex;
+  gap:8px;
+}
