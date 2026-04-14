@@ -63,7 +63,7 @@ body {
 .header-right {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
 }
 
 /* ===== BUSCADOR ===== */
@@ -105,18 +105,39 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+.categories {
+  justify-content: center;
+  gap: 25px;
+  background: white;
+}
+
 .categories button {
-  flex: 0 0 auto;
-  background: #f5f5f5;
+  background: none;
   border: none;
   font-size: 14px;
+  color: #333;
+  padding: 6px 0;
   cursor: pointer;
-  padding: 8px 14px;
-  border-radius: 20px;
+  position: relative;
 }
 
 .categories::-webkit-scrollbar {
   display: none;
+}
+
+.categories button::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #333;
+  transition: 0.3s;
+}
+
+.categories button:hover::after {
+  width: 100%;
 }
 
 /* ===== GRID PRODUCTOS ===== */
@@ -495,7 +516,8 @@ html {
   .menu-toggle {
     display: block;
     grid-column: 1;
-    font-size: 24px;
+    font-size: 22px;
+    color: #333;
   }
 
 
@@ -551,6 +573,9 @@ html {
 
   .logo-mobile {
     display: block;
+    font-size: 22px;
+    font-weight: 700;
+    min-width: 120px;
   }
 
   .search-container {
@@ -661,6 +686,9 @@ html {
   grid-column: 1 / 4;
   grid-row: 2;
   width: 100%;
+  flex: 1;
+  max-width: 700px;
+  margin: 0;
 }
 
 .suggestions-box {
@@ -730,11 +758,15 @@ mark {
 @media (min-width: 769px) {
 
   .header {
-    padding: 15px 0;
+    padding: 10px 0;
+    text-align: left;
   }
 
   .header-main {
     grid-template-columns: auto 1fr auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
   }
 
   .search-container {
@@ -1164,6 +1196,14 @@ mark {
 
   .new-price {
     font-size: 22px;
+  }
+
+  .categories {
+    overflow: visible;
+  }
+
+  .logo {
+    display: none;
   }
 
 }
