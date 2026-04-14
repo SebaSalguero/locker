@@ -39,11 +39,12 @@ function renderProduct(p){
     document.getElementById("description").innerText = p.description || "";
     document.getElementById("fullDescription").innerText = p.description || "";
 
-    document.getElementById("price").innerText = "$" + p.price_minor;
+    const price = getPrice(p);
 
+    document.getElementById("price").innerText = "$" + price;
 
     document.getElementById("oldPrice").innerText =
-        "$" + Math.round(p.price_minor * 1.25);
+        "$" + Math.round(price * 1.25);
 
     const mainImage = document.getElementById("mainImage");
     const thumbnails = document.getElementById("thumbnails");
@@ -213,7 +214,7 @@ if(isDesktop){
     🛒 Pedido directo
 
     📦 Producto: ${p.name}
-    💲 Precio: $${p.price_minor}
+    💲 Precio: $${price}
 
     Quiero comprar este producto.
     `;
