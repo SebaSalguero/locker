@@ -766,10 +766,11 @@ document.getElementById("bannerImage").addEventListener("change", e => {
   if(file){
     const img = document.createElement("img");
     img.src = URL.createObjectURL(file);
-    img.style.width = "100%";
-    img.style.borderRadius = "8px";
+    
 
     container.appendChild(img);
+  } else{
+    container.innerHTML = "<span style='color:#999'>Vista previa</span>";
   }
 });
 
