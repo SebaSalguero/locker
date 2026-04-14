@@ -321,8 +321,7 @@ function showSection(section){
   }
 
   
-  const sidebar = document.querySelector(".sidebar");
-  sidebar.classList.remove("active");
+  document.querySelector(".sidebar").classList.remove("active");
 }
 
 async function loadCategories(){
@@ -723,6 +722,13 @@ function openBannerModal(banner = null) {
 
 function closeBannerModal() {
   document.getElementById("bannerModal").classList.add("hidden");
+}
+
+async function loadBanners(){
+  const res = await fetch("/api/banners");
+  const banners = await res.json();
+
+  renderBanners(banners);
 }
 
 
