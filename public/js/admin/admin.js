@@ -616,65 +616,37 @@ function editUserById(id){
 //  BANNERS
 // ==========================
 
-async function uploadBanner(){
-
+async function saveBanner() {
   const file = document.getElementById("bannerImage").files[0];
   const link = document.getElementById("bannerLink").value;
 
   const formData = new FormData();
-
-  if(file){
-    formData.append("image", file);
-  }
-
+  if (file) formData.append("image", file);
   formData.append("link", link);
 
-  try{
-
-    let url = "/api/banners";
-    let method = "POST";
-
-    // 👉 SI ESTÁ EDITANDO
-    if(editingBannerId){
-      url = "/api/banners/" + editingBannerId;
-      method = "PUT";
-    }
-
-    const res = await fetch(url,{
-      method,
+  if (editingBannerId) {
+    await fetch(`/api/banners/${editingBannerId}`, {
+      method: "PUT",
       body: formData
     });
-
-    if(!res.ok) throw new Error();
-
-    showToast(editingBannerId ? "Banner actualizado" : "Banner creado");
-
-    // reset
-    editingBannerId = null;
-    document.getElementById("bannerImage").value="";
-    document.getElementById("bannerLink").value="";
-    document.getElementById("cancelEditBannerBtn").style.display = "none";
-
-
-
-    loadBanners();
-
-  }catch{
-    showToast("Error guardando banner","error");
+  } else {
+    await fetch("/api/banners", {
+      method: "POST",
+      body: formData
+    });
   }
 
+  closeBannerModal();
+  loadBanners();
 }
 
 // 🔥 Cargar banners
-async function loadBanners(){
 
-  const res = await fetch("/api/banners");
-  const data = await res.json();
-
+function renderBanners(banners) {
   const container = document.getElementById("bannerList");
   container.innerHTML = "";
 
-  data.forEach(b => {
+  banners.forEach((b, index) => {
 
     const div = document.createElement("div");
     div.className = "productRow";
@@ -683,20 +655,24 @@ async function loadBanners(){
       <img class="productThumb" src="${b.image_url}">
 
       <div class="productInfo">
-        <strong>Banner</strong>
         <span>${b.link || "Sin link"}</span>
       </div>
 
       <div class="productActions">
-        <button onclick="editBanner(${b.id}, '${b.image_url}', '${b.link || ""}')">✏️</button>
+        <button onclick="openBannerModalByIndex(${index})">✏️</button>
         <button onclick="deleteBanner(${b.id})">🗑</button>
       </div>
     `;
 
     container.appendChild(div);
-
   });
 
+  window.bannersCache = banners; // 🔥 guardás en memoria
+}
+
+function openBannerModalByIndex(index){
+  const banner = window.bannersCache[index];
+  openBannerModal(banner);
 }
 
 // eliminar
@@ -713,31 +689,40 @@ async function deleteBanner(id){
   loadBanners();
 }
 
-// editar Banner
-function editBanner(id, imageUrl, link){
 
-  editingBannerId = id;
+function openBannerModal(banner = null) {
+  document.getElementById("bannerModal").classList.remove("hidden");
 
-  document.getElementById("bannerLink").value = link || "";
+  const preview = document.getElementById("bannerPreview");
+  preview.innerHTML = ""; // limpiar siempre
 
-  // 👉 mostrar botón cancelar
-  document.getElementById("cancelEditBannerBtn").style.display = "inline-block";
+  if (banner) {
+    editingBannerId = banner.id;
 
-  showToast("Editando banner");
+    document.getElementById("modalTitle").innerText = "Editar banner";
+    document.getElementById("bannerLink").value = banner.link || "";
+
+    // 🔥 ACA VA LO QUE ME PREGUNTASTE
+    if (banner.image_url) {
+      preview.innerHTML = `
+        <img src="${banner.image_url}" 
+          style="width:100%; border-radius:8px;">
+      `;
+    }
+
+  } else {
+    editingBannerId = null;
+
+    document.getElementById("modalTitle").innerText = "Agregar banner";
+    document.getElementById("bannerLink").value = "";
+    document.getElementById("bannerImage").value = "";
+
+    preview.innerHTML = "";
+  }
 }
 
-
-function cancelEditBanner(){
-
-  editingBannerId = null;
-
-  document.getElementById("bannerImage").value = "";
-  document.getElementById("bannerLink").value = "";
-
-  
-  document.getElementById("cancelEditBannerBtn").style.display = "none";
-
-  showToast("Edición cancelada","info");
+function closeBannerModal() {
+  document.getElementById("bannerModal").classList.add("hidden");
 }
 
 
@@ -766,6 +751,23 @@ document.addEventListener("click", (e) => {
     e.target !== toggle
   ){
     sidebar.classList.remove("active");
+  }
+});
+
+document.getElementById("bannerImage").addEventListener("change", e => {
+
+  const container = document.getElementById("bannerPreview");
+  container.innerHTML = "";
+
+  const file = e.target.files[0];
+
+  if(file){
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(file);
+    img.style.width = "100%";
+    img.style.borderRadius = "8px";
+
+    container.appendChild(img);
   }
 });
 

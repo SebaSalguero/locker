@@ -187,20 +187,32 @@
 
   <div class="adminHeader">
     <h3>Banners</h3>
+    
+    <button onclick="openBannerModal()">+ Agregar banner</button>
   </div>
-
-  <div class="categoryForm">
-    <input type="file" id="bannerImage">
-    <input type="text" id="bannerLink" placeholder="Link opcional">
-    <button onclick="uploadBanner()">Subir</button>
-    <button id="cancelEditBannerBtn" onclick="cancelEditBanner()" style="display:none;">
-    Cancelar edición
-  </button>
 
   <div id="bannerList"></div>
 
 </div>
 
+
+<!-- MODAL -->
+<div id="bannerModal" class="modal hidden">
+  <div class="modal-content">
+
+    <h2 id="modalTitle">Agregar banner</h2>
+
+    <div id="bannerPreview" style="margin-bottom:10px;"></div>
+
+    <input type="file" id="bannerImage">
+    <input type="text" id="bannerLink" placeholder="https://...">
+
+    <div style="margin-top:10px;">
+      <button onclick="saveBanner()">Guardar</button>
+      <button onclick="closeBannerModal()">Cancelar</button>
+    </div>
+
+  </div>
 </div>
 
 </div>
