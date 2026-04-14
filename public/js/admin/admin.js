@@ -690,10 +690,13 @@ async function deleteBanner(id){
 
 
 function openBannerModal(banner = null) {
-  document.getElementById("bannerModal").classList.remove("hidden");
+  const modal = document.getElementById("bannerModal");
+
+  modal.classList.remove("hidden");
+  modal.style.display = "flex";
 
   const preview = document.getElementById("bannerPreview");
-  preview.innerHTML = ""; // limpiar siempre
+  preview.innerHTML = "";
 
   if (banner) {
     editingBannerId = banner.id;
@@ -701,7 +704,6 @@ function openBannerModal(banner = null) {
     document.getElementById("modalTitle").innerText = "Editar banner";
     document.getElementById("bannerLink").value = banner.link || "";
 
-    // 🔥 ACA VA LO QUE ME PREGUNTASTE
     if (banner.image_url) {
       preview.innerHTML = `
         <img src="${banner.image_url}" 
@@ -715,8 +717,6 @@ function openBannerModal(banner = null) {
     document.getElementById("modalTitle").innerText = "Agregar banner";
     document.getElementById("bannerLink").value = "";
     document.getElementById("bannerImage").value = "";
-
-    preview.innerHTML = "";
   }
 }
 
