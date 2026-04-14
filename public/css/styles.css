@@ -216,9 +216,9 @@ body {
 /* ===== BOTON ===== */
 .buy-btn {
   width: 100%;
-  padding: 10px;
+  padding: 14px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #B4E4D8;
   color: rgb(68, 156, 119);
   font-weight: 600;
@@ -1146,21 +1146,47 @@ mark {
 
   .products-grid {
     grid-template-columns: repeat(4, 1fr);
-    gap: 25px;
-    padding: 20px 40px;
+    gap: 30px;
   }
 
   .product-image {
-    height: 220px;
+    height: 260px;
+  }
+
+  .product-info {
+    padding: 18px;
   }
 
   .product-info h3 {
-    font-size: 16px;
-    height: 42px;
+    font-size: 17px;
+    height: 44px;
   }
 
   .new-price {
-    font-size: 20px;
+    font-size: 22px;
   }
 
+}
+
+
+main.container {
+  max-width: 100%;
+  width: 100%;
+  padding: 0 30px;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.buy-btn {
+  margin-top: auto;
 }
