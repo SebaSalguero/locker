@@ -114,7 +114,11 @@ body {
 .categories button {
   background: none;
   border: none;
-  font-size: 25px;
+  font-family:monospace;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  font-style: normal;
   color: #333;
   padding: 6px 0;
   cursor: pointer;
