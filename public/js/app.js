@@ -1220,3 +1220,17 @@ document.addEventListener("click", (e) => {
   }
 });
 
+
+// Cerrar el dropdown si el usuario hace click afuera
+
+document.addEventListener("click", (e) => {
+  const dropdown = document.querySelector(".more-dropdown");
+  const wrapper = document.querySelector(".more-wrapper");
+
+  if (!dropdown || !wrapper) return;
+
+  if (!wrapper.contains(e.target)) {
+    dropdown.classList.remove("active");
+  }
+});
+
