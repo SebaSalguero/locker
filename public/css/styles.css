@@ -69,7 +69,7 @@ body {
 /* ===== BUSCADOR ===== */
 .search-input {
   position: relative;
-  width: 300px;
+  width: 100%;
 }
 
 .search-icon {
@@ -671,23 +671,17 @@ html {
   pointer-events: all;
 }
 
-.menu-toggle {
-  grid-row: 1;
-}
 
 .logo {
-  grid-row: 1;
   text-align: center;
 }
 
 .header-right {
   
-  grid-row: 1;
   justify-content: flex-end;
 }
 
 .search-input {
-  grid-row: 2;
   width: 100%;
   flex: 1;
   max-width: 600px;
@@ -723,8 +717,6 @@ mark {
 }
 
 .header-main {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 15px;
 }
@@ -1227,4 +1219,41 @@ main.container {
 
 .buy-btn {
   margin-top: auto;
+}
+
+@media (min-width: 769px) {
+
+  .header-main {
+    display: flex !important;
+    align-items: center;
+    gap: 20px;
+  }
+
+  /* LOGO */
+  .logo-mobile {
+    display: block;
+    flex: 0 0 auto;
+    font-size: 24px;
+  }
+
+  /* BUSCADOR */
+  .search-input {
+    flex: 1;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* DERECHA */
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 0 0 auto;
+  }
+
+  /*OCULTAR MENU HAMBURGUESA EN DESKTOP*/
+  .menu-toggle {
+    display: none;
+  }
+
 }
