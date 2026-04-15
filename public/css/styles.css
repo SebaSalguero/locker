@@ -1196,9 +1196,9 @@ mark {
 .categories button {
   background: none;
   border: none;
-  font-size: 13px;
+  font-size: 20px;
+  letter-spacing: 0.8px;
   font-weight: 600;
-  letter-spacing: 1px;
   text-transform: uppercase;
   color: #444;
   cursor: pointer;
