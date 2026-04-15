@@ -536,9 +536,6 @@ html {
   display: block !important;
 }
 
-.header-main {
-    grid-template-columns: auto 1fr auto;
-  }
 
   .logo {
     display: none;
@@ -734,10 +731,6 @@ mark {
 
   .header {
     padding: 15px 0;
-  }
-
-  .header-main {
-    grid-template-columns: auto 1fr auto;
   }
 
   .search-container {
