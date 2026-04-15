@@ -106,7 +106,7 @@ body {
   padding: 12px 15px;
   background: white;
   border-bottom: 1px solid #eee;
-  overflow-x: auto;
+  overflow: visible;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
 }
