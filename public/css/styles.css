@@ -1184,24 +1184,52 @@ mark {
 .categories {
   display: flex;
   justify-content: center;
-  gap: 25px;
+  flex-wrap: wrap;
+  gap: 30px;
+  align-items: center;
+  width: 100%;
+  padding: 12px 20px;
   background: white;
-  padding: 10px 0;
+  border-top: 1px solid #eee;
 }
 
-/* SACAR estilo botón */
 .categories button {
   background: none;
   border: none;
-  font-size: 15px;
-  color: #333;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #444;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 /* hover tipo texto */
 .categories button:hover {
-  color: #e60023;
+  color: #000;
 }
+
+
+.categories button {
+  position: relative;
+}
+
+.categories button::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: #000;
+  transition: 0.3s;
+}
+
+.categories button:hover::after {
+  width: 100%;
+}
+
 
 .menu-toggle {
   justify-self: start;
