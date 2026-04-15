@@ -674,7 +674,7 @@ async function loadCategories(){
       dropdown.appendChild(btn)
     })
 
-    moreBtn.onclick = () => {
+    moreBtn.onclick = (e) => {
       e.stopPropagation();
       dropdown.classList.toggle("active")
     }
