@@ -658,6 +658,16 @@ async function loadCategories(){
     const moreWrapper = document.createElement("div")
     moreWrapper.className = "more-wrapper"
 
+    if (window.innerWidth > 768) {
+      moreWrapper.addEventListener("mouseenter", () => {
+        dropdown.classList.add("active");
+      });
+
+      moreWrapper.addEventListener("mouseleave", () => {
+        dropdown.classList.remove("active");
+      });
+    }
+
     const moreBtn = document.createElement("button")
     moreBtn.textContent = "Más ▾"
 
@@ -676,7 +686,6 @@ async function loadCategories(){
 
 
     moreBtn.addEventListener("click", (e) => {
-      console.log("CLICK FUNCIONANDO");
       e.stopPropagation();
       dropdown.classList.toggle("active");
     });

@@ -832,7 +832,7 @@ mark {
   color: red;
 }
 
-/* animaciÃ³n */
+/* animacion */
 @keyframes fadeCart {
   from {
     opacity: 0;
@@ -1070,7 +1070,7 @@ mark {
 .carousel {
   position: relative;
   width: 100%;
-  height: clamp(200px, 35vw, 400px); /* ðŸ”¥ adaptable */
+  height: clamp(200px, 35vw, 400px);
   overflow: hidden;
   border-radius: 14px;
   margin: 15px 0;
@@ -1183,9 +1183,9 @@ mark {
 .categories {
   display: flex;
   justify-content: center;
-  /*
+  
   flex-wrap: wrap;
-  */
+  
   gap: 30px;
   align-items: center;
   width: 100%;
@@ -1298,4 +1298,18 @@ main.container h2 {
 
 .more-dropdown button:hover {
   background: #f5f5f5;
+}
+
+
+.more-dropdown {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: 0.25s ease;
+  pointer-events: none;
+}
+
+.more-dropdown.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
 }
