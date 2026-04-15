@@ -675,6 +675,7 @@ async function loadCategories(){
     })
 
     moreBtn.onclick = () => {
+      e.stopPropagation();
       dropdown.classList.toggle("active")
     }
 
