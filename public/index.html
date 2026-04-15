@@ -24,58 +24,50 @@
 
       <div class="header-main">
 
-          <!-- IZQUIERDA -->
+  <!-- IZQUIERDA -->
         <div class="menu-toggle" onclick="toggleMenu()">☰</div>
 
-          <!-- CENTRO -->
+  <!-- LOGO -->
         <div class="logo-mobile">LOCKER</div>
 
-          <!-- DERECHA -->
-        <div class="header-right">
-          <div id="userBar"></div>
-          <div class="login-icon" onclick="showLogin()">
-            <img src="/images/sesion2.png" alt="Iniciar sesión" class="login-img-icon">
-          </div>
-          <div class="cart-icon cart-button" onclick="openCart()">
+  <!-- BUSCADOR (AHORA ADENTRO) -->
+        <div class="search-input">
+          <form autocomplete="off">
 
-            <img src="/images/carrito.png" alt="Carrito" class="cart-img-icon">
+            <input type="text" style="display:none">
 
-            <span id="cartCount">0</span>
+            <input
+              type="search"
+              id="searchInput"
+              name="no-autocomplete-search"
+              placeholder="Buscar productos..."
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+            >
 
-          </div>
+            <div id="suggestions" class="suggestions-box"></div>
+
+          </form>
         </div>
 
-      </div>
+  <!-- DERECHA -->
+  <div class="header-right">
+    <div id="userBar"></div>
 
-        <!-- BUSCADOR ABAJO (IMPORTANTE) -->
+    <div class="login-icon" onclick="showLogin()">
+      <img src="/images/sesion2.png" class="login-img-icon">
+    </div>
 
-        
-      
+    <div class="cart-icon cart-button" onclick="openCart()">
+      <img src="/images/carrito.png" class="cart-img-icon">
+      <span id="cartCount">0</span>
+    </div>
+  </div>
 
-      
-      <div class="search-input">
-        
-        <form autocomplete="off">
-  
-  
-          <input type="text" style="display:none">
+</div>
 
-          <input
-            type="search"
-            id="searchInput"
-            name="no-autocomplete-search"
-            placeholder="Buscar productos..."
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
-          >
-
-          <div id="suggestions" class="suggestions-box"></div>
-
-        </form>
-        <div id="suggestions" class="suggestions-box"></div>
-      </div>
       
     </div>
 
