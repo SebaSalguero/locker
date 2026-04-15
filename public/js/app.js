@@ -633,13 +633,58 @@ async function loadCategories(){
   nav.innerHTML = ""
   if(menu) menu.innerHTML = ""
 
-  // ===== BOTÓN TODOS =====
+  const MAX_VISIBLE = 6; // cantidad visible antes de "MAS"
 
+  // ===== BOTÓN TODOS =====
   const btnAll = document.createElement("button")
   btnAll.textContent = "Todos"
   btnAll.onclick = () => filterCategory("all")
   nav.appendChild(btnAll)
 
+  let visible = categories.slice(0, MAX_VISIBLE)
+  let hidden = categories.slice(MAX_VISIBLE)
+
+  // ===== VISIBLES =====
+  visible.forEach(cat => {
+    const btn = document.createElement("button")
+    btn.textContent = cat.name
+    btn.onclick = () => filterCategory(cat.id)
+    nav.appendChild(btn)
+  })
+
+  // ===== BOTÓN MÁS =====
+  if(hidden.length > 0){
+
+    const moreWrapper = document.createElement("div")
+    moreWrapper.className = "more-wrapper"
+
+    const moreBtn = document.createElement("button")
+    moreBtn.textContent = "Más ▾"
+
+    const dropdown = document.createElement("div")
+    dropdown.className = "more-dropdown"
+
+    hidden.forEach(cat => {
+      const btn = document.createElement("button")
+      btn.textContent = cat.name
+      btn.onclick = () => {
+        filterCategory(cat.id)
+        dropdown.classList.remove("active")
+      }
+      dropdown.appendChild(btn)
+    })
+
+    moreBtn.onclick = () => {
+      dropdown.classList.toggle("active")
+    }
+
+    moreWrapper.appendChild(moreBtn)
+    moreWrapper.appendChild(dropdown)
+
+    nav.appendChild(moreWrapper)
+  }
+
+  // ===== MENÚ MOBILE =====
   if(menu){
     const btnAllMenu = document.createElement("button");
     btnAllMenu.textContent = "Todos";
@@ -648,20 +693,8 @@ async function loadCategories(){
       toggleMenu();
     };
     menu.appendChild(btnAllMenu);
-  }
 
-  // ===== CATEGORÍAS =====
-
-  categories.forEach(cat => {
-
-    // NAV NORMAL
-    const btn = document.createElement("button")
-    btn.textContent = cat.name
-    btn.onclick = () => filterCategory(cat.id)
-    nav.appendChild(btn)
-
-    // MENÚ HAMBURGUESA
-    if(menu){
+    categories.forEach(cat => {
       const btnMenu = document.createElement("button");
       btnMenu.textContent = cat.name;
       btnMenu.onclick = () => {
@@ -669,9 +702,8 @@ async function loadCategories(){
         toggleMenu();
       };
       menu.appendChild(btnMenu);
-    }
-
-  })
+    });
+  }
 
 }
 

@@ -1263,3 +1263,37 @@ mark {
 main.container h2 {
   margin-bottom: 20px;
 }
+
+/* ===== MÁS DROPDOWN ===== */
+.more-wrapper {
+  position: relative;
+}
+
+.more-dropdown {
+  position: absolute;
+  top: 120%;
+  left: 0;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  padding: 10px;
+  display: none;
+  min-width: 180px;
+  z-index: 2000;
+}
+
+.more-dropdown.active {
+  display: block;
+}
+
+.more-dropdown button {
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+  border-radius: 6px;
+  background: none;
+}
+
+.more-dropdown button:hover {
+  background: #f5f5f5;
+}
