@@ -1198,3 +1198,9 @@ mark {
 .menu-toggle {
   justify-self: start;
 }
+
+@media (max-width: 768px) {
+  .categories {
+    display: none !important;
+  }
+}
