@@ -1036,10 +1036,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 100);
   };
 
-  // limpiar después de que Chrome meta mano
-  setTimeout(() => {
-    input.value = "";
-  }, 100);
 
   const icon = document.querySelector('.cart-icon');
 if(icon){
@@ -1140,6 +1136,18 @@ if (changeModal) {
   });
 }
 
+if (input) {
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      const value = input.value.trim();
+
+      if (!value) return;
+
+      window.location.href = `/index.html?search=${encodeURIComponent(value)}`;
+    }
+  });
+}
+
 });
 
 document.addEventListener("keydown", function (e) {
@@ -1180,16 +1188,3 @@ document.addEventListener("click", (e) => {
   }
 });
 
-const input = document.getElementById("searchInput");
-
-if (input) {
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      const value = input.value.trim();
-
-      if (!value) return;
-
-      window.location.href = `/index.html?search=${encodeURIComponent(value)}`;
-    }
-  });
-}

@@ -202,7 +202,7 @@ body {
 }
 
 /* ===== FOOTER ===== */
-.footer {
+.site-footer {
   background: #F4C2C2;
   text-align: center;
   padding: 20px;
@@ -235,4 +235,25 @@ body {
     grid-template-columns: repeat(4, 1fr);
   }
 
+}
+
+
+.header-main {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.menu-toggle {
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.logo-mobile {
+  white-space: nowrap;
 }
