@@ -675,6 +675,7 @@ async function loadCategories(){
     })
 
     moreBtn.onclick = (e) => {
+      console.log("CLICK EN MÁS");
       e.stopPropagation();
       dropdown.classList.toggle("active")
     }
