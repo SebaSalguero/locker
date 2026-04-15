@@ -674,13 +674,9 @@ async function loadCategories(){
       dropdown.appendChild(btn)
     })
 
-    moreBtn.onclick = (e) => {
-      console.log("CLICK EN MÁS");
-      e.stopPropagation();
-      dropdown.classList.toggle("active")
-    }
 
     moreBtn.addEventListener("click", (e) => {
+      console.log("CLICK FUNCIONANDO");
       e.stopPropagation();
       dropdown.classList.toggle("active");
     });

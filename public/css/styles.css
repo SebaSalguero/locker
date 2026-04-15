@@ -59,12 +59,12 @@ body {
   opacity: 0.8;
 }
 
-/*.header-top {
+.header-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 20px;
-}*/
+}
 
 .header-right {
   display: flex;
