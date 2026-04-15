@@ -679,6 +679,11 @@ async function loadCategories(){
       dropdown.classList.toggle("active")
     }
 
+    moreBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle("active");
+    });
+
     moreWrapper.appendChild(moreBtn)
     moreWrapper.appendChild(dropdown)
 
