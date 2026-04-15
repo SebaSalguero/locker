@@ -23,9 +23,15 @@ body {
 
 /* ===== CONTAINER ===== */
 .container {
-  width: 90%;
-  max-width: 1200px;
+  width: 92%;
   margin: auto;
+}
+
+/* pantallas grandes */
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1700px;
+  }
 }
 
 /* ===== HEADER ===== */
