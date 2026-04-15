@@ -1155,7 +1155,7 @@ mark {
 
 .header-main {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 15px;
 }
@@ -1193,4 +1193,8 @@ mark {
 /* hover tipo texto */
 .categories button:hover {
   color: #e60023;
+}
+
+.menu-toggle {
+  justify-self: start;
 }
