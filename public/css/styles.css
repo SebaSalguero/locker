@@ -1183,7 +1183,9 @@ mark {
 .categories {
   display: flex;
   justify-content: center;
+  /*
   flex-wrap: wrap;
+  */
   gap: 30px;
   align-items: center;
   width: 100%;
