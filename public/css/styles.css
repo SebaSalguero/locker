@@ -115,7 +115,6 @@ body {
   flex: 0 0 auto;
   background: #f5f5f5;
   border: none;
-  font-size: 14px;
   cursor: pointer;
   padding: 8px 14px;
   border-radius: 20px;
@@ -1196,11 +1195,11 @@ mark {
 .categories button {
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 18px;
   letter-spacing: 0.8px;
   font-weight: 600;
   text-transform: uppercase;
-  color: #444;
+  color: #6a4646;
   cursor: pointer;
   transition: 0.2s;
 }
