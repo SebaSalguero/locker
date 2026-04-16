@@ -11,6 +11,10 @@ function saveCart(cart) {
 }
 
 function addToCart(product) {
+  if(product.stock === 0){
+    showToast("Sin stock");
+    return;
+  }
 
   let cart = getCart();
 
@@ -19,14 +23,21 @@ function addToCart(product) {
   const existing = cart.find(p => p.id === product.id);
 
   if (existing) {
+
+    if(existing.qty >= product.stock){
+      showToast("No hay más stock disponible");
+      return;
+    }
+
     existing.qty += 1;
+
   } else {
       cart.push({
-        id: product.id,
-        name: product.name,
-        price: price,
-        image: product.image,
-        qty: 1
+      id: product.id,
+      name: product.name,
+      price: price,
+      image: product.image,
+      qty: 1
       });
   }
 
@@ -503,6 +514,12 @@ function sendOrder() {
 function increaseQty(index){
 
   const cart = getCart();
+  const product = allProducts.find(p => p.id === cart[index].id);
+
+  if(cart[index].qty >= product.stock){
+    showToast("Stock máximo alcanzado");
+    return;
+  }
 
   cart[index].qty++;
 
@@ -904,9 +921,21 @@ function openProductModal(product){
   document.getElementById("modalMainImage").src = product.image;
 
   // botón agregar
-  document.getElementById("modalAddBtn").onclick = () => {
-    addToCart(product);
-  };
+  const btn = document.getElementById("modalAddBtn");
+
+  if(product.stock === 0){
+    btn.innerText = "Sin stock";
+    btn.disabled = true;
+    btn.classList.add("disabled");
+  } else {
+    btn.innerText = "Agregar al carrito";
+    btn.disabled = false;
+    btn.classList.remove("disabled");
+
+    btn.onclick = () => {
+      addToCart(product);
+    };
+  }
 
   modal.classList.add("active");
 }
