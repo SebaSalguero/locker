@@ -238,8 +238,9 @@ ${highlight(p.description, search)}
 
 </div>
 
-<button class="buy-btn">
-Agregar al carrito
+<button class="buy-btn ${p.stock === 0 ? "disabled" : ""}" 
+  ${p.stock === 0 ? "disabled" : ""}>
+  ${p.stock === 0 ? "Sin stock" : "Agregar al carrito"}
 </button>
 
 </div>
