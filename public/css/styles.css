@@ -1313,3 +1313,21 @@ main.container h2 {
   transform: translateY(0);
   pointer-events: all;
 }
+
+.stock{
+  font-size: 13px;
+  font-weight: 600;
+  margin: 6px 0;
+}
+
+.stock.ok{
+  color: #2ecc71;
+}
+
+.stock.low{
+  color: #f39c12;
+}
+
+.stock.out{
+  color: #e74c3c;
+}

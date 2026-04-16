@@ -43,6 +43,14 @@ function renderProduct(p){
 
     document.getElementById("price").innerText = "$" + price;
 
+    const stock = getStockStatus(p);
+
+    const stockEl = document.createElement("div");
+    stockEl.className = "stock " + stock.class;
+    stockEl.innerText = stock.text;
+
+    document.querySelector(".buy-box").prepend(stockEl);
+
     document.getElementById("oldPrice").innerText =
         "$" + Math.round(price * 1.25);
 
@@ -203,10 +211,19 @@ if(isDesktop){
   });
 
   document.getElementById("addBtn").onclick = () => {
+    if(p.stock === 0){
+      alert("Sin stock");
+      return;
+    }
     addToCart(p);
   };
 
   document.getElementById("buyBtn").onclick = () => {
+
+    if(p.stock === 0){
+      alert("Sin stock");
+      return;
+    }
 
     const phone = "5492932618493";
 

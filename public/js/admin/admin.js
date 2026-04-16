@@ -118,6 +118,10 @@ div.innerHTML = `
 
 <span>Categoría: ${p.category}</span>
 
+<span class="stock ${getStockClass(p.stock)}">
+  ${getStockText(p.stock)} (${p.stock})
+</span>
+
 </div>
 
 <div class="productActions">
@@ -167,6 +171,7 @@ document.getElementById("name").value = product.name
 document.getElementById("description").value = product.description
 document.getElementById("price_minor").value = product.price_minor
 document.getElementById("price_major").value = product.price_major
+document.getElementById("stock").value = product.stock || 0;
 
 const container = document.getElementById("previewContainer");
 container.innerHTML = "";
@@ -238,6 +243,7 @@ async function saveProduct() {
   formData.append("price_minor", document.getElementById("price_minor").value);
   formData.append("price_major", document.getElementById("price_major").value);
   formData.append("category_id", Number(document.getElementById("category").value));
+  formData.append("stock", document.getElementById("stock").value);
 
   try {
     const url = editingId
@@ -725,6 +731,18 @@ async function loadBanners(){
   const banners = await res.json();
 
   renderBanners(banners);
+}
+
+function getStockClass(stock){
+  if(stock === 0) return "out";
+  if(stock < 5) return "low";
+  return "ok";
+}
+
+function getStockText(stock){
+  if(stock === 0) return "Sin stock";
+  if(stock < 5) return "Poco stock";
+  return "En stock";
 }
 
 

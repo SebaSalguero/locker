@@ -203,6 +203,8 @@ const card = document.createElement("div");
 
 const search = document.getElementById("searchInput").value;
 
+const stock = getStockStatus(p);
+
 card.className = "product-card";
 
 card.innerHTML = `
@@ -218,15 +220,21 @@ card.innerHTML = `
 ${highlight(p.description, search)}
 </p>
 
+<div class="stock ${stock.class}">
+    ${stock.text}
+</div>
+
 <div class="price">
 
-<span class="old-price">
-$${Math.round(p.price_minor * 1.25)}
-</span>
+  <span class="old-price">
+    $${Math.round(p.price_minor * 1.25)}
+  </span>
 
-<span class="new-price">
-$${getPrice(p)}
-</span>
+  <span class="new-price">
+    $${getPrice(p)}
+  </span>
+
+  
 
 </div>
 
@@ -245,6 +253,11 @@ imgEl.onclick = () => {
 };
 
 card.querySelector(".buy-btn").onclick = (e) => {
+
+  if(p.stock === 0){
+    showToast("Sin stock");
+    return;
+  }
 
   const img = card.querySelector("img"); //  imagen del producto
 
@@ -1061,6 +1074,19 @@ function addSwipe() {
   });
 }
 
+
+function getStockStatus(product){
+
+  if(product.stock === 0){
+    return { text: "Sin stock", class: "out" };
+  }
+
+  if(product.stock <= 5){
+    return { text: "Quedan pocos", class: "low" };
+  }
+
+  return { text: "Disponible", class: "ok" };
+}
 
 
 document.addEventListener("DOMContentLoaded", () => {

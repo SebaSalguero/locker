@@ -39,25 +39,26 @@ router.post("/login", (req, res) => {
 // CREAR PRODUCTO
 router.post("/products", upload.array("images", 5), async (req, res) => {
   try {
-    const { name, description, price_minor, price_major, category_id } = req.body;
-
-    // 🧾 insertar producto (imagen principal opcional)
+    const { name, description, price_minor, price_major, category_id, stock } = req.body;
+    const stockValue = Number(stock) || 0;
+    // insertar producto (imagen principal opcional)
     const [result] = await db.query(
-      `INSERT INTO products (name, description, price_minor, price_major, image, category_id)
-       VALUES (?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO products (name, description, price_minor, price_major, image, category_id, stock)
+        VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [
         name,
         description,
         price_minor,
         price_major,
-        req.files[0]?.path || null, // 👈 imagen principal
-        category_id
+        req.files[0]?.path || null, // imagen principal
+        category_id,
+        stockValue
       ]
     );
 
     const productId = result.insertId;
 
-    // 🖼 guardar TODAS las imágenes
+    // guardar TODAS las imágenes
     if (req.files && req.files.length > 0) {
       for (const file of req.files) {
         await db.query(
@@ -123,10 +124,11 @@ router.delete("/products/:id", async (req, res) => {
 router.put("/products/:id", upload.array("images", 5), async (req, res) => {
   try {
 
-    const { name, description, price_minor, price_major, category_id } = req.body;
+    const { name, description, price_minor, price_major, category_id, stock } = req.body;
     const productId = req.params.id;
+    const stockValue = Number(stock) || 0;
 
-    // 🧾 actualizar producto (imagen principal opcional)
+    // actualizar producto (imagen principal opcional)
     let mainImage;
 
 // si sube nuevas imágenes → usar nueva
@@ -144,8 +146,8 @@ if (req.files && req.files.length > 0) {
 
     await db.query(
       `UPDATE products 
-       SET name=?, description=?, price_minor=?, price_major=?, image=?, category_id=? 
-       WHERE id=?`,
+        SET name=?, description=?, price_minor=?, price_major=?, image=?, category_id=?, stock=? 
+        WHERE id=?`,
       [
         name,
         description,
@@ -153,19 +155,20 @@ if (req.files && req.files.length > 0) {
         price_major,
         mainImage,
         category_id,
+        stockValue,
         productId
       ]
     );
 
     if (req.files && req.files.length > 0) {
 
-  // 🧹 borrar imágenes anteriores SOLO si hay nuevas
+  // borrar imágenes anteriores SOLO si hay nuevas
   await db.query(
     "DELETE FROM product_images WHERE product_id = ?",
     [productId]
   );
 
-  // 🖼 insertar nuevas imágenes
+  // insertar nuevas imágenes
   for (const file of req.files) {
     await db.query(
       "INSERT INTO product_images (product_id, image) VALUES (?, ?)",
