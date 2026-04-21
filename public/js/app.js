@@ -457,7 +457,7 @@ function closeCart(){
 
 }
 
-function sendOrder() {
+async function sendOrder() {
 
   const cart = getCart();
   const user = getUser(); 
@@ -466,6 +466,17 @@ function sendOrder() {
     alert("El carrito está vacío");
     return;
   }
+
+  await fetch("/api/orders", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      user: getUser(),
+      cart: getCart()
+    })
+  });
 
   let message = "Pedido desde LOCKER\n\n";
 
@@ -499,6 +510,7 @@ function sendOrder() {
     phone +
     "?text=" +
     encodeURIComponent(message);
+
 
   window.open(url, "_blank");
 
