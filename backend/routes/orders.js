@@ -150,4 +150,18 @@ router.get("/user/:id", async (req, res) => {
   }
 });
 
+router.get("/my/:userId", async (req, res) => {
+
+  const { userId } = req.params;
+
+  const [orders] = await db.query(`
+    SELECT * FROM orders
+    WHERE user_id = ?
+    ORDER BY created_at DESC
+  `, [userId]);
+
+  res.json(orders);
+
+});
+
 module.exports = router;

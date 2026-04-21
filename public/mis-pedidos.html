@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mis pedidos</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+  <!-- HEADER SIMPLE -->
+  <div class="orders-header">
+    <h2>Mis pedidos</h2>
+    <button onclick="goHome()">← Volver</button>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="orders-filters">
+    <select id="filterStatus">
+      <option value="all">Todos</option>
+      <option value="pendiente">Pendiente</option>
+      <option value="en_proceso">En proceso</option>
+      <option value="enviado">Enviado</option>
+      <option value="vendido">Entregado</option>
+      <option value="cancelado">Cancelado</option>
+    </select>
+  </div>
+
+  <!-- LISTA -->
+  <div id="ordersContainer"></div>
+
+  <script src="/mis-pedidos.js"></script>
+
+</body>
+</html>

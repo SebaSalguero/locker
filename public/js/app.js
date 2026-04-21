@@ -105,11 +105,18 @@ function renderUserBar() {
 
   // usuario logueado
   userBar.innerHTML = `
-    <div class="user-bar">
-      Hola <strong>${user.nombre}</strong> (${user.tipo})
-      <button onclick="logout()">Cerrar sesión</button>
-    </div>
-  `;
+  <div class="user-bar">
+    Hola <strong>${user.nombre}</strong> (${user.tipo})
+
+    <button onclick="goToOrders()">Mis pedidos</button>
+
+    <button onclick="logout()">Cerrar sesión</button>
+  </div>
+`;
+}
+
+function goToOrders(){
+  window.location.href = "/mis-pedidos.html";
 }
 
 
