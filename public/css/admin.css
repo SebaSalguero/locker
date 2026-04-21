@@ -827,3 +827,52 @@ color:white;
   color: #f59e0b;
   font-weight: bold;
 }
+
+
+.orderRow{
+  border:1px solid #eee;
+  border-radius:10px;
+  margin-bottom:10px;
+  overflow:hidden;
+}
+
+.orderHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px;
+  background:#111;
+  color:#fff;
+  cursor:pointer;
+}
+
+.orderHeader span{
+  display:block;
+  font-size:12px;
+  opacity:0.8;
+}
+
+.orderBody{
+  max-height:0;
+  overflow:hidden;
+  transition: all 0.3s ease;
+  background:#fafafa;
+}
+
+.orderBody.open{
+  max-height:500px;
+  padding:10px;
+}
+
+.orderItem{
+  display:flex;
+  justify-content:space-between;
+  padding:6px 0;
+  border-bottom:1px solid #eee;
+}
+
+.orderActions{
+  margin-top:10px;
+  display:flex;
+  gap:5px;
+}

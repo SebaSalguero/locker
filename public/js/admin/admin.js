@@ -201,41 +201,47 @@ async function loadOrders(){
 function renderOrders(orders){
 
   const container = document.getElementById("ordersList");
-
   container.innerHTML = "";
 
   orders.forEach(o => {
 
     const div = document.createElement("div");
-
-    div.className = "productRow";
+    div.className = "orderRow";
 
     div.innerHTML = `
 
-      <div class="productInfo">
+      <!-- HEADER (lo que siempre se ve) -->
+      <div class="orderHeader" onclick="toggleOrder(${o.id})">
 
-        <strong>Pedido #${o.id}</strong>
+        <div>
+          <strong>Pedido #${o.id}</strong>
+          <span>${o.customer_name || "Visitante"}</span>
+        </div>
 
-        <span>Cliente: ${o.customer_name}</span>
-        <span>Total: $${o.total}</span>
-        <span>Estado: <b>${o.status}</b></span>
+        <div>
+          $${o.total}
+        </div>
+
+        <div>
+          <span class="status-${o.status}">
+            ${o.status}
+          </span>
+        </div>
 
       </div>
 
-      <span class="status-${o.status}">${o.status}</span>
+      <!-- BODY (se abre/cierra) -->
+      <div class="orderBody" id="order-${o.id}">
+        <div class="orderItems" id="items-${o.id}">
+          Cargando...
+        </div>
 
-      <div class="productActions">
-
-        <button onclick="viewOrder(${o.id})">👁</button>
-
-        <button onclick="updateOrderStatus(${o.id}, 'en_proceso')">🟡</button>
-
-        <button onclick="updateOrderStatus(${o.id}, 'enviado')">🚚</button>
-
-        <button onclick="updateOrderStatus(${o.id}, 'vendido')">✔</button>
-
-        <button onclick="updateOrderStatus(${o.id}, 'cancelado')">❌</button>
-
+        <div class="orderActions">
+          <button onclick="updateOrderStatus(${o.id}, 'en_proceso')">🟡</button>
+          <button onclick="updateOrderStatus(${o.id}, 'enviado')">🚚</button>
+          <button onclick="updateOrderStatus(${o.id}, 'vendido')">✔</button>
+          <button onclick="updateOrderStatus(${o.id}, 'cancelado')">❌</button>
+        </div>
       </div>
 
     `;
@@ -243,6 +249,47 @@ function renderOrders(orders){
     container.appendChild(div);
 
   });
+
+}
+
+async function toggleOrder(id){
+
+  const body = document.getElementById("order-" + id);
+  const itemsContainer = document.getElementById("items-" + id);
+
+  const isOpen = body.classList.contains("open");
+
+  // cerrar
+  if(isOpen){
+    body.classList.remove("open");
+    return;
+  }
+
+  // abrir
+  body.classList.add("open");
+
+  // 🔥 cargar items SOLO la primera vez
+  if(itemsContainer.innerHTML !== "Cargando...") return;
+
+  try{
+    const res = await fetch("/api/orders/" + id);
+    const order = await res.json();
+
+    itemsContainer.innerHTML = order.items.map(i => `
+      <div class="orderItem">
+        <div>
+          <strong>${i.name}</strong>
+          <span>x${i.qty}</span>
+        </div>
+        <div>
+          $${i.price * i.qty}
+        </div>
+      </div>
+    `).join("");
+
+  }catch(err){
+    itemsContainer.innerHTML = "Error cargando items";
+  }
 
 }
 
@@ -261,19 +308,6 @@ async function updateOrderStatus(id, status){
   loadOrders();
 }
 
-async function viewOrder(id){
-
-  const res = await fetch("/api/orders/" + id);
-  const order = await res.json();
-
-  let text = `Pedido #${order.id}\n\n`;
-
-  order.items.forEach(i => {
-    text += `- ${i.name} x${i.qty} = $${i.price * i.qty}\n`;
-  });
-
-  alert(text);
-}
 
 
 document.getElementById("image").addEventListener("change", e => {
