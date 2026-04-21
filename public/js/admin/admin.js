@@ -4,6 +4,7 @@ let currentImage = "";
 let usersCache = [];
 let editingUserId = null;
 let editingBannerId = null;
+let ordersCache = [];
 
 console.log("admin.js cargado");
 
@@ -195,53 +196,83 @@ async function loadOrders(){
   const res = await fetch("/api/orders");
   const orders = await res.json();
 
-  renderOrders(orders);
+  ordersCache = orders;
+
+  updateOrderStats(orders);
+  renderOrders();
+  renderRanking(orders);
+
 }
 
-function renderOrders(orders){
+function updateOrderStats(orders){
+
+  document.getElementById("statTotalOrders").textContent = orders.length;
+
+  const totalSales = orders
+    .filter(o => o.status === "vendido")
+    .reduce((acc, o) => acc + Number(o.total), 0);
+
+  document.getElementById("statTotalSales").textContent = totalSales;
+
+  document.getElementById("statPending").textContent =
+    orders.filter(o => o.status === "pendiente").length;
+
+  document.getElementById("statCanceled").textContent =
+    orders.filter(o => o.status === "cancelado").length;
+
+}
+
+function renderOrders(){
 
   const container = document.getElementById("ordersList");
   container.innerHTML = "";
 
-  orders.forEach(o => {
+  const search = document.getElementById("searchOrder").value.toLowerCase();
+  const statusFilter = document.getElementById("filterStatus").value;
+
+  let filtered = ordersCache;
+
+  // 🔍 buscar cliente
+  if(search){
+    filtered = filtered.filter(o =>
+      (o.customer_name || "").toLowerCase().includes(search)
+    );
+  }
+
+  // 🎯 filtrar estado
+  if(statusFilter !== "all"){
+    filtered = filtered.filter(o => o.status === statusFilter);
+  }
+
+  filtered.forEach(o => {
 
     const div = document.createElement("div");
-    div.className = "orderRow";
+    div.className = "order-card";
 
     div.innerHTML = `
 
-      <!-- HEADER (lo que siempre se ve) -->
-      <div class="orderHeader" onclick="toggleOrder(${o.id})">
+      <div class="order-header">
 
         <div>
-          <strong>Pedido #${o.id}</strong>
-          <span>${o.customer_name || "Visitante"}</span>
+          <strong>#${o.id}</strong>
+          <span>${o.customer_name}</span>
         </div>
 
         <div>
-          $${o.total}
-        </div>
-
-        <div>
-          <span class="status-${o.status}">
-            ${o.status}
-          </span>
+          <span class="status ${o.status}">${o.status}</span>
+          <strong>$${o.total}</strong>
         </div>
 
       </div>
 
-      <!-- BODY (se abre/cierra) -->
-      <div class="orderBody" id="order-${o.id}">
-        <div class="orderItems" id="items-${o.id}">
-          Cargando...
-        </div>
+      <div class="order-body hidden" id="order-${o.id}"></div>
 
-        <div class="orderActions">
-          <button onclick="updateOrderStatus(${o.id}, 'en_proceso')">🟡</button>
-          <button onclick="updateOrderStatus(${o.id}, 'enviado')">🚚</button>
-          <button onclick="updateOrderStatus(${o.id}, 'vendido')">✔</button>
-          <button onclick="updateOrderStatus(${o.id}, 'cancelado')">❌</button>
-        </div>
+      <div class="order-actions">
+        <button onclick="toggleOrder(${o.id})">Ver</button>
+        <button onclick="updateOrderStatus(${o.id}, 'en_proceso')">Proceso</button>
+        <button onclick="updateOrderStatus(${o.id}, 'enviado')">Enviado</button>
+        <button onclick="updateOrderStatus(${o.id}, 'vendido')">Vendido</button>
+        <button onclick="updateOrderStatus(${o.id}, 'cancelado')">Cancelar</button>
       </div>
 
     `;
@@ -255,41 +286,73 @@ function renderOrders(orders){
 async function toggleOrder(id){
 
   const body = document.getElementById("order-" + id);
-  const itemsContainer = document.getElementById("items-" + id);
 
-  const isOpen = body.classList.contains("open");
-
-  // cerrar
-  if(isOpen){
-    body.classList.remove("open");
+  if(!body.classList.contains("hidden")){
+    body.classList.add("hidden");
     return;
   }
 
-  // abrir
-  body.classList.add("open");
+  const res = await fetch("/api/orders/" + id);
+  const order = await res.json();
 
-  // 🔥 cargar items SOLO la primera vez
-  if(itemsContainer.innerHTML !== "Cargando...") return;
-
-  try{
-    const res = await fetch("/api/orders/" + id);
-    const order = await res.json();
-
-    itemsContainer.innerHTML = order.items.map(i => `
-      <div class="orderItem">
-        <div>
-          <strong>${i.name}</strong>
-          <span>x${i.qty}</span>
-        </div>
-        <div>
-          $${i.price * i.qty}
-        </div>
+  body.innerHTML = order.items.map(i => `
+    <div class="order-item">
+      <img src="${i.image}" class="order-img">
+      <div>
+        <strong>${i.name}</strong>
+        <span>x${i.qty}</span>
       </div>
-    `).join("");
+      <div>$${i.price * i.qty}</div>
+    </div>
+  `).join("");
 
-  }catch(err){
-    itemsContainer.innerHTML = "Error cargando items";
-  }
+  body.classList.remove("hidden");
+
+}
+
+function renderRanking(orders){
+
+  const container = document.getElementById("rankingClients");
+
+  const map = {};
+
+  orders.forEach(o => {
+
+    if(!map[o.customer_name]){
+      map[o.customer_name] = {
+        total: 0,
+        count: 0
+      };
+    }
+
+    if(o.status === "vendido"){
+      map[o.customer_name].total += Number(o.total);
+      map[o.customer_name].count++;
+    }
+
+  });
+
+  const ranking = Object.entries(map)
+    .map(([name, data]) => ({ name, ...data }))
+    .sort((a,b) => b.total - a.total)
+    .slice(0,5);
+
+  container.innerHTML = "";
+
+  ranking.forEach(r => {
+
+    const div = document.createElement("div");
+
+    div.className = "ranking-row";
+
+    div.innerHTML = `
+      <strong>${r.name}</strong>
+      <span>$${r.total} (${r.count} compras)</span>
+    `;
+
+    container.appendChild(div);
+
+  });
 
 }
 

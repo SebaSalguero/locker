@@ -240,7 +240,56 @@
 
     <div id="ordersList"></div>
 
+    <!-- 📊 MÉTRICAS -->
+  <div class="stats-grid">
+    <div class="stat-box">
+      <span>Total pedidos</span>
+      <strong id="statTotalOrders">0</strong>
+    </div>
+
+    <div class="stat-box">
+      <span>Ventas ($)</span>
+      <strong id="statTotalSales">0</strong>
+    </div>
+
+    <div class="stat-box">
+      <span>Pendientes</span>
+      <strong id="statPending">0</strong>
+    </div>
+
+    <div class="stat-box">
+      <span>Cancelados</span>
+      <strong id="statCanceled">0</strong>
+    </div>
   </div>
+
+  <!-- 🔍 FILTROS -->
+  <div class="filters">
+    <input type="text" id="searchOrder" placeholder="Buscar cliente...">
+
+    <select id="filterStatus">
+      <option value="all">Todos</option>
+      <option value="pendiente">Pendiente</option>
+      <option value="en_proceso">En proceso</option>
+      <option value="enviado">Enviado</option>
+      <option value="vendido">Vendido</option>
+      <option value="cancelado">Cancelado</option>
+    </select>
+  </div>
+
+  <!-- 📦 LISTA -->
+  <div id="ordersList"></div>
+
+  <!-- 🏆 RANKING -->
+  <div class="ranking-box">
+    <h3>Top clientes</h3>
+    <div id="rankingClients"></div>
+  </div>
+
+
+  </div>
+
+    
 
 </div>
 

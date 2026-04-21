@@ -876,3 +876,60 @@ color:white;
   display:flex;
   gap:5px;
 }
+
+.order-card{
+  background:#1e1e1e;
+  padding:15px;
+  margin-bottom:10px;
+  border-radius:10px;
+}
+
+.order-header{
+  display:flex;
+  justify-content:space-between;
+}
+
+.order-body{
+  margin-top:10px;
+}
+
+.order-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:5px 0;
+}
+
+.order-img{
+  width:40px;
+  height:40px;
+  object-fit:cover;
+}
+
+.hidden{
+  display:none;
+}
+
+.status{
+  padding:3px 8px;
+  border-radius:6px;
+  font-size:12px;
+}
+
+.status.vendido{ background:#2ecc71; }
+.status.cancelado{ background:#e74c3c; }
+.status.enviado{ background:#3498db; }
+.status.en_proceso{ background:#f1c40f; }
+
+.stats-grid{
+  display:grid;
+  grid-template-columns: repeat(4,1fr);
+  gap:10px;
+  margin-bottom:20px;
+}
+
+.stat-box{
+  background:#2a2a2a;
+  padding:15px;
+  border-radius:10px;
+}
