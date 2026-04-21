@@ -46,6 +46,8 @@
 
 <button onclick="showSection('banners')">🎡 Banners</button>
 
+<button onclick="showSection('orders')">📦 Pedidos</button>
+
 </div>
 
 
@@ -55,43 +57,43 @@
 
   <button id="menuToggle" class="menuToggle">☰</button>
 
-<!-- PRODUCTOS -->
+  <!-- PRODUCTOS -->
 
-<div id="productsSection" class="section">
+  <div id="productsSection" class="section">
 
-<div class="adminHeader">
+    <div class="adminHeader">
 
-<h3>Productos</h3>
+      <h3>Productos</h3>
 
-<button onclick="openProductModal()">+ Agregar producto</button>
+      <button onclick="openProductModal()">+ Agregar producto</button>
 
-</div>
+    </div>
 
-<div id="productList"></div>
+  <div id="productList"></div>
 
-</div>
-
-
-<!-- CATEGORIAS -->
-
-<div id="categoriesSection" class="section" style="display:none">
-
-<h3>Categorías</h3>
-
-<div class="categoryForm">
-
-<input id="newCategoryName" placeholder="Nueva categoría">
-
-<button onclick="createCategory()">Crear</button>
-
-</div>
-
-<div id="categoryList"></div>
-
-</div>
+  </div>
 
 
-<!-- USUARIOS -->
+  <!-- CATEGORIAS -->
+
+  <div id="categoriesSection" class="section" style="display:none">
+
+    <h3>Categorías</h3>
+
+    <div class="categoryForm">
+
+      <input id="newCategoryName" placeholder="Nueva categoría">
+
+      <button onclick="createCategory()">Crear</button>
+
+    </div>
+
+    <div id="categoryList"></div>
+
+  </div>
+
+
+  <!-- USUARIOS -->
 
 
 
@@ -231,6 +233,14 @@
 
   </div>
 </div>
+
+  <div id="ordersSection" class="section" style="display:none">
+
+    <h2>Pedidos</h2>
+
+    <div id="ordersList"></div>
+
+  </div>
 
 </div>
 

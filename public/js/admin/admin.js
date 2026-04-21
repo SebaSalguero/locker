@@ -189,6 +189,93 @@ document.getElementById("productModal").style.display = "flex"
 
 }
 
+
+async function loadOrders(){
+
+  const res = await fetch("/api/orders");
+  const orders = await res.json();
+
+  renderOrders(orders);
+}
+
+function renderOrders(orders){
+
+  const container = document.getElementById("ordersList");
+
+  container.innerHTML = "";
+
+  orders.forEach(o => {
+
+    const div = document.createElement("div");
+
+    div.className = "productRow";
+
+    div.innerHTML = `
+
+      <div class="productInfo">
+
+        <strong>Pedido #${o.id}</strong>
+
+        <span>Cliente: ${o.customer_name}</span>
+        <span>Total: $${o.total}</span>
+        <span>Estado: <b>${o.status}</b></span>
+
+      </div>
+
+      <span class="status-${o.status}">${o.status}</span>
+
+      <div class="productActions">
+
+        <button onclick="viewOrder(${o.id})">👁</button>
+
+        <button onclick="updateOrderStatus(${o.id}, 'en_proceso')">🟡</button>
+
+        <button onclick="updateOrderStatus(${o.id}, 'enviado')">🚚</button>
+
+        <button onclick="updateOrderStatus(${o.id}, 'vendido')">✔</button>
+
+        <button onclick="updateOrderStatus(${o.id}, 'cancelado')">❌</button>
+
+      </div>
+
+    `;
+
+    container.appendChild(div);
+
+  });
+
+}
+
+async function updateOrderStatus(id, status){
+
+  await fetch("/api/orders/" + id + "/status", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ status })
+  });
+
+  showToast("Estado actualizado");
+
+  loadOrders();
+}
+
+async function viewOrder(id){
+
+  const res = await fetch("/api/orders/" + id);
+  const order = await res.json();
+
+  let text = `Pedido #${order.id}\n\n`;
+
+  order.items.forEach(i => {
+    text += `- ${i.name} x${i.qty} = $${i.price * i.qty}\n`;
+  });
+
+  alert(text);
+}
+
+
 document.getElementById("image").addEventListener("change", e => {
 
   const container = document.getElementById("previewContainer");
@@ -318,6 +405,10 @@ function showSection(section){
 
   if(section === "banners"){
   loadBanners();
+  }
+
+  if(section === "orders"){
+  loadOrders();
   }
 
   

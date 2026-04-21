@@ -805,3 +805,25 @@ color:white;
     overflow-y: auto;
   }
 }
+
+.status-pendiente { color: orange; }
+.status-en_proceso { color: #f1c40f; }
+.status-enviado { color: #3498db; }
+.status-vendido { color: #2ecc71; }
+.status-cancelado { color: red; }
+
+
+.status-vendido {
+  color: #16a34a;
+  font-weight: bold;
+}
+
+.status-cancelado {
+  color: #dc2626;
+  font-weight: bold;
+}
+
+.status-en_proceso {
+  color: #f59e0b;
+  font-weight: bold;
+}
