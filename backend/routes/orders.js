@@ -36,9 +36,9 @@ router.post("/", async (req, res) => {
     for (const p of cart) {
       await db.query(
         `INSERT INTO order_items 
-        (order_id, product_id, name, price, qty)
-        VALUES (?, ?, ?, ?, ?)`,
-        [orderId, p.id, p.name, p.price, p.qty]
+        (order_id, product_id, name, price, qty, image)
+        VALUES (?, ?, ?, ?, ?, ?)`,
+        [orderId, p.id, p.name, p.price, p.qty, p.image || null]
       );
     }
 
