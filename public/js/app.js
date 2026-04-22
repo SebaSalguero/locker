@@ -90,29 +90,45 @@ if (el) el.innerText = total;
 
 function renderUserBar() {
   const userBar = document.getElementById("userBar");
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = getUser();
 
-  // visitante (no logueado)
   if (!user) {
     userBar.innerHTML = `
-      <div class="user-bar">
-        
-
+      <div class="user-actions">
+        <button onclick="showLogin()">Iniciar sesión</button>
       </div>
     `;
     return;
   }
 
-  // usuario logueado
   userBar.innerHTML = `
-  <div class="user-bar">
-    Hola <strong>${user.nombre}</strong> (${user.tipo})
+    <div class="user-menu">
 
-    <button onclick="goToOrders()">Mis pedidos</button>
+      <div class="user-trigger" onclick="toggleUserMenu()">
+        👤
+      </div>
 
-    <button onclick="logout()">Cerrar sesión</button>
-  </div>
-`;
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-header">
+          Hola <strong>${user.nombre}</strong>
+        </div>
+
+        <button onclick="goToOrders()">Mis pedidos</button>
+        <button onclick="logout()">Cerrar sesión</button>
+
+      </div>
+
+    </div>
+  `;
+}
+
+function toggleUserMenu(){
+  const menu = document.getElementById("userDropdown");
+  menu.classList.toggle("active");
+}
+
+function goToOrders(){
+  window.location.href = "/mis-pedidos.html";
 }
 
 function goToOrders(){
@@ -248,9 +264,21 @@ ${highlight(p.description, search)}
     $${Math.round(p.price_minor * 1.25)}
   </span>
 
-  <span class="new-price">
-    $${getPrice(p)}
+  <div class="price-block">
+
+  <span class="price-minor">
+    Minorista: $${p.price_minor}
   </span>
+
+  ${
+    getUser()?.tipo === "mayorista"
+    ? `<span class="price-major">
+        Mayorista: $${p.price_major}
+      </span>`
+    : ""
+  }
+
+</div>
 
   
 
