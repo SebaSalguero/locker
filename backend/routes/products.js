@@ -8,7 +8,13 @@ router.get("/", async (req, res) => {
     const [rows] = await db.query(`
     SELECT 
       p.*, 
-      c.name AS category
+      c.name AS category,
+      (
+        SELECT pi.image 
+        FROM product_images pi 
+        WHERE pi.product_id = p.id 
+        LIMIT 1
+      ) AS image
     FROM products p
     LEFT JOIN categories c ON p.category_id = c.id
     `);

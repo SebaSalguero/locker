@@ -96,7 +96,7 @@ async function loadOrderItems(orderId){
   container.innerHTML = order.items.map(i => `
     <div class="order-item">
 
-      <img src="${i.image}" />
+      <img src="${i.image || '/img/default.png'}" />
 
       <div class="info">
         <strong>${i.name}</strong>
