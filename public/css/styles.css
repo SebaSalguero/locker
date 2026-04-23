@@ -1486,7 +1486,7 @@ main.container h2 {
 
 /* PRECIO PRINCIPAL (minorista o visitante) */
 .price-main {
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
   color: #111;
 }
@@ -1508,5 +1508,5 @@ main.container h2 {
 .price-major-line {
   font-size: 22px;
   font-weight: 700;
-  color: #0a7cff; /* podés usar tu color de marca */
+  color: rgb(68, 156, 119);
 }
