@@ -2,6 +2,17 @@ let allProducts = [];
 let tempUserForPasswordChange = null;
 let tempPassword = null;
 
+function updateUserUI() {
+    const user = getUser();
+    const greeting = document.getElementById("userGreeting");
+
+    if (!greeting) return;
+
+    if (user) {
+      greeting.innerHTML = `Hola <strong>${user.nombre}</strong>`;
+    }
+  }
+
 function getCart() {
   return JSON.parse(localStorage.getItem("cart")) || [];
 }
@@ -87,45 +98,6 @@ if (el) el.innerText = total;
 
 }
 
-
-function renderUserBar() {
-  const userBar = document.getElementById("userBar");
-  const user = getUser();
-
-  if (!user) {
-    userBar.innerHTML = `
-      <div class="user-actions">
-        <button onclick="showLogin()">Iniciar sesión</button>
-      </div>
-    `;
-    return;
-  }
-
-  userBar.innerHTML = `
-    <div class="user-menu">
-
-      <div class="user-trigger" onclick="toggleUserMenu()">
-        👤
-      </div>
-
-      <div class="user-dropdown" id="userDropdown">
-        <div class="user-header">
-          Hola <strong>${user.nombre}</strong>
-        </div>
-
-        <button onclick="goToOrders()">Mis pedidos</button>
-        <button onclick="logout()">Cerrar sesión</button>
-
-      </div>
-
-    </div>
-  `;
-}
-
-function toggleUserMenu(){
-  const menu = document.getElementById("userDropdown");
-  menu.classList.toggle("active");
-}
 
 function goToOrders(){
   window.location.href = "/mis-pedidos.html";
@@ -367,7 +339,6 @@ async function login() {
     localStorage.setItem("user", JSON.stringify(data));
 
     showLogin();
-    renderUserBar();
     loadProducts();
 
   } catch (err) {
@@ -376,6 +347,8 @@ async function login() {
     alert("Error conectando con el servidor");
 
   }
+
+  updateUserUI();
 
 }
 
@@ -427,7 +400,7 @@ async function submitNewPassword(){
     localStorage.setItem("user", JSON.stringify(tempUserForPasswordChange));
 
     closeChangePasswordModal();
-    renderUserBar();
+    
     loadProducts();
 
   } catch (err) {
@@ -836,12 +809,14 @@ async function register() {
     localStorage.setItem("user", JSON.stringify(user));
 
     closeRegister();        // cerrar modal
-    renderUserBar();        // actualizar UI
+    
     loadProducts();         // actualizar precios
     showToast("Cuenta creada y sesión iniciada");
   } else {
     alert("Error al registrarse");
   }
+
+  updateUserUI();
 
 }
 
@@ -1166,6 +1141,23 @@ function getStockStatus(product){
 }
 
 
+function handleUserClick() {
+  const user = getUser();
+
+  if (!user) {
+    showLogin();
+    return;
+  }
+
+  toggleUserDropdown();
+}
+
+function toggleUserDropdown() {
+  const dropdown = document.getElementById("userDropdown");
+  dropdown.classList.toggle("active");
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const cartPanel = document.getElementById("cartPanel");
@@ -1173,6 +1165,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const registerModal = document.getElementById("register");
 
   const input = document.getElementById("searchInput");
+
+  updateUserUI();
 
   // limpiar al cargar
   if (input) {
@@ -1185,20 +1179,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   const icon = document.querySelector('.cart-icon');
-if(icon){
-  icon.classList.add('bump');
-  setTimeout(() => {
-    icon.classList.remove('bump');
-  }, 400);
-}
+  if(icon){
+    icon.classList.add('bump');
+    setTimeout(() => {
+      icon.classList.remove('bump');
+    }, 400);
+  }
 
-    if (registerModal) {
-  registerModal.addEventListener("click", function(e) {
+  if (registerModal) {
+    registerModal.addEventListener("click", function(e) {
     if (e.target === registerModal) {
       closeRegister();
     }
-  });
-}
+    });
+  }
 
   if (cartPanel) {
     cartPanel.addEventListener("click", function(e){
@@ -1217,9 +1211,11 @@ if(icon){
       closeCart();
   }
 
+  
+
 });
 
-  renderUserBar();
+  
   if(document.getElementById("products")){
     loadProducts();
   }
@@ -1295,6 +1291,17 @@ if (input) {
   });
 }
 
+});
+
+document.addEventListener("click", (e) => {
+  const dropdown = document.getElementById("userDropdown");
+  const icon = document.querySelector(".login-icon");
+
+  if (!dropdown || !icon) return;
+
+  if (!icon.contains(e.target)) {
+    dropdown.classList.remove("active");
+  }
 });
 
 document.addEventListener("keydown", function (e) {

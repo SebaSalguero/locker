@@ -54,10 +54,16 @@
 
   <!-- DERECHA -->
   <div class="header-right">
-    <div id="userBar"></div>
 
-    <div class="login-icon" onclick="showLogin()">
+    <div class="login-icon" onclick="handleUserClick()">
       <img src="/images/sesion2.png" class="login-img-icon">
+
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-header" id="userGreeting"></div>
+
+        <button onclick="goToOrders()">Mis pedidos</button>
+        <button onclick="logout()">Cerrar sesión</button>
+      </div>
     </div>
 
     <div class="cart-icon cart-button" onclick="openCart()">
