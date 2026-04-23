@@ -164,6 +164,17 @@ async function loadProducts() {
 
   }
 
+  // 🔍 aplicar búsqueda si viene por URL
+const params = new URLSearchParams(window.location.search);
+const search = params.get("search");
+
+if (search) {
+  const input = document.getElementById("searchInput");
+  if (input) input.value = search;
+
+  filterProducts();
+}
+
 }
 
 function filterProducts() {
@@ -1299,14 +1310,7 @@ if (input && document.getElementById("products")) {
     });
   };
 
-  const params = new URLSearchParams(window.location.search);
-const search = params.get("search");
-
-if (search) {
-  const input = document.getElementById("searchInput");
-  input.value = search;
-  filterProducts();
-}
+  
 
 const changeModal = document.getElementById("changePasswordModal");
 
