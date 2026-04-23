@@ -133,6 +133,11 @@ function goToOrders(){
 
 function logout() {
   setUser(null);
+
+  const dropdown = document.getElementById("userDropdown");
+  if (dropdown) {
+    dropdown.classList.remove("active");
+  }
 }
 
 async function loadProducts() {
