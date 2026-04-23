@@ -236,6 +236,40 @@ products.forEach(p => {
 
 const card = document.createElement("div");
 
+
+
+const user = getUser();
+
+let priceHTML = "";
+
+// visitante o minorista
+if (!user || user.tipo === "minorista") {
+  priceHTML = `
+    <div class="price-main">
+      $${p.price_minor}
+    </div>
+  `;
+}
+
+// mayorista
+else if (user.tipo === "mayorista") {
+  priceHTML = `
+    <div class="price-wholesale">
+
+      <div class="price-minor-line">
+        Por menor: $${p.price_minor}
+      </div>
+
+      <div class="price-major-line">
+        Por mayor: $${p.price_major}
+      </div>
+
+    </div>
+  `;
+}
+
+
+
 const search = document.getElementById("searchInput").value;
 
 const stock = getStockStatus(p);
@@ -260,29 +294,7 @@ ${highlight(p.description, search)}
 </div>
 
 <div class="price">
-
-  <span class="old-price">
-    $${Math.round(p.price_minor * 1.25)}
-  </span>
-
-  <div class="price-block">
-
-  <span class="price-minor">
-    Minorista: $${p.price_minor}
-  </span>
-
-  ${
-    getUser()?.tipo === "mayorista"
-    ? `<span class="price-major">
-        Mayorista: $${p.price_major}
-      </span>`
-    : ""
-  }
-
-</div>
-
-  
-
+  ${priceHTML}
 </div>
 
 <button class="buy-btn ${p.stock === 0 ? "disabled" : ""}" 
