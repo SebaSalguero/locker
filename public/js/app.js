@@ -15,15 +15,25 @@ function setUser(user) {
 
 function updateUserUI() {
   const user = getUser();
-  const greeting = document.getElementById("userGreeting");
 
-  if (!greeting) return;
+  const greetingDropdown = document.getElementById("userGreeting");
+  const greetingTop = document.getElementById("userGreetingTop");
+
+  let text = "Hola invitado";
 
   if (user && user.nombre) {
-    greeting.innerHTML = `Hola <strong>${user.nombre}</strong>`;
-  } else {
-    greeting.innerHTML = "Hola invitado";
+    text = `Hola ${user.nombre}`;
   }
+
+  if (greetingDropdown) {
+    greetingDropdown.innerHTML = `<strong>${text}</strong>`;
+  }
+
+  if (greetingTop) {
+    greetingTop.innerText = text;
+  }
+
+  console.log("USER:", user); // DEBUG clave
 }
 
 function getCart() {

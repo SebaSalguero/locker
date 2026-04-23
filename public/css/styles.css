@@ -1477,3 +1477,9 @@ main.container h2 {
   font-weight: bold;
   color: #111;
 }
+
+.user-greeting-top {
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 10px;
+}
