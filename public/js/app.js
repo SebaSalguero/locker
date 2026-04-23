@@ -2,16 +2,29 @@ let allProducts = [];
 let tempUserForPasswordChange = null;
 let tempPassword = null;
 
-function updateUserUI() {
-    const user = getUser();
-    const greeting = document.getElementById("userGreeting");
-
-    if (!greeting) return;
-
-    if (user) {
-      greeting.innerHTML = `Hola <strong>${user.nombre}</strong>`;
-    }
+function setUser(user) {
+  if (user) {
+    localStorage.setItem("user", JSON.stringify(user));
+  } else {
+    localStorage.removeItem("user");
   }
+
+  updateUserUI();
+  loadProducts();
+}
+
+function updateUserUI() {
+  const user = getUser();
+  const greeting = document.getElementById("userGreeting");
+
+  if (!greeting) return;
+
+  if (user && user.nombre) {
+    greeting.innerHTML = `Hola <strong>${user.nombre}</strong>`;
+  } else {
+    greeting.innerHTML = "Hola invitado";
+  }
+}
 
 function getCart() {
   return JSON.parse(localStorage.getItem("cart")) || [];
@@ -109,8 +122,7 @@ function goToOrders(){
 
 
 function logout() {
-  localStorage.removeItem("user");
-  location.reload();
+  setUser(null);
 }
 
 async function loadProducts() {
@@ -336,8 +348,7 @@ async function login() {
 }
 
     //  GUARDAR USUARIO COMPLETO
-    localStorage.setItem("user", JSON.stringify(data));
-    updateUserUI();
+    setUser(data);
     showLogin();
     loadProducts();
 
@@ -397,8 +408,8 @@ async function submitNewPassword(){
     alert("Contraseña actualizada");
 
     // guardar usuario ahora sí
-    localStorage.setItem("user", JSON.stringify(tempUserForPasswordChange));
-
+    setUser(tempUserForPasswordChange);
+    updateUserUI();
     closeChangePasswordModal();
     
     loadProducts();
@@ -806,8 +817,7 @@ async function register() {
     const user = await res.json();
 
     // guardamos sesión automáticamente
-    localStorage.setItem("user", JSON.stringify(user));
-    updateUserUI();
+    setUser(user);
     closeRegister();        // cerrar modal
     
     loadProducts();         // actualizar precios
