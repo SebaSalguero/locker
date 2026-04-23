@@ -175,6 +175,14 @@ if (search) {
   filterProducts();
 }
 
+// 📦 aplicar categoría si viene por URL
+const category = params.get("category");
+const name = params.get("name");
+
+if (category) {
+  filterCategory(category, name || "Productos");
+}
+
 }
 
 function filterProducts() {
@@ -211,21 +219,28 @@ function filterProducts() {
   renderProducts(results);
 }
 
-function filterCategory(cat){
+function filterCategory(cat, name = "Productos"){
 
-  // si NO estoy en index → redirigir
+  // si NO estoy en index → redirigir con params
   if(!document.getElementById("products")){
-    window.location.href = `/index.html?category=${cat}`;
+    window.location.href = `/index.html?category=${cat}&name=${encodeURIComponent(name)}`;
     return;
   }
 
+  const title = document.getElementById("productsTitle");
+
   if(cat === "all"){
     renderProducts(allProducts);
+    if(title) title.innerText = "Productos";
     return;
   }
 
   const filtered = allProducts.filter(p => p.category_id === cat);
+
   renderProducts(filtered);
+
+  // 👉 ACTUALIZAR TITULO
+  if(title) title.innerText = name;
 }
 
 function highlight(text, search) {
@@ -750,7 +765,7 @@ async function loadCategories(){
   visible.forEach(cat => {
     const btn = document.createElement("button")
     btn.textContent = cat.name
-    btn.onclick = () => filterCategory(cat.id)
+    btn.onclick = () => filterCategory(cat.id, cat.name)
     nav.appendChild(btn)
   })
 
@@ -780,7 +795,7 @@ async function loadCategories(){
       const btn = document.createElement("button")
       btn.textContent = cat.name
       btn.onclick = () => {
-        filterCategory(cat.id)
+        filterCategory(cat.id, cat.name)
         dropdown.classList.remove("active")
       }
       dropdown.appendChild(btn)
@@ -812,7 +827,7 @@ async function loadCategories(){
       const btnMenu = document.createElement("button");
       btnMenu.textContent = cat.name;
       btnMenu.onclick = () => {
-        filterCategory(cat.id);
+        filterCategory(cat.id, cat.name);
         toggleMenu();
       };
       menu.appendChild(btnMenu);
