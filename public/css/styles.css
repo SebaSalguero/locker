@@ -1483,3 +1483,30 @@ main.container h2 {
   font-weight: 600;
   margin-right: 10px;
 }
+
+/* PRECIO PRINCIPAL (minorista o visitante) */
+.price-main {
+  font-size: 26px;
+  font-weight: 700;
+  color: #111;
+}
+
+/* BLOQUE MAYORISTA */
+.price-wholesale {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* precio por menor */
+.price-minor-line {
+  font-size: 14px;
+  color: #777;
+}
+
+/* precio por mayor (PROTAGONISTA) */
+.price-major-line {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0a7cff; /* podés usar tu color de marca */
+}
