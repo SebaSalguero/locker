@@ -131,7 +131,9 @@ function goToOrders(){
 }
 
 
-function logout() {
+function logout(e) {
+  if (e) e.stopPropagation(); // 🔥 CLAVE
+
   setUser(null);
 
   const dropdown = document.getElementById("userDropdown");
