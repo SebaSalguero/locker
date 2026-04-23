@@ -337,7 +337,7 @@ async function login() {
 
     //  GUARDAR USUARIO COMPLETO
     localStorage.setItem("user", JSON.stringify(data));
-
+    updateUserUI();
     showLogin();
     loadProducts();
 
@@ -348,7 +348,7 @@ async function login() {
 
   }
 
-  updateUserUI();
+  
 
 }
 
@@ -807,7 +807,7 @@ async function register() {
 
     // guardamos sesión automáticamente
     localStorage.setItem("user", JSON.stringify(user));
-
+    updateUserUI();
     closeRegister();        // cerrar modal
     
     loadProducts();         // actualizar precios
@@ -816,7 +816,7 @@ async function register() {
     alert("Error al registrarse");
   }
 
-  updateUserUI();
+  
 
 }
 
