@@ -49,7 +49,7 @@ app.get("/producto/:slugId", async (req, res) => {
     }
 
     // ⚠️ CAMBIAR POR TU DOMINIO REAL
-    const url = `https://locker-xwso.onrender.com//producto/${slugId}`;
+    const url = `https://locker-xwso.onrender.com/producto/${slugId}`;
 
     res.send(`
       <!DOCTYPE html>
