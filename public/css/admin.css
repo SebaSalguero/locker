@@ -933,3 +933,38 @@ color:white;
   padding:15px;
   border-radius:10px;
 }
+
+.order-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.order-actions button {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* vender */
+.btn-success {
+  background: #2ecc71;
+  color: white;
+}
+
+.btn-success:hover {
+  background: #27ae60;
+}
+
+/* cancelar */
+.btn-danger {
+  background: #e74c3c;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #c0392b;
+}

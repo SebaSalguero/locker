@@ -214,12 +214,11 @@ function updateOrderStats(orders){
 
   document.getElementById("statTotalSales").textContent = totalSales;
 
-  document.getElementById("statPending").textContent =
-    orders.filter(o => o.status === "pendiente").length;
+  document.getElementById("statSold").textContent =
+    orders.filter(o => o.status === "vendido").length;
 
   document.getElementById("statCanceled").textContent =
     orders.filter(o => o.status === "cancelado").length;
-
 }
 
 function renderOrders(){
@@ -269,10 +268,13 @@ function renderOrders(){
 
       <div class="order-actions">
         <button onclick="toggleOrder(${o.id})">Ver</button>
-        <button onclick="updateOrderStatus(${o.id}, 'en_proceso')">Proceso</button>
-        <button onclick="updateOrderStatus(${o.id}, 'enviado')">Enviado</button>
-        <button onclick="updateOrderStatus(${o.id}, 'vendido')">Vendido</button>
-        <button onclick="updateOrderStatus(${o.id}, 'cancelado')">Cancelar</button>
+        <button class="btn-success" onclick="updateOrderStatus(${o.id}, 'vendido')">
+          ✔ Vender
+        </button>
+
+        <button class="btn-danger" onclick="updateOrderStatus(${o.id}, 'cancelado')">
+          ✖ Cancelar
+        </button>
       </div>
 
     `;
