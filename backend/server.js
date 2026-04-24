@@ -51,6 +51,10 @@ app.get("/producto/:slugId", async (req, res) => {
     // ⚠️ CAMBIAR POR TU DOMINIO REAL
     const url = `https://locker-xwso.onrender.com/producto/${slugId}`;
 
+    const imageUrl = product.image?.startsWith("http")
+      ? product.image.replace("http://", "https://")
+      : `https://locker-xwso.onrender.com${product.image}`;
+
     res.send(`
       <!DOCTYPE html>
       <html lang="es">
@@ -60,10 +64,12 @@ app.get("/producto/:slugId", async (req, res) => {
         <title>${product.name}</title>
 
         <meta property="og:title" content="${product.name}" />
-        <meta property="og:description" content="${product.description || ""}" />
-        <meta property="og:image" content="${product.image}" />
-        <meta property="og:url" content="${url}" />
-        <meta property="og:type" content="product" />
+<meta property="og:description" content="${product.description || ""}" />
+<meta property="og:image" content="${imageUrl}" />
+<meta property="og:image:secure_url" content="${imageUrl}" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:url" content="${url}" />
+<meta property="og:type" content="product" />
 
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
