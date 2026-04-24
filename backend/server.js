@@ -60,7 +60,7 @@ app.get("/producto/:slugId", async (req, res) => {
     if (imageUrl.includes("res.cloudinary.com")) {
       imageUrl = imageUrl.replace(
         "/upload/",
-        "/upload/w_1200,h_630,c_fill,f_jpg,q_auto/"
+        "/upload/w_1200,h_630,c_fill,q_auto/"
       );
     }
 
@@ -73,7 +73,7 @@ app.get("/producto/:slugId", async (req, res) => {
         <meta charset="UTF-8" />
 
         <title>${product.name}</title>
-
+        <meta property="og:site_name" content="Locker" />
         <meta property="og:title" content="${product.name}" />
         <meta property="og:description" content="${product.description || ""}" />
         <meta property="og:image" content="${imageUrl}" />
@@ -86,7 +86,7 @@ app.get("/producto/:slugId", async (req, res) => {
         <meta property="og:image:height" content="630" />
 
         <!-- redirige a tu frontend -->
-        <meta http-equiv="refresh" content="1;url=/product.html?slug=${slugId}">
+        <meta http-equiv="refresh" content="5;url=/product.html?slug=${slugId}">
 
       </head>
       <body>
