@@ -70,7 +70,7 @@ app.get("/producto/:slugId", async (req, res) => {
 
         <!-- redirige a tu frontend -->
         <script>
-          window.location.href = "/product.html";
+          window.location.href = "/product.html?slug=${slugId}";
         </script>
 
       </head>

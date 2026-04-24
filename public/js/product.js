@@ -1,13 +1,16 @@
 function getProductId(){
 
-    const path = window.location.pathname;
+  const params = new URLSearchParams(window.location.search);
+  const slugId = params.get("slug");
 
-    const parts = path.split("/");
-    const slugId = parts[2]; // producto/slug-id
+  if(!slugId){
+    document.body.innerHTML = "<h2>Producto no encontrado</h2>";
+    return null;
+  }
 
-    const id = slugId.split("-").pop();
+  const id = slugId.split("-").pop();
 
-    return id;
+  return id;
 }
 
 async function loadProduct(){
