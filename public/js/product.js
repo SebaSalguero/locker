@@ -341,7 +341,9 @@ function saveCart(cart){
 
 async function shareProduct() {
 
-  const url = window.location.href;
+  const slug = new URLSearchParams(window.location.search).get("slug");
+
+  const url = `https://locker-xwso.onrender.com/producto/${slug}`;
   const title = document.getElementById("name")?.innerText || "Producto";
 
   if (navigator.share) {
