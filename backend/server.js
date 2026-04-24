@@ -86,7 +86,7 @@ app.get("/producto/:slugId", async (req, res) => {
         <meta property="og:image:height" content="630" />
 
         <!-- redirige a tu frontend -->
-        <meta http-equiv="refresh" content="1;url=/product.html?slug=${slugId}">
+        <meta http-equiv="refresh" content="0.5;url=/product.html?slug=${slugId}">
 
       </head>
       <body>
