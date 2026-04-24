@@ -1339,14 +1339,24 @@ if (changeModal) {
 
 if (input) {
   input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      const value = input.value.trim();
+  if (e.key === "Enter") {
 
-      if (!value) return;
+    e.preventDefault();
 
-      window.location.href = `/index.html?search=${encodeURIComponent(value)}`;
-    }
-  });
+    const value = input.value.trim();
+    if (!value) return;
+
+    // cerrar sugerencias
+    document.getElementById("suggestions").innerHTML = "";
+
+    // filtrar productos en vivo
+    filterProducts();
+
+    // actualizar URL sin recargar
+    const newUrl = `/index.html?search=${encodeURIComponent(value)}`;
+    window.history.pushState({}, "", newUrl);
+  }
+});
 }
 
 });
