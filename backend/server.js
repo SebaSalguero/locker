@@ -64,23 +64,23 @@ app.get("/producto/:slugId", async (req, res) => {
         <title>${product.name}</title>
 
         <meta property="og:title" content="${product.name}" />
-<meta property="og:description" content="${product.description || ""}" />
-<meta property="og:image" content="${imageUrl}" />
-<meta property="og:image:secure_url" content="${imageUrl}" />
-<meta property="og:image:type" content="image/jpeg" />
-<meta property="og:url" content="${url}" />
-<meta property="og:type" content="product" />
+        <meta property="og:description" content="${product.description || ""}" />
+        <meta property="og:image" content="${imageUrl}" />
+        <meta property="og:image:secure_url" content="${imageUrl}" />
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:url" content="${url}" />
+        <meta property="og:type" content="product" />
 
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
 
         <!-- redirige a tu frontend -->
-        <script>
-          window.location.href = "/product.html?slug=${slugId}";
-        </script>
+        <meta http-equiv="refresh" content="1;url=/product.html?slug=${slugId}">
 
       </head>
-      <body></body>
+      <body>
+        <p>Redirigiendo...</p>
+      </body>
       </html>
     `);
 
