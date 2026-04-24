@@ -51,9 +51,20 @@ app.get("/producto/:slugId", async (req, res) => {
     // ⚠️ CAMBIAR POR TU DOMINIO REAL
     const url = `https://locker-xwso.onrender.com/producto/${slugId}`;
 
-    const imageUrl = product.image?.startsWith("http")
-      ? product.image.replace("http://", "https://")
-      : `https://locker-xwso.onrender.com${product.image}`;
+    let imageUrl = product.image || "";
+
+    // forzar https
+    imageUrl = imageUrl.replace("http://", "https://");
+
+    // 🔥 ACA ES DONDE SE HACE EL CAMBIO
+    if (imageUrl.includes("res.cloudinary.com")) {
+      imageUrl = imageUrl.replace(
+        "/upload/",
+        "/upload/w_1200,h_630,c_fill,f_jpg,q_auto/"
+      );
+    }
+
+    imageUrl = imageUrl.trim();
 
     res.send(`
       <!DOCTYPE html>
