@@ -38,6 +38,15 @@ function login() {
     });
 }
 
+
+function clearFilters(){
+  document.getElementById("searchProduct").value = "";
+  document.getElementById("filterCategory").value = "all";
+  document.getElementById("filterStock").value = "all";
+  applyProductFilters();
+}
+
+
 async function addProduct(){
 
   const fileInput = document.getElementById("image");
