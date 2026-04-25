@@ -968,3 +968,100 @@ color:white;
 .btn-danger:hover {
   background: #c0392b;
 }
+
+
+
+.filtersBar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  background: #1e1e2f;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.filtersBar input,
+.filtersBar select {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  background: #2a2a40;
+  color: white;
+}
+
+
+.productRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1e1e2f;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  transition: 0.2s;
+}
+
+.productRow:hover {
+  transform: scale(1.01);
+  background: #25253a;
+}
+
+
+.productThumb {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.productInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-left: 10px;
+  flex: 1;
+}
+
+.productInfo strong {
+  font-size: 14px;
+}
+
+.productInfo span {
+  font-size: 12px;
+  color: #bbb;
+}
+
+.productActions button {
+  border: none;
+  padding: 6px 8px;
+  margin-left: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #2a2a40;
+  color: white;
+  transition: 0.2s;
+}
+
+.productActions button:hover {
+  background: #3a3a5a;
+}
+
+
+.stock.out {
+  color: #ff4d4d;
+  font-weight: bold;
+}
+
+.stock.low {
+  color: #ffb84d;
+}
+
+.stock.ok {
+  color: #4dff88;
+}
+
+
+input::placeholder {
+  color: #888;
+}
