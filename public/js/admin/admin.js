@@ -93,53 +93,7 @@ function loadProducts(){
 
   productsCache = products
 
-  const container = document.getElementById("productList");
-
-  container.innerHTML = "";
-
-  products.forEach((p,index) => {
-
-      const div = document.createElement("div");
-
-div.className = "productRow";
-
-div.innerHTML = `
-
-<img class="productThumb" src="${p.image}">
-
-<div class="productInfo">
-
-<strong>${p.name}</strong>
-
-<span>${p.description}</span>
-
-<span>Minorista: $${p.price_minor}</span>
-
-<span>Mayorista: $${p.price_major}</span>
-
-<span>Categoría: ${p.category}</span>
-
-<span class="stock ${getStockClass(p.stock)}">
-  ${getStockText(p.stock)} (${p.stock})
-</span>
-
-</div>
-
-<div class="productActions">
-
-<button onclick="editProductByIndex(${index})">✏️</button>
-
-<button onclick="deleteProduct(${p.id})">
-🗑
-</button>
-
-</div>
-
-`;
-
-      container.appendChild(div);
-
-    });
+  renderProducts(products);
 
   });
 
@@ -187,6 +141,58 @@ if(product.image){
 document.getElementById("category").value = product.category_id
 
 document.getElementById("productModal").style.display = "flex"
+
+}
+
+
+function renderProducts(products){
+
+  const container = document.getElementById("productList");
+  container.innerHTML = "";
+
+  products.forEach((p,index) => {
+
+    const div = document.createElement("div");
+
+    div.className = "productRow";
+
+    div.innerHTML = `
+
+<img class="productThumb" src="${p.image}">
+
+<div class="productInfo">
+
+<strong>${p.name}</strong>
+
+<span>${p.description}</span>
+
+<span>Minorista: $${p.price_minor}</span>
+
+<span>Mayorista: $${p.price_major}</span>
+
+<span>Categoría: ${p.category}</span>
+
+<span class="stock ${getStockClass(p.stock)}">
+  ${getStockText(p.stock)} (${p.stock})
+</span>
+
+</div>
+
+<div class="productActions">
+
+<button onclick="editProductByIndex(${index})">✏️</button>
+
+<button onclick="deleteProduct(${p.id})">
+🗑
+</button>
+
+</div>
+
+`;
+
+    container.appendChild(div);
+
+  });
 
 }
 
@@ -933,6 +939,20 @@ function getStockText(stock){
   if(stock === 0) return "Sin stock";
   if(stock < 5) return "Poco stock";
   return "En stock";
+}
+
+
+function filterProducts() {
+  const search = document.getElementById("searchProduct").value.toLowerCase();
+
+  const filtered = productsCache.filter(product => {
+    return (
+      (product.name || "").toLowerCase().includes(search) ||
+      (product.description || "").toLowerCase().includes(search)
+    );
+  });
+
+  renderProducts(filtered);
 }
 
 
