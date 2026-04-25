@@ -30,7 +30,8 @@ function login() {
       document.getElementById("loginBox").style.display = "none";
       document.getElementById("panel").style.display = "flex";
       loadProducts();
-      loadCategories()
+      loadCategories();
+      loadCategoryFilter();
     })
     .catch(() => {
       msg.textContent = "Login incorrecto";
@@ -199,6 +200,57 @@ function renderProducts(products){
 function editProductById(id){
   const product = productsCache.find(p => p.id === id);
   editProduct(product);
+}
+
+
+async function loadCategoryFilter(){
+
+  const res = await fetch("/api/categories");
+  const categories = await res.json();
+
+  const select = document.getElementById("filterCategory");
+
+  categories.forEach(c => {
+    const option = document.createElement("option");
+    option.value = c.name; // usás name porque así viene en products
+    option.textContent = c.name;
+    select.appendChild(option);
+  });
+
+}
+
+
+function applyProductFilters(){
+
+  const search = document.getElementById("searchProduct").value.toLowerCase();
+  const category = document.getElementById("filterCategory").value;
+  const stock = document.getElementById("filterStock").value;
+
+  let filtered = productsCache;
+
+  // 🔍 búsqueda
+  if(search){
+    filtered = filtered.filter(p =>
+      (p.name || "").toLowerCase().includes(search) ||
+      (p.description || "").toLowerCase().includes(search)
+    );
+  }
+
+  // 🏷 categoría
+  if(category !== "all"){
+    filtered = filtered.filter(p => p.category === category);
+  }
+
+  // 📦 stock
+  if(stock !== "all"){
+    filtered = filtered.filter(p => {
+      if(stock === "out") return p.stock === 0;
+      if(stock === "low") return p.stock > 0 && p.stock < 5;
+      if(stock === "ok") return p.stock >= 5;
+    });
+  }
+
+  renderProducts(filtered);
 }
 
 
@@ -944,20 +996,6 @@ function getStockText(stock){
   if(stock === 0) return "Sin stock";
   if(stock < 5) return "Poco stock";
   return "En stock";
-}
-
-
-function filterProducts() {
-  const search = document.getElementById("searchProduct").value.toLowerCase();
-
-  const filtered = productsCache.filter(product => {
-    return (
-      (product.name || "").toLowerCase().includes(search) ||
-      (product.description || "").toLowerCase().includes(search)
-    );
-  });
-
-  renderProducts(filtered);
 }
 
 

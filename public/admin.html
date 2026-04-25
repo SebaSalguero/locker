@@ -73,8 +73,26 @@
       type="text" 
       id="searchProduct" 
       placeholder="Buscar producto..." 
-      oninput="filterProducts()"
+      oninput="applyProductFilters()"
     />
+
+    <input 
+      type="text" 
+      id="searchProduct" 
+      placeholder="Buscar producto..." 
+      oninput="applyProductFilters()"
+    />
+
+    <select id="filterCategory" onchange="applyProductFilters()">
+      <option value="all">Todas las categorías</option>
+    </select>
+
+    <select id="filterStock" onchange="applyProductFilters()">
+      <option value="all">Todo el stock</option>
+      <option value="out">Sin stock</option>
+      <option value="low">Poco stock</option>
+      <option value="ok">En stock</option>
+    </select>
 
     <div id="productList"></div>
 
