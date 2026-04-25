@@ -69,23 +69,36 @@
 
     </div>
 
+    <div class="filtersBar">
+
+  <div class="searchBox">
+    <span>🔍</span>
     <input 
       type="text" 
       id="searchProduct" 
-      placeholder="Buscar producto..." 
+      placeholder="Buscar productos..."
       oninput="applyProductFilters()"
     />
 
+    <button class="clearBtn" onclick="clearFilters()">✖</button>
+  </div>
+
+  <div class="filters">
+
     <select id="filterCategory" onchange="applyProductFilters()">
-      <option value="all">Todas las categorías</option>
+      <option value="all">Categoría</option>
     </select>
 
     <select id="filterStock" onchange="applyProductFilters()">
-      <option value="all">Todo el stock</option>
+      <option value="all">Stock</option>
       <option value="out">Sin stock</option>
-      <option value="low">Poco stock</option>
-      <option value="ok">En stock</option>
+      <option value="low">Poco</option>
+      <option value="ok">Disponible</option>
     </select>
+
+  </div>
+
+</div>
 
     <div id="productList"></div>
 
