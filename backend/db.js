@@ -1,18 +1,21 @@
-const mysql = require("mysql2/promise");
+const { Pool } = require("pg");
 
 let db;
 
-if (process.env.MYSQL_PUBLIC_URL) {
-  db = mysql.createPool(process.env.MYSQL_PUBLIC_URL);
+if (process.env.DATABASE_URL) {
+  db = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
+    }
+  });
 } else {
-  db = mysql.createPool({
+  db = new Pool({
     host: "localhost",
-    user: "root",
-    password: "",
-    database: "locker",
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
+    user: "postgres",
+    password: "tu_password",
+    database: "postgres",
+    port: 5432
   });
 }
 

@@ -17,10 +17,11 @@ router.post("/", async (req, res) => {
       total += p.price * p.qty;
     });
 
-    const [result] = await db.query(
+    const result = await db.query(
       `INSERT INTO orders 
       (user_id, customer_name, customer_email, total, status) 
-      VALUES (?, ?, ?, ?, ?)`,
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING id`,
       [
         user?.id || null,
         user?.nombre || "Visitante",
@@ -30,14 +31,14 @@ router.post("/", async (req, res) => {
       ]
     );
 
-    const orderId = result.insertId;
+    const orderId = result.rows[0].id;
 
     // 📦 items
     for (const p of cart) {
       await db.query(
         `INSERT INTO order_items 
         (order_id, product_id, name, price, qty, image)
-        VALUES (?, ?, ?, ?, ?, ?)`,
+        VALUES ($1, $2, $3, $4, $5, $6)`,
         [orderId, p.id, p.name, p.price, p.qty, p.image || null]
       );
     }
@@ -54,14 +55,14 @@ router.post("/", async (req, res) => {
 // 📋 LISTAR TODOS (admin)
 router.get("/", async (req, res) => {
   try {
-    const [rows] = await db.query(`
+    const result = await db.query(`
       SELECT o.*, u.name as user_name
       FROM orders o
       LEFT JOIN users u ON o.user_id = u.id
       ORDER BY o.created_at DESC
     `);
 
-    res.json(rows);
+    res.json(result.rows);
 
   } catch (err) {
     res.status(500).json(err);
@@ -73,23 +74,23 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
 
-    const [orders] = await db.query(
-      "SELECT * FROM orders WHERE id = ?",
+    const orderResult = await db.query(
+      "SELECT * FROM orders WHERE id = $1",
       [req.params.id]
     );
 
-    if (!orders.length) {
+    if (!orderResult.rows.length) {
       return res.status(404).json({ error: "No encontrado" });
     }
 
-    const [items] = await db.query(
-      "SELECT * FROM order_items WHERE order_id = ?",
+    const itemsResult = await db.query(
+      "SELECT * FROM order_items WHERE order_id = $1",
       [req.params.id]
     );
 
     res.json({
-      ...orders[0],
-      items
+      ...orderResult.rows[0],
+      items: itemsResult.rows
     });
 
   } catch (err) {
@@ -105,21 +106,21 @@ router.put("/:id/status", async (req, res) => {
     const { status } = req.body;
 
     await db.query(
-      "UPDATE orders SET status = ? WHERE id = ?",
+      "UPDATE orders SET status = $1 WHERE id = $2",
       [status, req.params.id]
     );
 
     // 🔥 DESCONTAR STOCK SOLO SI ES VENDIDO
     if (status === "vendido") {
 
-      const [items] = await db.query(
-        "SELECT * FROM order_items WHERE order_id = ?",
+      const itemsResult = await db.query(
+        "SELECT * FROM order_items WHERE order_id = $1",
         [req.params.id]
       );
 
-      for (const item of items) {
+      for (const item of itemsResult.rows) {
         await db.query(
-          "UPDATE products SET stock = stock - ? WHERE id = ?",
+          "UPDATE products SET stock = stock - $1 WHERE id = $2",
           [item.qty, item.product_id]
         );
       }
@@ -138,12 +139,12 @@ router.put("/:id/status", async (req, res) => {
 router.get("/user/:id", async (req, res) => {
   try {
 
-    const [rows] = await db.query(
-      "SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC",
+    const result = await db.query(
+      "SELECT * FROM orders WHERE user_id = $1 ORDER BY created_at DESC",
       [req.params.id]
     );
 
-    res.json(rows);
+    res.json(result.rows);
 
   } catch (err) {
     res.status(500).json(err);
@@ -154,13 +155,13 @@ router.get("/my/:userId", async (req, res) => {
 
   const { userId } = req.params;
 
-  const [orders] = await db.query(`
+  const result = await db.query(`
     SELECT * FROM orders
-    WHERE user_id = ?
+    WHERE user_id = $1
     ORDER BY created_at DESC
   `, [userId]);
 
-  res.json(orders);
+  res.json(result.rows);
 
 });
 

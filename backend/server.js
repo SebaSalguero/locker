@@ -26,23 +26,23 @@ app.get("/producto/:slugId", async (req, res) => {
   const slugId = req.params.slugId;
 
   // 👉 sacar ID del slug (ej: zapatilla-nike-123 → 123)
-  const id = slugId.split("-").pop();
+  const id = Number(slugId.split("-").pop());
 
   try {
 
-    const [rows] = await db.query(`
-      SELECT p.*, 
-        (
-          SELECT pi.image 
-          FROM product_images pi 
-          WHERE pi.product_id = p.id 
-          LIMIT 1
-        ) AS image
-      FROM products p
-      WHERE p.id = ?
-    `, [id]);
+    const result = await db.query(`
+  SELECT p.*, 
+    (
+      SELECT pi.image 
+      FROM product_images pi 
+      WHERE pi.product_id = p.id 
+      LIMIT 1
+    ) AS image
+  FROM products p
+  WHERE p.id = $1
+`, [id]);
 
-    const product = rows[0];
+const product = result.rows[0];
 
     if (!product) {
       return res.status(404).send("Producto no encontrado");

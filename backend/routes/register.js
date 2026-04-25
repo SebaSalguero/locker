@@ -13,27 +13,30 @@ router.post("/", async (req, res) => {
 
     const hash = await bcrypt.hash(password, 10);
 
-    const [result] = await db.query(
-      "INSERT INTO users (name,email,password,role,approved) VALUES (?,?,?,?,1)",
+    const result = await db.query(
+      `INSERT INTO users (name, email, password, role, approved) 
+       VALUES ($1, $2, $3, $4, 1)
+       RETURNING id`,
       [nombre, email, hash, tipo || "minorista"]
     );
 
     res.json({
-      id: result.insertId,
+      id: result.rows[0].id,
       nombre,
       email,
       tipo: tipo || "minorista"
     });
 
   } catch (err) {
-  console.error("REGISTER ERROR:", err);
+    console.error("REGISTER ERROR:", err);
 
-  if (err.code === "ER_DUP_ENTRY") {
-    return res.status(400).json({ error: "Email ya registrado" });
+    // 🔥 PostgreSQL duplicate key
+    if (err.code === "23505") {
+      return res.status(400).json({ error: "Email ya registrado" });
+    }
+
+    res.status(500).json({ error: "Error interno" });
   }
-
-  res.status(500).json({ error: "Error interno" });
-}
 });
 
 module.exports = router;

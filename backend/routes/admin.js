@@ -9,8 +9,8 @@ const { CloudinaryStorage } = require("multer-storage-cloudinary");
 function getPublicId(url){
   try {
     const parts = url.split("/");
-    const file = parts.slice(-2).join("/"); // folder + filename
-    return file.split(".")[0]; // sin extensión
+    const file = parts.slice(-2).join("/");
+    return file.split(".")[0];
   } catch {
     return null;
   }
@@ -41,28 +41,29 @@ router.post("/products", upload.array("images", 5), async (req, res) => {
   try {
     const { name, description, price_minor, price_major, category_id, stock } = req.body;
     const stockValue = Number(stock) || 0;
-    // insertar producto (imagen principal opcional)
-    const [result] = await db.query(
+
+    const result = await db.query(
       `INSERT INTO products (name, description, price_minor, price_major, image, category_id, stock)
-        VALUES (?, ?, ?, ?, ?, ?, ?)`,
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
+       RETURNING id`,
       [
         name,
         description,
         price_minor,
         price_major,
-        req.files[0]?.path || null, // imagen principal
-        category_id,
+        req.files?.[0]?.path || null,
+        Number(category_id),
         stockValue
       ]
     );
 
-    const productId = result.insertId;
+    const productId = result.rows[0].id;
 
-    // guardar TODAS las imágenes
+    // guardar imágenes
     if (req.files && req.files.length > 0) {
       for (const file of req.files) {
         await db.query(
-          "INSERT INTO product_images (product_id, image) VALUES (?, ?)",
+          "INSERT INTO product_images (product_id, image) VALUES ($1, $2)",
           [productId, file.path]
         );
       }
@@ -79,38 +80,32 @@ router.post("/products", upload.array("images", 5), async (req, res) => {
 // DELETE PRODUCTO
 router.delete("/products/:id", async (req, res) => {
   try {
-
     const productId = req.params.id;
 
-    // traer producto + imágenes
-    const [products] = await db.query(
-      "SELECT image FROM products WHERE id = ?",
+    const productRes = await db.query(
+      "SELECT image FROM products WHERE id = $1",
       [productId]
     );
 
-    const [images] = await db.query(
-      "SELECT image FROM product_images WHERE product_id = ?",
+    const imagesRes = await db.query(
+      "SELECT image FROM product_images WHERE product_id = $1",
       [productId]
     );
 
-    // juntar TODAS las imágenes
     const allImages = [
-      ...products.map(p => p.image),
-      ...images.map(i => i.image)
+      ...productRes.rows.map(p => p.image),
+      ...imagesRes.rows.map(i => i.image)
     ].filter(Boolean);
 
-    // borrar de Cloudinary
     for (const img of allImages) {
       const publicId = getPublicId(img);
-
       if(publicId){
         await cloudinary.uploader.destroy(publicId);
       }
     }
 
-    // borrar de DB
-    await db.query("DELETE FROM product_images WHERE product_id = ?", [productId]);
-    await db.query("DELETE FROM products WHERE id = ?", [productId]);
+    await db.query("DELETE FROM product_images WHERE product_id = $1", [productId]);
+    await db.query("DELETE FROM products WHERE id = $1", [productId]);
 
     res.json({ success: true });
 
@@ -123,59 +118,51 @@ router.delete("/products/:id", async (req, res) => {
 // UPDATE PRODUCTO
 router.put("/products/:id", upload.array("images", 5), async (req, res) => {
   try {
-
     const { name, description, price_minor, price_major, category_id, stock } = req.body;
     const productId = req.params.id;
     const stockValue = Number(stock) || 0;
 
-    // actualizar producto (imagen principal opcional)
     let mainImage;
 
-// si sube nuevas imágenes → usar nueva
-if (req.files && req.files.length > 0) {
-  mainImage = req.files[0].path;
-} else {
-  // mantener imagen actual
-  const [rows] = await db.query(
-    "SELECT image FROM products WHERE id = ?",
-    [productId]
-  );
-
-  mainImage = rows[0]?.image || null;
-}
+    if (req.files && req.files.length > 0) {
+      mainImage = req.files[0].path;
+    } else {
+      const result = await db.query(
+        "SELECT image FROM products WHERE id = $1",
+        [productId]
+      );
+      mainImage = result.rows[0]?.image || null;
+    }
 
     await db.query(
       `UPDATE products 
-        SET name=?, description=?, price_minor=?, price_major=?, image=?, category_id=?, stock=? 
-        WHERE id=?`,
+       SET name=$1, description=$2, price_minor=$3, price_major=$4, image=$5, category_id=$6, stock=$7
+       WHERE id=$8`,
       [
         name,
         description,
         price_minor,
         price_major,
         mainImage,
-        category_id,
+        Number(category_id),
         stockValue,
         productId
       ]
     );
 
     if (req.files && req.files.length > 0) {
+      await db.query(
+        "DELETE FROM product_images WHERE product_id = $1",
+        [productId]
+      );
 
-  // borrar imágenes anteriores SOLO si hay nuevas
-  await db.query(
-    "DELETE FROM product_images WHERE product_id = ?",
-    [productId]
-  );
-
-  // insertar nuevas imágenes
-  for (const file of req.files) {
-    await db.query(
-      "INSERT INTO product_images (product_id, image) VALUES (?, ?)",
-      [productId, file.path]
-    );
-  }
-}
+      for (const file of req.files) {
+        await db.query(
+          "INSERT INTO product_images (product_id, image) VALUES ($1, $2)",
+          [productId, file.path]
+        );
+      }
+    }
 
     res.json({ success: true });
 
@@ -192,15 +179,14 @@ router.post("/upload", upload.array("images", 5), (req, res) => {
   }
 
   const paths = req.files.map(f => f.path);
-
   res.json({ paths });
 });
 
 // USERS LIST
 router.get("/users", async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT id,name,email,role,approved FROM users");
-    res.json(rows);
+    const result = await db.query("SELECT id,name,email,role,approved FROM users");
+    res.json(result.rows);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -213,7 +199,7 @@ router.post("/users", async (req, res) => {
     const hash = await bcrypt.hash(password, 10);
 
     await db.query(
-      "INSERT INTO users (name,email,password,role,approved) VALUES (?,?,?,?,1)",
+      "INSERT INTO users (name,email,password,role,approved) VALUES ($1,$2,$3,$4,1)",
       [name, email, hash, role]
     );
 
@@ -229,7 +215,7 @@ router.put("/users/:id", async (req, res) => {
     const { name, email, role, approved } = req.body;
 
     await db.query(
-      "UPDATE users SET name=?, email=?, role=?, approved=? WHERE id=?",
+      "UPDATE users SET name=$1, email=$2, role=$3, approved=$4 WHERE id=$5",
       [name, email, role, approved, req.params.id]
     );
 
@@ -245,7 +231,7 @@ router.put("/users/:id/reset-password", async (req, res) => {
     const hash = await bcrypt.hash("123456", 10);
 
     await db.query(
-      "UPDATE users SET password=?, force_password_change=1 WHERE id=?",
+      "UPDATE users SET password=$1, force_password_change=1 WHERE id=$2",
       [hash, req.params.id]
     );
 
@@ -258,7 +244,7 @@ router.put("/users/:id/reset-password", async (req, res) => {
 // DELETE USER
 router.delete("/users/:id", async (req, res) => {
   try {
-    await db.query("DELETE FROM users WHERE id=?", [req.params.id]);
+    await db.query("DELETE FROM users WHERE id=$1", [req.params.id]);
     res.json({ success: true });
   } catch (err) {
     res.status(500).json(err);

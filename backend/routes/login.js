@@ -11,16 +11,16 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: "Faltan datos" });
     }
 
-    const [result] = await db.query(
-      "SELECT * FROM users WHERE email=?",
+    const result = await db.query(
+      "SELECT * FROM users WHERE email = $1",
       [username]
     );
 
-    if (!result.length) {
+    if (!result.rows.length) {
       return res.status(401).json({ error: "Usuario no existe" });
     }
 
-    const user = result[0];
+    const user = result.rows[0];
 
     if (!user.password) {
       return res.status(500).json({ error: "Usuario sin contraseña válida" });

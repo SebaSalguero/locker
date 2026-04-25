@@ -5,8 +5,8 @@ const db = require("../db");
 // GET
 router.get("/", async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT * FROM categories ORDER BY name");
-    res.json(rows);
+    const result = await db.query("SELECT * FROM categories ORDER BY name");
+    res.json(result.rows);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
     const slug = name.toLowerCase().replace(/\s+/g, "-");
 
     await db.query(
-      "INSERT INTO categories (name, slug) VALUES (?, ?)",
+      "INSERT INTO categories (name, slug) VALUES ($1, $2)",
       [name, slug]
     );
 
@@ -32,7 +32,7 @@ router.post("/", async (req, res) => {
 // DELETE
 router.delete("/:id", async (req, res) => {
   try {
-    await db.query("DELETE FROM categories WHERE id=?", [req.params.id]);
+    await db.query("DELETE FROM categories WHERE id=$1", [req.params.id]);
     res.json({ success: true });
   } catch (err) {
     res.status(500).json(err);
@@ -46,7 +46,7 @@ router.put("/:id", async (req, res) => {
     const slug = name.toLowerCase().replace(/\s+/g, "-");
 
     await db.query(
-      "UPDATE categories SET name=?, slug=? WHERE id=?",
+      "UPDATE categories SET name=$1, slug=$2 WHERE id=$3",
       [name, slug, req.params.id]
     );
 

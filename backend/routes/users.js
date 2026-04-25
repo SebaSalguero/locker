@@ -12,12 +12,12 @@ router.put("/change-password", async (req, res) => {
       return res.status(400).json({ error: "Faltan datos" });
     }
 
-    const [result] = await db.query(
-      "SELECT * FROM users WHERE id=?",
+    const result = await db.query(
+      "SELECT * FROM users WHERE id = $1",
       [userId]
     );
 
-    const user = result[0];
+    const user = result.rows[0];
 
     if (!user) {
       return res.status(404).json({ error: "Usuario no encontrado" });
@@ -32,7 +32,7 @@ router.put("/change-password", async (req, res) => {
     const hash = await bcrypt.hash(newPassword, 10);
 
     await db.query(
-      "UPDATE users SET password=?, force_password_change=0 WHERE id=?",
+      "UPDATE users SET password = $1, force_password_change = 0 WHERE id = $2",
       [hash, userId]
     );
 
@@ -47,10 +47,12 @@ router.put("/change-password", async (req, res) => {
 // 👤 LISTAR USUARIOS
 router.get("/", async (req, res) => {
   try {
-    const [rows] = await db.query(
-      "SELECT id,name,email,role,approved FROM users"
+    const result = await db.query(
+      "SELECT id, name, email, role, approved FROM users"
     );
-    res.json(rows);
+
+    res.json(result.rows);
+
   } catch (err) {
     console.error("USERS ERROR:", err);
     res.status(500).json({ error: "Error interno" });
