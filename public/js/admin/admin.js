@@ -180,7 +180,7 @@ function renderProducts(products){
 
 <div class="productActions">
 
-<button onclick="editProductByIndex(${index})">✏️</button>
+<button onclick="editProductById(${p.id})">✏️</button>
 
 <button onclick="deleteProduct(${p.id})">
 🗑
@@ -194,6 +194,11 @@ function renderProducts(products){
 
   });
 
+}
+
+function editProductById(id){
+  const product = productsCache.find(p => p.id === id);
+  editProduct(product);
 }
 
 
