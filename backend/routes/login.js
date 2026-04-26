@@ -22,9 +22,7 @@ router.post("/", async (req, res) => {
 
     const user = result.rows[0];
 
-    if (!user.password) {
-      return res.status(500).json({ error: "Usuario sin contraseña válida" });
-    }
+    console.log("USER FOUND:", user);
 
     const match = await bcrypt.compare(password, user.password);
 
@@ -32,7 +30,7 @@ router.post("/", async (req, res) => {
       return res.status(401).json({ error: "Contraseña incorrecta" });
     }
 
-    res.json({
+    return res.json({
       id: user.id,
       nombre: user.name,
       email: user.email,
@@ -45,5 +43,6 @@ router.post("/", async (req, res) => {
     res.status(500).json({ error: "Error interno" });
   }
 });
+
 
 module.exports = router;
