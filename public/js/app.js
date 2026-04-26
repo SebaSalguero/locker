@@ -403,14 +403,13 @@ async function login() {
 
 
     // FORZAR CAMBIO DE CONTRASEÑA
-    if (data.force_password_change) {
+    if (data.force_password_change == true || data.force_password_change == 1 || data.force_password_change === "true") {
+      tempUserForPasswordChange = data;
+      tempPassword = password;
 
-  tempUserForPasswordChange = data;
-  tempPassword = password;
-
-  openChangePasswordModal();
-  return;
-}
+      openChangePasswordModal();
+      return;
+    }
 
     //  GUARDAR USUARIO COMPLETO
     setUser(data);
