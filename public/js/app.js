@@ -10,7 +10,11 @@ function setUser(user) {
   }
 
   updateUserUI();
-  loadProducts();
+
+  // ✔️ SOLO si estás en la página de productos
+  if (document.getElementById("products")) {
+    loadProducts();
+  }
 }
 
 function updateUserUI() {
@@ -144,45 +148,43 @@ function logout(e) {
 
 async function loadProducts() {
 
+  const container = document.getElementById("products");
+
+  if (!container) return; // 🔥 evita el crash
+
   try {
 
     const res = await fetch("/api/products");
     allProducts = await res.json();
-    const products = allProducts;
-
-    const container = document.getElementById("products");
 
     container.innerHTML = "";
 
-    renderProducts(products);
+    renderProducts(allProducts);
 
     loadBanners();
 
-  } catch(err) {
-
+  } catch (err) {
     console.error("Error cargando productos:", err);
-
   }
 
   // 🔍 aplicar búsqueda si viene por URL
-const params = new URLSearchParams(window.location.search);
-const search = params.get("search");
+  const params = new URLSearchParams(window.location.search);
+  const search = params.get("search");
 
-if (search) {
-  const input = document.getElementById("searchInput");
-  if (input) input.value = search;
+  if (search) {
+    const input = document.getElementById("searchInput");
+    if (input) input.value = search;
 
-  filterProducts();
-}
+    filterProducts();
+  }
 
-// 📦 aplicar categoría si viene por URL
-const category = params.get("category");
-const name = params.get("name");
+  // 📦 aplicar categoría si viene por URL
+  const category = params.get("category");
+  const name = params.get("name");
 
-if (category) {
-  filterCategory(category, name || "Productos");
-}
-
+  if (category) {
+    filterCategory(category, name || "Productos");
+  }
 }
 
 function filterProducts() {
