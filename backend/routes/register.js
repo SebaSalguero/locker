@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
 
     const result = await db.query(
       `INSERT INTO users (name, email, password, role, approved) 
-       VALUES ($1, $2, $3, $4, 1)
+       VALUES ($1, $2, $3, $4, false)
        RETURNING id`,
       [nombre, email, hash, tipo || "minorista"]
     );
