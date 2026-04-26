@@ -385,12 +385,20 @@ async function login() {
       body: JSON.stringify({ username, password })
     });
 
+    const data = await res.json();
+
+    console.log("LOGIN DEBUG:", data.debug);
+    console.log("MATCH:", data.match);
+
+
     if (!res.ok) {
       alert("Usuario o contraseña incorrectos");
       return;
     }
 
-    const data = await res.json();
+    
+
+
 
     // FORZAR CAMBIO DE CONTRASEÑA
     if (data.force_password_change) {
