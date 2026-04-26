@@ -4,6 +4,8 @@ const db = require("../db");
 const bcrypt = require("bcrypt");
 
 router.post("/", async (req, res) => {
+  console.log("🔥 LOGIN REQUEST RECIBIDO");
+  console.log("BODY:", req.body);
   try {
     const { username, password } = req.body;
 
