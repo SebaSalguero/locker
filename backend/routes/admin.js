@@ -230,21 +230,29 @@ router.put("/users/:id/reset-password", async (req, res) => {
   try {
     const hash = await bcrypt.hash("123456", 10);
 
-    await db.query(
-      "UPDATE users SET password=$1, force_password_change=1 WHERE id=$2",
+    console.log("RESET PASSWORD USER ID:", req.params.id);
+
+    const result = await db.query(
+      "UPDATE users SET password=$1, force_password_change=true WHERE id=$2 RETURNING id",
       [hash, req.params.id]
     );
 
+    console.log("ROWS UPDATED:", result.rowCount);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
     res.json({ success: true });
+
   } catch (err) {
-    console.error("RESET PASSWORD ERROR FULL:", err);
+    console.error("🔥 RESET PASSWORD ERROR:", err);
 
     res.status(500).json({
-    success: false,
-    message: err.message,
-    code: err.code,
-    detail: err
-  });
+      success: false,
+      error: err.message,
+      code: err.code
+    });
   }
 });
 
