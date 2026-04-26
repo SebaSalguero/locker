@@ -22,9 +22,18 @@ router.post("/", async (req, res) => {
 
     const user = result.rows[0];
 
-    console.log("USER FOUND:", user);
+    // 👇 ACÁ ES DONDE VA EL DEBUG
+    console.log("PASSWORD INPUT:", password);
+    console.log("PASSWORD DB:", user.password);
+    console.log("TYPE DB:", typeof user.password);
+
+    if (!user.password) {
+      return res.status(500).json({ error: "Usuario sin contraseña válida" });
+    }
 
     const match = await bcrypt.compare(password, user.password);
+
+    console.log("MATCH RESULT:", match); // 👈 este va acá (después del compare)
 
     if (!match) {
       return res.status(401).json({ error: "Contraseña incorrecta" });
@@ -42,12 +51,6 @@ router.post("/", async (req, res) => {
     console.error("LOGIN ERROR:", err);
     res.status(500).json({ error: "Error interno" });
   }
-
-  console.log("PASSWORD INPUT:", password);
-  console.log("PASSWORD DB:", user.password);
-  console.log("TYPE DB:", typeof user.password);
-  console.log("MATCH RESULT:", await bcrypt.compare(password, user.password));
 });
-
 
 module.exports = router;
