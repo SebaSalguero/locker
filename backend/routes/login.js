@@ -18,22 +18,31 @@ router.post("/", async (req, res) => {
 
     const user = result.rows[0];
 
-    const debug = {
-      inputPassword: password,
-      dbPassword: user.password,
-      hasPassword: !!user.password,
-    };
+    console.log("🔍 USER:", user);
+    console.log("🔑 PASSWORD INPUT:", password);
+    console.log("🧾 PASSWORD DB:", user.password);
+
+    if (!user.password) {
+      return res.status(500).json({
+        error: "Usuario sin password en DB",
+        debug: user
+      });
+    }
 
     const match = await bcrypt.compare(password, user.password);
 
+    console.log("✅ MATCH:", match);
+
+    if (!match) {
+      return res.status(401).json({ error: "Contraseña incorrecta" });
+    }
+
     return res.json({
-      debug,              // 👈 esto lo ves en frontend
-      match,              // 👈 true/false
+      ok: true,
       id: user.id,
       nombre: user.name,
       email: user.email,
-      tipo: user.role,
-      force_password_change: user.force_password_change
+      tipo: user.role
     });
 
   } catch (err) {
@@ -41,5 +50,4 @@ router.post("/", async (req, res) => {
     res.status(500).json({ error: "Error interno" });
   }
 });
-
 module.exports = router;
