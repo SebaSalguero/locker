@@ -32,7 +32,7 @@ router.put("/change-password", async (req, res) => {
     const hash = await bcrypt.hash(newPassword, 10);
 
     await db.query(
-      "UPDATE users SET password = $1, force_password_change = 0 WHERE id = $2",
+      "UPDATE users SET password = $1, force_password_change = false WHERE id = $2",
       [hash, userId]
     );
 
