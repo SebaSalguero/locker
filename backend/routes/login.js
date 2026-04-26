@@ -42,6 +42,11 @@ router.post("/", async (req, res) => {
     console.error("LOGIN ERROR:", err);
     res.status(500).json({ error: "Error interno" });
   }
+
+  console.log("PASSWORD INPUT:", password);
+  console.log("PASSWORD DB:", user.password);
+  console.log("TYPE DB:", typeof user.password);
+  console.log("MATCH RESULT:", await bcrypt.compare(password, user.password));
 });
 
 
