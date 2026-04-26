@@ -237,7 +237,14 @@ router.put("/users/:id/reset-password", async (req, res) => {
 
     res.json({ success: true });
   } catch (err) {
-    res.status(500).json(err);
+    console.error("RESET PASSWORD ERROR FULL:", err);
+
+    res.status(500).json({
+    success: false,
+    message: err.message,
+    code: err.code,
+    detail: err
+  });
   }
 });
 
