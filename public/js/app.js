@@ -433,10 +433,6 @@ function openChangePasswordModal(){
   document.getElementById("changePasswordModal").classList.add("active");
 }
 
-function closeChangePasswordModal(){
-  document.getElementById("changePasswordModal").classList.remove("active");
-}
-
 async function submitNewPassword(){
 
   const newPass = document.getElementById("newPassword").value.trim();
@@ -459,7 +455,7 @@ async function submitNewPassword(){
 
   try {
 
-    await fetch("/api/users/change-password", {
+    const res = await fetch("/api/users/change-password", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -469,18 +465,29 @@ async function submitNewPassword(){
       })
     });
 
+    const data = await res.json();
+
+    // 🔥 IMPORTANTE: validar respuesta real
+    if (!res.ok || !data.success) {
+      console.error("CHANGE PASSWORD ERROR:", data);
+      alert(data.error || "Error al cambiar contraseña");
+      return;
+    }
+
     alert("Contraseña actualizada");
 
-    // guardar usuario ahora sí
+    // 🔐 actualizar usuario en memoria
+    tempUserForPasswordChange.force_password_change = false;
     setUser(tempUserForPasswordChange);
+
     updateUserUI();
     closeChangePasswordModal();
-    
+
     loadProducts();
 
   } catch (err) {
-    console.error(err);
-    alert("Error al cambiar contraseña");
+    console.error("ERROR FETCH:", err);
+    alert("Error de conexión al cambiar contraseña");
   }
 }
 
