@@ -39,8 +39,13 @@ router.put("/change-password", async (req, res) => {
     res.json({ success: true });
 
   } catch (err) {
-    console.error("CHANGE PASSWORD ERROR:", err);
-    res.status(500).json({ error: "Error interno" });
+      console.error("🔥 CHANGE PASSWORD ERROR:", err);
+
+      res.status(500).json({
+      success: false,
+      message: err.message,
+      code: err.code
+      });
   }
 });
 
