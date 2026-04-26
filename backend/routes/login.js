@@ -44,7 +44,8 @@ router.post("/", async (req, res) => {
       id: user.id,
       nombre: user.name,
       email: user.email,
-      tipo: user.role
+      tipo: user.role,
+      fpass: user.force_password_change
     });
 
   } catch (err) {
