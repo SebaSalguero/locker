@@ -492,6 +492,10 @@ async function submitNewPassword(){
 }
 
 
+function closeChangePasswordModal(){
+  const modal = document.getElementById("changePasswordModal");
+  if (modal) modal.classList.remove("active");
+}
 
 
 function buyProduct(product) {
