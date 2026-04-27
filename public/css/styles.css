@@ -1345,74 +1345,7 @@ main.container h2 {
   cursor: not-allowed;
 }
 
-.orders-header{
-  display:flex;
-  justify-content:space-between;
-  padding:15px;
-  background:#111;
-  color:#fff;
-}
 
-.orders-filters{
-  padding:10px;
-}
-
-.order-card{
-  background:#1e1e1e;
-  margin:10px;
-  padding:15px;
-  border-radius:10px;
-  color:#fff;
-}
-
-.order-top{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:10px;
-}
-
-.order-products{
-  border-top:1px solid #333;
-  border-bottom:1px solid #333;
-  padding:10px 0;
-}
-
-.order-item{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:10px;
-}
-
-.order-item img{
-  width:50px;
-  height:50px;
-  object-fit:cover;
-  border-radius:6px;
-}
-
-.order-item .info{
-  flex:1;
-}
-
-.order-footer{
-  display:flex;
-  justify-content:space-between;
-  margin-top:10px;
-}
-
-/* estados */
-.status{
-  padding:5px 10px;
-  border-radius:6px;
-  font-size:12px;
-}
-
-.status.pendiente{ background:#f1c40f; }
-.status.en_proceso{ background:#e67e22; }
-.status.enviado{ background:#3498db; }
-.status.vendido{ background:#2ecc71; }
-.status.cancelado{ background:#e74c3c; }
 
 .user-menu {
   position: relative;
