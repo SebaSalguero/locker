@@ -106,7 +106,7 @@ cursor:pointer;
 }
 
 /* PRODUCTOS */
-
+/*
 .productRow{
   
   gap:15px;
@@ -117,7 +117,7 @@ cursor:pointer;
   box-shadow:0 4px 15px rgba(0,0,0,0.05);
   transition:0.2s;
 }
-
+*/
 .productRow:hover{
   transform:translateY(-2px);
   box-shadow:0 8px 25px rgba(0,0,0,0.08);
@@ -1017,7 +1017,7 @@ color:white;
   display: flex;
   flex-direction: column;
   gap: 3px;
-  margin-left: 10px;
+  
   flex: 1;
 }
 
@@ -1151,7 +1151,7 @@ input::placeholder {
 
 #productList{
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 🔥 2 columnas */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
 }
 
@@ -1177,8 +1177,9 @@ input::placeholder {
 
 @media (max-width: 768px){
   #productList{
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
+
 
   .productThumb{
     height: 200px;
@@ -1187,12 +1188,17 @@ input::placeholder {
 
 
 /* CARD CONTENEDORA */
+
 .productCard{
   display:flex;
   flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+
   background:#1e1e2f;
   border-radius:16px;
   overflow:hidden;
+  padding:10px;
   transition:0.2s;
 }
 
@@ -1369,4 +1375,65 @@ input::placeholder {
     width: 100%;
   }
 
+}
+
+.imageWrapper{
+  width:100%;
+  display:flex;
+  justify-content:center;
+}
+
+.productThumb{
+  width:100%;
+  max-width:220px;   /* 🔥 esto evita que se desborde */
+  height:180px;
+  object-fit:cover;
+  border-radius:12px;
+}
+
+.productInfo{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  gap:6px;
+  padding:10px;
+}
+
+.productInfo strong{
+  color:white;
+  font-size:15px;
+}
+
+.productInfo .desc{
+  font-size:12px;
+  color:#bbb;
+}
+
+.prices{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+}
+
+.prices span{
+  font-weight:bold;
+  color:#4dff88;
+}
+
+.prices .major{
+  color:#aaa;
+  font-size:13px;
+}
+
+.productActions{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  width:100%;
+}
+
+.productActions button{
+  flex:1;
+  max-width:120px;
 }
