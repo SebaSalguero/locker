@@ -935,6 +935,7 @@ function renderBanners(banners) {
       <img class="productThumb" src="${b.image_url}">
 
       <div class="productInfo">
+        <span>${b.action || "none"}</span>
         <span>${b.link || "Sin link"}</span>
       </div>
 
@@ -947,7 +948,7 @@ function renderBanners(banners) {
     container.appendChild(div);
   });
 
-  window.bannersCache = banners; // 🔥 guardás en memoria
+  window.bannersCache = banners;
 }
 
 function openBannerModalByIndex(index){
