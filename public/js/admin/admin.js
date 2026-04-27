@@ -168,36 +168,40 @@ function renderProducts(products){
 
     div.innerHTML = `
 
-<img class="productThumb" src="${p.image}">
+<div class="productCard">
 
-<div class="productInfo">
+  <div class="imageWrapper">
+    <img class="productThumb" src="${p.image}">
+    
+    <span class="stockBadge ${getStockClass(p.stock)}">
+      ${getStockText(p.stock)}
+    </span>
+  </div>
 
-<strong>${p.name}</strong>
+  <div class="productInfo">
 
-<span>${p.description}</span>
+    <strong>${p.name}</strong>
 
-<span>Minorista: $${p.price_minor}</span>
+    <span class="desc">${p.description || ""}</span>
 
-<span>Mayorista: $${p.price_major}</span>
+    <div class="prices">
+      <span>$${p.price_minor}</span>
+      <span class="major">$${p.price_major}</span>
+    </div>
 
-<span>Categoría: ${p.category}</span>
+    <span class="category">${p.category}</span>
 
-<span class="stock ${getStockClass(p.stock)}">
-  ${getStockText(p.stock)} (${p.stock})
-</span>
+  </div>
+
+  <div class="productActions">
+
+    <button onclick="editProductById(${p.id})">✏️</button>
+
+    <button onclick="deleteProduct(${p.id})">🗑</button>
+
+  </div>
 
 </div>
-
-<div class="productActions">
-
-<button onclick="editProductById(${p.id})">✏️</button>
-
-<button onclick="deleteProduct(${p.id})">
-🗑
-</button>
-
-</div>
-
 `;
 
     container.appendChild(div);

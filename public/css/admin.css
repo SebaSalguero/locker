@@ -991,28 +991,28 @@ color:white;
 }
 
 
-.productRow {
+
+.productRow{
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   background: #1e1e2f;
-  padding: 12px;
-  border-radius: 10px;
-  margin-bottom: 10px;
+  border-radius: 14px;
+  overflow: hidden;
+  padding: 0;
   transition: 0.2s;
 }
 
-.productRow:hover {
-  transform: scale(1.01);
+.productRow:hover{
+  transform: translateY(-3px);
   background: #25253a;
 }
 
 
-.productThumb {
-  width: 60px;
-  height: 60px;
+.productThumb{
+  width: 100%;
+  height: 220px; 
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 0; 
 }
 
 .productInfo {
@@ -1149,4 +1149,137 @@ input::placeholder {
 
 .clearBtn:hover {
   color: white;
+}
+
+#productList{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 🔥 2 columnas */
+  gap: 20px;
+}
+
+.productInfo{
+  padding: 12px;
+}
+
+.productInfo strong{
+  font-size: 16px;
+  color: white;
+}
+
+.productInfo span{
+  font-size: 13px;
+  color: #bbb;
+}
+
+.productActions{
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+@media (max-width: 768px){
+  #productList{
+    grid-template-columns: 1fr;
+  }
+
+  .productThumb{
+    height: 200px;
+  }
+}
+
+
+/* CARD CONTENEDORA */
+.productCard{
+  display:flex;
+  flex-direction:column;
+  background:#1e1e2f;
+  border-radius:16px;
+  overflow:hidden;
+  transition:0.2s;
+}
+
+.productCard:hover{
+  transform:translateY(-4px);
+  background:#25253a;
+}
+
+/* IMAGEN */
+.imageWrapper{
+  position:relative;
+}
+
+.productThumb{
+  width:100%;
+  height:240px;
+  object-fit:cover;
+}
+
+/* BADGE STOCK */
+.stockBadge{
+  position:absolute;
+  top:10px;
+  left:10px;
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+  color:white;
+}
+
+.stockBadge.out{ background:#e74c3c; }
+.stockBadge.low{ background:#f39c12; }
+.stockBadge.ok{ background:#2ecc71; }
+
+/* INFO */
+.productInfo{
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.productInfo strong{
+  color:white;
+  font-size:16px;
+}
+
+.productInfo .desc{
+  font-size:12px;
+  color:#bbb;
+}
+
+/* PRECIOS */
+.prices{
+  display:flex;
+  justify-content:space-between;
+  margin-top:5px;
+}
+
+.prices span{
+  font-size:15px;
+  font-weight:bold;
+  color:#4dff88;
+}
+
+.prices .major{
+  color:#aaa;
+  font-size:13px;
+}
+
+/* CATEGORIA */
+.category{
+  font-size:11px;
+  color:#888;
+}
+
+/* ACCIONES */
+.productActions{
+  display:flex;
+  justify-content:space-between;
+  padding:10px;
+}
+
+.productActions button{
+  flex:1;
+  margin:0 3px;
 }
