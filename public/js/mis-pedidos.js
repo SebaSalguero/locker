@@ -68,12 +68,6 @@ function renderOrders(){
 
       <div class="order-footer">
         <strong>Total: $${o.total}</strong>
-
-        ${
-          o.status === "pendiente"
-          ? `<button onclick="reorder(${o.id})">Repetir pedido</button>`
-          : ""
-        }
       </div>
 
     `;
