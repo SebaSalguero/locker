@@ -1290,13 +1290,13 @@ input::placeholder {
   overflow:hidden;
   transition:0.2s;
 
-  align-items:center; /* 🔥 centra horizontalmente TODO */
+  align-items:center; /* centra horizontalmente TODO */
 }
 
 .imageWrapper{
   width:100%;
   display:flex;
-  justify-content:center; /* 🔥 centra imagen */
+  justify-content:center; /* centra imagen */
 }
 
 .productThumb{
@@ -1311,19 +1311,62 @@ input::placeholder {
   flex-direction:column;
   gap:6px;
 
-  align-items:center;     /* 🔥 centra horizontal */
-  text-align:center;      /* 🔥 centra texto */
+  align-items:center;     /* centra horizontal */
+  text-align:center;      /* centra texto */
 }
 
 .prices{
   display:flex;
-  justify-content:center; /* 🔥 en vez de space-between */
+  justify-content:center; /* en vez de space-between */
   gap:15px;
 }
 
 .productActions{
   display:flex;
-  justify-content:center; /* 🔥 centra botones */
+  justify-content:center; /* centra botones */
   gap:10px;
   width:100%;
+}
+
+@media (max-width: 768px){
+
+  /* CENTRAR TODA LA CARD */
+  .productCard{
+    align-items: center;
+  }
+
+  /* IMAGEN CENTRADA */
+  .imageWrapper{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .productThumb{
+    width: 100%;
+    max-width: 320px; /* 🔥 evita que quede gigante */
+    height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  /* TEXTO CENTRADO */
+  .productInfo{
+    align-items: center;
+    text-align: center;
+  }
+
+  /* PRECIOS CENTRADOS */
+  .prices{
+    justify-content: center;
+    gap: 15px;
+  }
+
+  /* BOTONES CENTRADOS */
+  .productActions{
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+  }
+
 }
