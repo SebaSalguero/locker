@@ -993,7 +993,7 @@ color:white;
 .productRow{
   display: flex;
   flex-direction: column;
-  background: #bc85a3;
+  background: #1e1e2f;
   border-radius: 14px;
   overflow: hidden;
   padding: 0;
@@ -1002,7 +1002,7 @@ color:white;
 
 .productRow:hover{
   transform: translateY(-3px);
-  background: #9799ba;
+  background: #25253a;
 }
 
 
