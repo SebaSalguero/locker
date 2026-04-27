@@ -1443,3 +1443,12 @@ main.container h2 {
   font-weight: 700;
   color: rgb(68, 156, 119);
 }
+
+#carouselTrack {
+  display: flex;
+  width: 100%;
+}
+
+.carousel-slide {
+  min-width: 100%;
+}

@@ -1082,51 +1082,59 @@ async function loadBanners() {
     const res = await fetch("/api/banners");
     bannerData = await res.json();
 
-    const track = document.getElementById("carouselTrack");
-    const dotsContainer = document.getElementById("carouselDots");
+    if (!bannerData || bannerData.length === 0) return;
 
-    if (!track) return;
+    renderPublicBanners(bannerData);
 
-    track.innerHTML = "";
-    dotsContainer.innerHTML = "";
-
-    const fullData = [
-  bannerData[bannerData.length - 1], // último al inicio
-  ...bannerData,
-  bannerData[0] // primero al final
-];
-
-fullData.forEach((b, i) => {
-
-  const slide = document.createElement("div");
-  slide.className = "carousel-slide";
-
-  const img = document.createElement("img");
-  img.src = b.image_url;
-
-img.onclick = () => {
-  if (b.link) {
-    const url = b.link.startsWith("http")
-      ? b.link
-      : "https://" + b.link;
-
-    window.open(url, "_blank");
-  }
-};
-
-slide.appendChild(img);
-
-  track.appendChild(slide);
-});
-
+    bannerIndex = 0;
     updateDots();
+    updateCarousel();
     startCarousel();
-
-    addSwipe(); // 🔥 mobile gesture
+    addSwipe();
 
   } catch (err) {
     console.error("Error cargando banners:", err);
   }
+}
+
+function renderPublicBanners(banners){
+
+  const container = document.getElementById("carouselTrack");
+  const dotsContainer = document.getElementById("carouselDots");
+
+  if(!container) return;
+
+  container.innerHTML = "";
+  dotsContainer.innerHTML = "";
+
+  banners.forEach((b, i) => {
+
+    const slide = document.createElement("div");
+    slide.className = "carousel-slide";
+
+    const img = document.createElement("img");
+    img.src = b.image_url;
+
+    img.onclick = () => {
+      if(b.link){
+        const url = b.link.startsWith("http")
+          ? b.link
+          : "https://" + b.link;
+
+        window.open(url, "_blank");
+      }
+    };
+
+    slide.appendChild(img);
+    container.appendChild(slide);
+
+    // dots
+    const dot = document.createElement("span");
+    dot.onclick = () => goToSlide(i);
+    dotsContainer.appendChild(dot);
+
+  });
+
 }
 
 function startCarousel() {
@@ -1134,7 +1142,13 @@ function startCarousel() {
 
   bannerInterval = setInterval(() => {
     bannerIndex++;
+
+    if (bannerIndex >= bannerData.length) {
+      bannerIndex = 0;
+    }
+
     updateCarousel();
+
   }, 4000);
 }
 
@@ -1145,25 +1159,10 @@ function stopCarousel() {
 function updateCarousel() {
   const track = document.getElementById("carouselTrack");
 
-  track.style.transition = "transform 0.8s cubic-bezier(0.77,0,0.175,1)";
+  if (!track) return;
+
+  track.style.transition = "transform 0.5s ease";
   track.style.transform = `translateX(-${bannerIndex * 100}%)`;
-
-  // loop infinito
-  if (bannerIndex === 0) {
-    setTimeout(() => {
-      track.style.transition = "none";
-      bannerIndex = bannerData.length;
-      track.style.transform = `translateX(-${bannerIndex * 100}%)`;
-    }, 800);
-  }
-
-  if (bannerIndex === bannerData.length + 1) {
-    setTimeout(() => {
-      track.style.transition = "none";
-      bannerIndex = 1;
-      track.style.transform = `translateX(-100%)`;
-    }, 800);
-  }
 
   updateDots();
 }
@@ -1175,7 +1174,7 @@ function goToSlide(i) {
 
 function updateDots() {
   const dots = document.querySelectorAll("#carouselDots span");
-
+  if (!dots.length) return;
   dots.forEach((d, i) => {
     d.classList.toggle("active", i === bannerIndex);
   });
@@ -1213,6 +1212,10 @@ function addSwipe() {
     } else if (diff < -50) {
       bannerIndex--;
     }
+
+
+    if (bannerIndex >= bannerData.length) bannerIndex = 0;
+    if (bannerIndex < 0) bannerIndex = bannerData.length - 1;
 
     updateCarousel();
     startCarousel();

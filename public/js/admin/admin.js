@@ -884,10 +884,14 @@ function editUserById(id){
 async function saveBanner() {
   const file = document.getElementById("bannerImage").files[0];
   const link = document.getElementById("bannerLink").value;
+  const action = document.getElementById("bannerAction").value;
 
   const formData = new FormData();
+
   if (file) formData.append("image", file);
-  formData.append("link", link);
+
+  formData.append("action", action);
+  formData.append("link", action === "link" ? link : null);
 
   if (editingBannerId) {
     await fetch(`/api/banners/${editingBannerId}`, {
@@ -903,6 +907,17 @@ async function saveBanner() {
 
   closeBannerModal();
   loadBanners();
+}
+
+function toggleBannerLink(){
+  const action = document.getElementById("bannerAction").value;
+  const linkContainer = document.getElementById("linkContainer");
+
+  if(action === "link"){
+    linkContainer.style.display = "flex";
+  }else{
+    linkContainer.style.display = "none";
+  }
 }
 
 // 🔥 Cargar banners
@@ -970,6 +985,9 @@ function openBannerModal(banner = null) {
     document.getElementById("modalTitle").innerText = "Editar banner";
     document.getElementById("bannerLink").value = banner.link || "";
 
+    document.getElementById("bannerAction").value = banner.action || "none";
+    toggleBannerLink();
+
     if (banner.image_url) {
       preview.innerHTML = `
         <img src="${banner.image_url}" 
@@ -983,6 +1001,9 @@ function openBannerModal(banner = null) {
     document.getElementById("modalTitle").innerText = "Agregar banner";
     document.getElementById("bannerLink").value = "";
     document.getElementById("bannerImage").value = "";
+
+    document.getElementById("bannerAction").value = "none";
+    toggleBannerLink();
   }
 }
 

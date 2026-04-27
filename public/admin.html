@@ -243,20 +243,30 @@
       <!-- PREVIEW -->
       <div id="bannerPreview" class="bannerPreview"></div>
 
-      <!-- CAMPOS -->
+      <!-- IMAGEN -->
       <div class="formGroup">
         <label>Imagen</label>
         <input type="file" id="bannerImage">
       </div>
 
+      <!-- TIPO DE ACCION -->
       <div class="formGroup">
+        <label>Acción del banner</label>
+        <select id="bannerAction" onchange="toggleBannerLink()">
+          <option value="none">Sin acción</option>
+          <option value="link">Ir a link</option>
+          <option value="login">Abrir login</option>
+        </select>
+      </div>
+
+      <!-- LINK -->
+      <div class="formGroup" id="linkContainer">
         <label>Link del banner</label>
         <input type="text" id="bannerLink" placeholder="https://...">
       </div>
 
     </div>
 
-    <!-- FOOTER -->
     <div class="modal-footer">
       <button class="btn secondary" onclick="closeBannerModal()">Cancelar</button>
       <button class="btn primary" onclick="saveBanner()">Guardar</button>
