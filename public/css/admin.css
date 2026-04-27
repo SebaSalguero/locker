@@ -108,8 +108,7 @@ cursor:pointer;
 /* PRODUCTOS */
 
 .productRow{
-  display:flex;
-  align-items:center;
+  
   gap:15px;
   padding:15px;
   background:white;
@@ -125,8 +124,7 @@ cursor:pointer;
 }
 
 .productThumb{
-  width:80px;
-  height:80px;
+
   object-fit:cover;
   border-radius:10px;
   border:1px solid #eee;
@@ -1282,4 +1280,50 @@ input::placeholder {
 .productActions button{
   flex:1;
   margin:0 3px;
+}
+
+.productCard{
+  display:flex;
+  flex-direction:column;
+  background:#1e1e2f;
+  border-radius:16px;
+  overflow:hidden;
+  transition:0.2s;
+
+  align-items:center; /* 🔥 centra horizontalmente TODO */
+}
+
+.imageWrapper{
+  width:100%;
+  display:flex;
+  justify-content:center; /* 🔥 centra imagen */
+}
+
+.productThumb{
+  width:100%;
+  height:240px;
+  object-fit:cover;
+}
+
+.productInfo{
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+
+  align-items:center;     /* 🔥 centra horizontal */
+  text-align:center;      /* 🔥 centra texto */
+}
+
+.prices{
+  display:flex;
+  justify-content:center; /* 🔥 en vez de space-between */
+  gap:15px;
+}
+
+.productActions{
+  display:flex;
+  justify-content:center; /* 🔥 centra botones */
+  gap:10px;
+  width:100%;
 }
