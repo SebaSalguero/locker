@@ -2,8 +2,6 @@ let allProducts = [];
 let tempUserForPasswordChange = null;
 let tempPassword = null;
 
-const actionType = b.action_type || (b.link ? "link" : null);
-const actionValue = b.action_value || b.link;
 
 function setUser(user) {
   if (user) {
@@ -1111,6 +1109,9 @@ function renderPublicBanners(banners){
   dotsContainer.innerHTML = "";
 
   banners.forEach((b, i) => {
+
+    const actionType = b.action_type || (b.link ? "link" : null);
+    const actionValue = b.action_value || b.link;
 
     const slide = document.createElement("div");
     slide.className = "carousel-slide";
