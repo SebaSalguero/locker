@@ -1455,7 +1455,7 @@ main.container h2 {
 
 .categories {
   position: sticky;
-  top: 157px;
+  top: 147px;
   z-index: 999;
 
   display: flex;
