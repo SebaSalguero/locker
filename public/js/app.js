@@ -24,7 +24,7 @@ function updateUserUI() {
   const greetingDropdown = document.getElementById("userGreeting");
   const greetingTop = document.getElementById("userGreetingTop");
 
-  let text = "Hola invitado";
+  let text = "";
 
   if (user && user.nombre) {
     text = `Hola ${user.nombre}`;
