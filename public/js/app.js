@@ -1123,7 +1123,7 @@ function renderPublicBanners(banners){
 
     if(actionType === "link" && actionValue){
       const url = actionValue.startsWith("http")
-        ? b.action_value
+        ? actionValue
         : "https://" + actionValue;
 
       window.open(url, "_blank");
