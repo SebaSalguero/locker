@@ -281,6 +281,8 @@ body{
 .toast.success{ background:#22c55e; }
 .toast.error{ background:#ef4444; }
 
+
+
 /* ================= MOBILE ================= */
 
 .menuToggle{
@@ -318,3 +320,113 @@ body{
   }
 
 }
+
+/* ===== FILTER BAR MODERNA ===== */
+
+.filtersBar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+
+  background:#1e1e2f;
+  padding:14px;
+  border-radius:14px;
+  margin-bottom:20px;
+}
+
+/* 🔍 SEARCH BOX */
+.searchBox{
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  background:#2a2a40;
+  padding:10px 14px;
+  border-radius:10px;
+
+  flex:1;
+  transition:0.2s;
+}
+
+.searchBox span{
+  opacity:0.6;
+}
+
+.searchBox input{
+  border:none;
+  outline:none;
+  background:transparent;
+  color:white;
+  font-size:14px;
+  width:100%;
+}
+
+.searchBox input::placeholder{
+  color:#888;
+}
+
+/* focus PRO */
+.searchBox:focus-within{
+  background:#333355;
+  box-shadow:0 0 0 2px rgba(90,90,255,0.3);
+}
+
+/* ❌ BOTON CLEAR */
+.clearBtn{
+  background:transparent;
+  border:none;
+  color:#777;
+  font-size:14px;
+  cursor:pointer;
+  padding:4px;
+  border-radius:6px;
+  transition:0.2s;
+}
+
+.clearBtn:hover{
+  background:#3a3a5a;
+  color:white;
+}
+
+/* 🎛 CONTENEDOR FILTROS */
+.filters{
+  display:flex;
+  gap:10px;
+}
+
+/* 🎯 SELECT MODERNO */
+.filters select{
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+
+  background:#2a2a40;
+  color:white;
+
+  border:none;
+  padding:10px 35px 10px 12px;
+  border-radius:10px;
+
+  font-size:13px;
+  cursor:pointer;
+
+  position:relative;
+  transition:0.2s;
+
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5 7l5 5 5-5z'/></svg>");
+  background-repeat:no-repeat;
+  background-position:right 10px center;
+}
+
+/* hover */
+.filters select:hover{
+  background:#333355;
+}
+
+/* focus */
+.filters select:focus{
+  outline:none;
+  box-shadow:0 0 0 2px rgba(90,90,255,0.3);
+}
+
