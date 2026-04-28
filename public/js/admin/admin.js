@@ -891,7 +891,9 @@ async function saveBanner() {
   if (file) formData.append("image", file);
 
   formData.append("action", action);
-  formData.append("link", action === "link" ? link : null);
+  if (action === "link" && link) {
+    formData.append("link", link);
+  }
 
   if (editingBannerId) {
     await fetch(`/api/banners/${editingBannerId}`, {

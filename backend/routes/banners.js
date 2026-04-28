@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
 // ==========================
 router.post("/", upload.single("image"), async (req, res) => {
   try {
-    const { link } = req.body;
+    const { link, action } = req.body;
 
     if (!req.file) {
       return res.status(400).json({ error: "No se envió imagen" });
@@ -40,9 +40,14 @@ router.post("/", upload.single("image"), async (req, res) => {
     });
 
     await db.query(
-      "INSERT INTO banners (image_url, public_id, link) VALUES ($1, $2, $3)",
-      [uploadResult.secure_url, uploadResult.public_id, link || null]
-    );
+  "INSERT INTO banners (image_url, public_id, link, action) VALUES ($1, $2, $3, $4)",
+  [
+    uploadResult.secure_url,
+    uploadResult.public_id,
+    action === "link" ? link : null,
+    action || "none"
+  ]
+);
 
     res.json({ success: true });
 
@@ -95,7 +100,7 @@ router.delete("/:id", async (req, res) => {
 // ==========================
 router.put("/:id", upload.single("image"), async (req, res) => {
   try {
-    const { link } = req.body;
+    const { link, action } = req.body;
 
     // buscar banner actual
     const result = await db.query(
@@ -128,9 +133,15 @@ router.put("/:id", upload.single("image"), async (req, res) => {
 
     // 👉 actualizar DB
     await db.query(
-      "UPDATE banners SET image_url = $1, public_id = $2, link = $3 WHERE id = $4",
-      [image_url, public_id, link || null, req.params.id]
-    );
+  "UPDATE banners SET image_url = $1, public_id = $2, link = $3, action = $4 WHERE id = $5",
+  [
+    image_url,
+    public_id,
+    action === "link" ? link : null,
+    action || "none",
+    req.params.id
+  ]
+);
 
     res.json({ success: true });
 

@@ -1116,14 +1116,20 @@ function renderPublicBanners(banners){
     img.src = b.image_url;
 
     img.onclick = () => {
-      if(b.link){
-        const url = b.link.startsWith("http")
-          ? b.link
-          : "https://" + b.link;
 
-        window.open(url, "_blank");
-      }
-    };
+    if(b.action === "link" && b.link){
+      const url = b.link.startsWith("http")
+        ? b.link
+        : "https://" + b.link;
+
+      window.open(url, "_blank");
+    }
+
+    if(b.action === "modal"){
+      showLogin(); // 🔥 abrir login
+    }
+
+  };
 
     slide.appendChild(img);
     container.appendChild(slide);
