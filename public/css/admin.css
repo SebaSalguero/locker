@@ -1,3 +1,20 @@
+:root{
+  --bg-main: #f9e1e0;
+  --bg-secondary: #feadb9;
+  --bg-dark: #bc85a3;
+  --bg-darker: #9799ba;
+
+  --text-main: #2c2c2c;
+  --text-light: #ffffff;
+  --text-muted: #555;
+
+  --card-bg: #ffffff;
+  --border-soft: #e5e5e5;
+
+  --accent: #bc85a3;
+  --accent-hover: #a56f90;
+}
+
 body, html{
   margin:0;
   padding:0;
@@ -5,9 +22,10 @@ body, html{
 }
 
 body{
-font-family:Inter, sans-serif;
-margin:0;
-background:#f4f6f9;
+  font-family:Inter, sans-serif;
+  margin:0;
+  background: var(--bg-main);
+  color: var(--text-main);
 }
 
 /* LOGIN */
@@ -52,8 +70,8 @@ cursor:pointer;
 .sidebar{
 width:220px;
 min-width:220px;
-background:#111;
-color:white;
+  background: var(--bg-dark);
+  color: var(--text-light);
 padding:20px;
 display:flex;
 flex-direction:column;
@@ -76,7 +94,7 @@ font-size:15px;
 }
 
 .sidebar button:hover{
-background:#222;
+background: var(--accent);
 }
 
 /* CONTENIDO */
@@ -97,12 +115,16 @@ margin-bottom:20px;
 }
 
 .adminHeader button{
-background:black;
-color:white;
+  background: var(--accent);
+  color: white;
 border:none;
 padding:10px 15px;
 border-radius:6px;
 cursor:pointer;
+}
+
+.adminHeader button:hover{
+  background: var(--accent-hover);
 }
 
 /* PRODUCTOS */
@@ -1437,3 +1459,45 @@ input::placeholder {
   flex:1;
   max-width:120px;
 }
+
+.statCard,
+.tableContainer,
+.categoryRow{
+  background: var(--card-bg);
+}
+
+input, select{
+  border: 1px solid var(--border-soft);
+}
+
+.filtersBar{
+  background: var(--bg-darker);
+}
+
+.searchBox{
+  background: var(--bg-dark);
+}
+
+.filters select{
+  background: var(--bg-dark);
+}
+
+.productCard{
+  background: var(--bg-secondary);
+}
+
+.productCard:hover{
+  background: var(--bg-dark);
+}
+
+.productInfo strong{
+  color: var(--text-main);
+}
+
+.productInfo span{
+  color: var(--text-muted);
+}
+
+.stockBadge.ok{ background:#a8e6cf; }
+.stockBadge.low{ background:#ffd3b6; }
+.stockBadge.out{ background:#ffaaa5; }
