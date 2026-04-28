@@ -2,6 +2,9 @@ let allProducts = [];
 let tempUserForPasswordChange = null;
 let tempPassword = null;
 
+const actionType = b.action_type || (b.link ? "link" : null);
+const actionValue = b.action_value || b.link;
+
 function setUser(user) {
   if (user) {
     localStorage.setItem("user", JSON.stringify(user));
@@ -1117,15 +1120,15 @@ function renderPublicBanners(banners){
 
     img.onclick = () => {
 
-    if(b.action === "link" && b.link){
-      const url = b.link.startsWith("http")
-        ? b.link
-        : "https://" + b.link;
+    if(actionType === "link" && actionValue){
+      const url = actionValue.startsWith("http")
+        ? b.action_value
+        : "https://" + actionValue;
 
       window.open(url, "_blank");
     }
 
-    if(b.action === "modal"){
+    if(actionType === "modal"){
       showLogin(); // 🔥 abrir login
     }
 

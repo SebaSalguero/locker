@@ -937,7 +937,7 @@ function renderBanners(banners) {
       <img class="productThumb" src="${b.image_url}">
 
       <div class="productInfo">
-        <span>${b.action || "none"}</span>
+        <span>${b.action_type || "none"}</span>
         <span>${b.link || "Sin link"}</span>
       </div>
 
@@ -988,7 +988,7 @@ function openBannerModal(banner = null) {
     document.getElementById("modalTitle").innerText = "Editar banner";
     document.getElementById("bannerLink").value = banner.link || "";
 
-    document.getElementById("bannerAction").value = banner.action || "none";
+    document.getElementById("bannerAction").value = banner.action_type || "none";
     toggleBannerLink();
 
     if (banner.image_url) {
