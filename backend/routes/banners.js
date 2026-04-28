@@ -39,15 +39,29 @@ router.post("/", upload.single("image"), async (req, res) => {
       folder: "banners"
     });
 
+    let action_type = null;
+    let action_value = null;
+
+    if (action === "link") {
+      action_type = "link";
+      action_value = link;
+    }
+
+    if (action === "modal") {
+      action_type = "modal";
+    }
+
     await db.query(
-  "INSERT INTO banners (image_url, public_id, link, action) VALUES ($1, $2, $3, $4)",
-  [
-    uploadResult.secure_url,
-    uploadResult.public_id,
-    action === "link" ? link : null,
-    action || "none"
-  ]
-);
+      `INSERT INTO banners (image_url, public_id, link, action_type, action_value) 
+        VALUES ($1, $2, $3, $4, $5)`,
+      [
+        uploadResult.secure_url,
+        uploadResult.public_id,
+        action === "link" ? link : null,
+        action_type,
+        action_value
+      ]
+    );
 
     res.json({ success: true });
 
@@ -132,16 +146,31 @@ router.put("/:id", upload.single("image"), async (req, res) => {
     }
 
     // 👉 actualizar DB
+    let action_type = null;
+    let action_value = null;
+
+    if (action === "link") {
+      action_type = "link";
+      action_value = link;
+    }
+
+    if (action === "modal") {
+      action_type = "modal";
+    }
+
     await db.query(
-  "UPDATE banners SET image_url = $1, public_id = $2, link = $3, action = $4 WHERE id = $5",
-  [
-    image_url,
-    public_id,
-    action === "link" ? link : null,
-    action || "none",
-    req.params.id
-  ]
-);
+      `UPDATE banners 
+        SET image_url = $1, public_id = $2, link = $3, action_type = $4, action_value = $5 
+        WHERE id = $6`,
+      [
+        image_url,
+        public_id,
+        action === "link" ? link : null,
+        action_type,
+        action_value,
+        req.params.id
+      ]
+    );
 
     res.json({ success: true });
 
