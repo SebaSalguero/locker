@@ -570,3 +570,87 @@ body{
   transform:scale(1.2);
   z-index:10;
 }
+
+
+
+/* ===== CATEGORIAS PRO ===== */
+
+#categoryList{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+/* CARD */
+.categoryRow{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  background: var(--card-bg);
+  padding:14px 16px;
+  border-radius:12px;
+
+  border:1px solid var(--border-soft);
+
+  transition:0.2s;
+}
+
+/* hover elegante */
+.categoryRow:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+  background: var(--bg-secondary);
+}
+
+/* nombre */
+.categoryRow span{
+  font-size:14px;
+  font-weight:500;
+}
+
+/* acciones */
+.categoryActions{
+  display:flex;
+  gap:8px;
+}
+
+/* botones */
+.categoryActions button{
+  border:none;
+  padding:6px 10px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:12px;
+  transition:0.2s;
+}
+
+/* editar (si tenés) */
+.categoryActions .edit{
+  background:#e0f2fe;
+  color:#0369a1;
+}
+
+.categoryActions .edit:hover{
+  background:#bae6fd;
+}
+
+/* eliminar */
+.categoryActions .delete{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.categoryActions .delete:hover{
+  background:#fecaca;
+}
+
+#categoryList{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.categoryRow{
+  width:auto;
+}
