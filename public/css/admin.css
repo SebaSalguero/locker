@@ -422,9 +422,9 @@ body{
   position:relative;
   transition:0.2s;
 
-  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5 7l5 5 5-5z'/></svg>");
+  /*background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5 7l5 5 5-5z'/></svg>");
   background-repeat:no-repeat;
-  background-position:right 10px center;
+  background-position:right 10px center;*/
 }
 
 /* hover */
@@ -529,7 +529,9 @@ body{
   transition:0.2s;
 
   /* flecha mejor */
+  /*
   background-image: url("data:image/svg+xml;utf8,<svg fill='%232c2c2c' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5 7l5 5 5-5z'/></svg>");
+  */
 }
 
 /* hover coherente con tu paleta */
