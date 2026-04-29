@@ -654,3 +654,155 @@ body{
 .categoryRow{
   width:auto;
 }
+
+
+.toolbar{
+  display:flex;
+  gap:10px;
+  margin-bottom:20px;
+}
+
+/* input */
+.toolbar input{
+  flex:1;
+  padding:10px 14px;
+  border-radius:10px;
+  border:1px solid var(--border-soft);
+  background:white;
+  transition:0.2s;
+}
+
+.toolbar input:focus{
+  outline:none;
+  box-shadow:0 0 0 2px rgba(188,133,163,0.3);
+}
+
+/* select */
+.toolbar select{
+  padding:10px 14px;
+  border-radius:10px;
+  border:1px solid var(--border-soft);
+  background:white;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.toolbar select:focus{
+  outline:none;
+  box-shadow:0 0 0 2px rgba(188,133,163,0.3);
+}
+
+.statsGrid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.statCard{
+  background:white;
+  border-radius:14px;
+  padding:15px;
+  border:1px solid var(--border-soft);
+
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+
+  transition:0.2s;
+}
+
+.statCard:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.statCard h4{
+  font-size:13px;
+  color:var(--text-muted);
+  margin:0;
+}
+
+.statCard span{
+  font-size:20px;
+  font-weight:600;
+}
+
+.tableContainer{
+  background:white;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid var(--border-soft);
+}
+
+/* tabla */
+.userTable{
+  width:100%;
+  border-collapse:collapse;
+}
+
+/* header */
+.userTable thead{
+  background: var(--bg-secondary);
+}
+
+.userTable th{
+  text-align:left;
+  padding:14px;
+  font-size:13px;
+  color:var(--text-main);
+}
+
+/* filas */
+.userTable td{
+  padding:14px;
+  font-size:14px;
+  border-top:1px solid var(--border-soft);
+}
+
+/* hover fila */
+.userTable tr:hover{
+  background: var(--bg-main);
+}
+
+
+.badge{
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:500;
+}
+
+/* activo */
+.badge.active{
+  background:#dcfce7;
+  color:#166534;
+}
+
+/* pendiente */
+.badge.pending{
+  background:#fef3c7;
+  color:#92400e;
+}
+
+
+.userTable button{
+  border:none;
+  padding:6px 10px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:12px;
+  transition:0.2s;
+}
+
+/* editar */
+.userTable .edit{
+  background:#e0f2fe;
+  color:#0369a1;
+}
+
+.userTable .edit:hover{
+  background:#bae6fd;
+}
+
+
