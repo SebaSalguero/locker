@@ -543,3 +543,30 @@ body{
 .filters select:focus{
   box-shadow:0 0 0 2px rgba(188,133,163,0.3);
 }
+
+.previewContainer{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, 80px);
+  gap:10px;
+
+  max-height:150px;
+  overflow-y:auto;
+}
+
+.previewImage{
+  width:80px;
+  height:80px;
+
+  object-fit:cover;
+  
+  border-radius:8px;
+  border:1px solid var(--border-soft);
+
+  flex-shrink:0;
+  transition:0.2s;
+}
+
+.previewImage:hover{
+  transform:scale(1.2);
+  z-index:10;
+}
