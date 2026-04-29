@@ -586,6 +586,10 @@ function showSection(section){
   loadOrders();
   }
 
+  if(section === "reports"){
+  loadOrders(); //
+  }
+
   
   document.querySelector(".sidebar").classList.remove("active");
 }
@@ -1034,6 +1038,93 @@ function getStockText(stock){
   if(stock < 5) return "Poco stock";
   return "En stock";
 }
+
+function loadTopClients(){
+
+  const container = document.getElementById("reportContent");
+
+  const map = {};
+
+  ordersCache.forEach(o => {
+
+    if(o.status !== "vendido") return;
+
+    if(!map[o.customer_name]){
+      map[o.customer_name] = {
+        total: 0,
+        count: 0
+      };
+    }
+
+    map[o.customer_name].total += Number(o.total);
+    map[o.customer_name].count++;
+
+  });
+
+  const ranking = Object.entries(map)
+    .map(([name, data]) => ({ name, ...data }))
+    .sort((a,b) => b.total - a.total)
+    .slice(0,10);
+
+  container.innerHTML = "<h3>Top 10 Clientes</h3>";
+
+  ranking.forEach(r => {
+    container.innerHTML += `
+      <div class="ranking-row">
+        <strong>${r.name}</strong>
+        <span>$${r.total} (${r.count} compras)</span>
+      </div>
+    `;
+  });
+
+}
+
+
+function loadTopProducts(){
+
+  const container = document.getElementById("reportContent");
+
+  const map = {};
+
+  ordersCache.forEach(o => {
+
+    if(o.status !== "vendido") return;
+
+    o.items.forEach(i => {
+
+      if(!map[i.name]){
+        map[i.name] = {
+          qty: 0,
+          total: 0
+        };
+      }
+
+      map[i.name].qty += i.qty;
+      map[i.name].total += i.price * i.qty;
+
+    });
+
+  });
+
+  const ranking = Object.entries(map)
+    .map(([name, data]) => ({ name, ...data }))
+    .sort((a,b) => b.qty - a.qty)
+    .slice(0,10);
+
+  container.innerHTML = "<h3>Top 10 Productos</h3>";
+
+  ranking.forEach(p => {
+    container.innerHTML += `
+      <div class="ranking-row">
+        <strong>${p.name}</strong>
+        <span>${p.qty} vendidos ($${p.total})</span>
+      </div>
+    `;
+  });
+
+}
+
+
 
 
 

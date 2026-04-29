@@ -1238,3 +1238,25 @@ body{
   display:flex;
   flex-direction:column;
 }
+
+
+
+.ranking-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  background:white;
+  padding:12px 16px;
+  border-radius:10px;
+  margin-bottom:8px;
+
+  border:1px solid var(--border-soft);
+
+  transition:0.2s;
+}
+
+.ranking-row:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 15px rgba(0,0,0,0.08);
+}
