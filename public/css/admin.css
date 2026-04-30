@@ -289,18 +289,8 @@ body{
 
 /* ================= MOBILE ================= */
 
-.menuToggle{
-  display:none;
-}
 
 @media (max-width:768px){
-
-  .menuToggle{
-    display:block;
-    position:fixed;
-    top:15px;
-    left:15px;
-  }
 
   .sidebar{
     position:fixed;
@@ -327,9 +317,6 @@ body{
     z-index: 9999;
   }
 
-  .menuToggle{
-    z-index: 10000;
-  }
 
   .content{
     position: relative;
@@ -341,6 +328,64 @@ body{
   }
 
 
+}
+
+.menuToggle{
+  display:none;
+}
+
+@media (max-width:768px){
+
+  .menuToggle{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:5px;
+
+    position:fixed;
+    top:15px;
+    left:15px;
+
+    width:42px;
+    height:42px;
+
+    background: white;
+    border:none;
+    border-radius:12px;
+
+    box-shadow:0 6px 20px rgba(0,0,0,0.15);
+
+    cursor:pointer;
+    z-index:10000;
+
+    transition:0.25s;
+  }
+
+  .menuToggle span{
+    width:22px;
+    height:2px;
+    background:#2c2c2c;
+    margin:auto;
+    transition:0.25s;
+  }
+
+  /* ✨ HOVER */
+  .menuToggle:hover{
+    transform:scale(1.05);
+  }
+
+  /* 🔥 ANIMACIÓN A "X" */
+  .menuToggle.active span:nth-child(1){
+    transform:rotate(45deg) translate(5px,5px);
+  }
+
+  .menuToggle.active span:nth-child(2){
+    opacity:0;
+  }
+
+  .menuToggle.active span:nth-child(3){
+    transform:rotate(-45deg) translate(5px,-5px);
+  }
 }
 
 /* ===== FILTER BAR MODERNA ===== */

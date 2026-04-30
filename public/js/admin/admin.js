@@ -1174,6 +1174,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   toggle.addEventListener("click", () => {
     sidebar.classList.toggle("active");
+    toggle.classList.toggle("active"); // agrega animación
   });
 
 });
