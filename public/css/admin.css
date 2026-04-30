@@ -354,7 +354,12 @@ body{
     padding:0;
 
     cursor:pointer;
-    z-index:10000;
+    z-index:11000;
+  }
+
+  .menuToggle{
+    position: fixed; /* 🔥 clave */
+    z-index: 20000;
   }
 
   .menuToggle span{
