@@ -1172,9 +1172,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggle = document.getElementById("menuToggle");
   const sidebar = document.querySelector(".sidebar");
 
-  toggle.addEventListener("click", () => {
+  toggle.addEventListener("click", (e) => {
+    e.stopPropagation(); // 🔥 clave
     sidebar.classList.toggle("active");
-    toggle.classList.toggle("active"); // agrega animación
+    toggle.classList.toggle("active");
   });
 
 });
@@ -1186,7 +1187,7 @@ document.addEventListener("click", (e) => {
   if(
     sidebar.classList.contains("active") &&
     !sidebar.contains(e.target) &&
-    e.target !== toggle
+    !toggle.contains(e.target)
   ){
     sidebar.classList.remove("active");
   }
