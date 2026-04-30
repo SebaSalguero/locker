@@ -72,6 +72,7 @@ body{
 
 .sidebar{
   width:220px;
+  max-width: 80vw;
   background: var(--bg-dark);
   color:white;
   padding:20px;
@@ -298,10 +299,12 @@ body{
     top:0;
     height:100%;
     transition:0.3s;
+    pointer-events: none;
   }
 
   .sidebar.active{
     left:0;
+    pointer-events: auto;
   }
 
   .content{
@@ -358,8 +361,8 @@ body{
   }
 
   .menuToggle{
-    position: fixed; /* 🔥 clave */
-    z-index: 20000;
+    position: fixed;
+    z-index: 999999;
   }
 
   .menuToggle span{
