@@ -1138,7 +1138,11 @@ function loadTopProducts(){
     .sort((a,b) => b.qty - a.qty)
     .slice(0,10);
 
-  container.innerHTML = "<h3>Top 10 Productos</h3>";
+  container.innerHTML = `
+    <div class="reportBox">
+      <h3>Top 10 Productos</h3>
+    </div>
+  `;
 
   ranking.forEach(p => {
     container.innerHTML += `

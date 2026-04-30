@@ -1466,25 +1466,45 @@ body{
 }
 
 
+/* ===== REPORTES BOTONES ===== */
+
 #reportsSection button{
   background: var(--accent);
   color: var(--text-light);
   border:none;
-  padding:10px 14px;
+
+  padding:10px 16px;
   border-radius:10px;
+
   cursor:pointer;
-  font-size:13px;
+  font-size:14px;
   font-weight:500;
-  transition:0.2s;
-  margin-right:10px;
+
+  transition: all 0.2s ease;
 }
 
+/* hover */
 #reportsSection button:hover{
   background: var(--accent-hover);
   transform: translateY(-2px);
-  box-shadow:0 6px 15px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
 }
 
+/* click */
 #reportsSection button:active{
-  transform: scale(0.97);
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.reportsActions{
+  display:flex;
+  gap:10px;
+  margin-bottom:20px;
+}
+
+.reportBox{
+  background: white;
+  border-radius:14px;
+  padding:15px;
+  border:1px solid var(--border-soft);
 }
