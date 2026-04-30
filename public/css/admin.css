@@ -95,6 +95,11 @@ body{
   background: var(--accent);
 }
 
+.sidebar h2{
+  margin-top: 40px;
+  padding-top: 65px;
+}
+
 .content{
   flex:1;
   padding:30px;
