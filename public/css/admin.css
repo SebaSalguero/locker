@@ -981,21 +981,27 @@ body{
 /* botones */
 .bannerActions button{
   border:none;
-  padding:6px 10px;
-  border-radius:8px;
+  padding:7px 12px;
+  border-radius:10px;
   cursor:pointer;
-  font-size:12px;
+  font-size:13px;
+  font-weight:500;
   transition:0.2s;
+}
+
+.bannerActions button:active{
+  transform: scale(0.97);
 }
 
 /* editar */
 .bannerActions .edit{
-  background:#e0f2fe;
-  color:#0369a1;
+  background: var(--accent);
+  color: var(--text-light);
 }
 
 .bannerActions .edit:hover{
-  background:#bae6fd;
+  background: var(--accent-hover);
+  transform: translateY(-1px);
 }
 
 /* eliminar */
@@ -1006,6 +1012,7 @@ body{
 
 .bannerActions .delete:hover{
   background:#fecaca;
+  transform: translateY(-1px);
 }
 
 

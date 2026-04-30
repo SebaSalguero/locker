@@ -974,8 +974,8 @@ function renderBanners(banners) {
       </div>
 
       <div class="productActions">
-        <button onclick="openBannerModalByIndex(${index})">✏️</button>
-        <button onclick="deleteBanner(${b.id})">🗑</button>
+        <button class="edit" onclick="openBannerModalByIndex(${index})">Editar</button>
+        <button class="delete" onclick="deleteBanner(${b.id})">Eliminar</button>
       </div>
     `;
 
