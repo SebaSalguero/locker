@@ -1152,7 +1152,19 @@ function loadTopProducts(){
 
 }
 
+function toggleMenu(forceClose = false){
+  const sidebar = document.querySelector(".sidebar");
+  const toggle = document.getElementById("menuToggle");
 
+  if(forceClose){
+    sidebar.classList.remove("active");
+    toggle.classList.remove("active");
+    return;
+  }
+
+  sidebar.classList.toggle("active");
+  toggle.classList.toggle("active");
+}
 
 window.addEventListener("click", (e) => {
   const modal = document.getElementById("orderModal");
@@ -1173,9 +1185,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.querySelector(".sidebar");
 
   toggle.addEventListener("click", (e) => {
-    e.stopPropagation(); // 🔥 clave
-    sidebar.classList.toggle("active");
-    toggle.classList.toggle("active");
+    e.stopPropagation();
+    toggleMenu();
   });
 
 });
@@ -1189,7 +1200,7 @@ document.addEventListener("click", (e) => {
     !sidebar.contains(e.target) &&
     !toggle.contains(e.target)
   ){
-    sidebar.classList.remove("active");
+    toggleMenu(true); // cierra TODO (sidebar + icono)
   }
 });
 

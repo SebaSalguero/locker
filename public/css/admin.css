@@ -390,6 +390,10 @@ body{
   .menuToggle.active span:nth-child(3){
     transform:translateY(-7px) rotate(-45deg);
   }
+
+  .menuToggle.active span{
+    background: white;
+  }
 }
 
 /* ===== FILTER BAR MODERNA ===== */
