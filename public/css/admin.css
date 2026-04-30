@@ -243,9 +243,25 @@ body{
 }
 
 .categoryForm button{
-  background:black;
-  color:white;
+  background: var(--accent);
+  color: var(--text-light);
   border:none;
+  cursor:pointer;
+  transition:0.2s;
+  padding:10px 16px;
+  border-radius:10px;
+  font-weight:500;
+}
+
+/* hover consistente con todo el admin */
+.categoryForm button:hover{
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+/* feedback al hacer click */
+.categoryForm button:active{
+  transform: scale(0.97);
 }
 
 /* ================= MODAL ================= */
