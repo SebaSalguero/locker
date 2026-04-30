@@ -195,9 +195,9 @@ function renderProducts(products){
 
   <div class="productActions">
 
-    <button onclick="editProductById(${p.id})">✏️</button>
+    <button class="edit" onclick="editProductById(${p.id})">Editar</button>
 
-    <button onclick="deleteProduct(${p.id})">🗑</button>
+    <button class="delete" onclick="deleteProduct(${p.id})">Eliminar</button>
 
   </div>
 

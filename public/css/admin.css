@@ -178,14 +178,48 @@ body{
   padding:10px;
 }
 
+.productActions{
+  display:flex;
+  gap:10px;
+  padding:10px;
+}
+
+/* base */
 .productActions button{
   flex:1;
   border:none;
-  padding:8px;
-  border-radius:6px;
+  padding:9px;
+  border-radius:8px;
   cursor:pointer;
-  background:#2a2a40;
-  color:white;
+  font-size:13px;
+  font-weight:500;
+  transition:0.2s;
+}
+
+/* ✏️ EDITAR */
+.productActions .edit{
+  background: var(--accent);
+  color: var(--text-light);
+}
+
+.productActions .edit:hover{
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+/* 🗑 ELIMINAR */
+.productActions .delete{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.productActions .delete:hover{
+  background:#fecaca;
+  transform: translateY(-1px);
+}
+
+.productActions button:active{
+  transform: scale(0.97);
 }
 
 /* ================= FORMS ================= */
