@@ -1464,3 +1464,27 @@ body{
   background:#dc2626;
   transform:translateY(-1px);
 }
+
+
+#reportsSection button{
+  background: var(--accent);
+  color: var(--text-light);
+  border:none;
+  padding:10px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:13px;
+  font-weight:500;
+  transition:0.2s;
+  margin-right:10px;
+}
+
+#reportsSection button:hover{
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow:0 6px 15px rgba(0,0,0,0.15);
+}
+
+#reportsSection button:active{
+  transform: scale(0.97);
+}

@@ -781,7 +781,6 @@ function renderUsers(){
       </td>
       <td>
         <button onclick="editUserById(${u.id})">✏️</button>
-        <button onclick="approveUser(${u.id})">✔</button>
         <button onclick="deleteUser(${u.id})">🗑</button>
         <button onclick="resetPassword(${u.id})">🔑 Reset </button>
       </td>
