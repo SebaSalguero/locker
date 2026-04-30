@@ -1038,23 +1038,25 @@ body{
 }
 
 /* CARD */
-.orderCard{
+.order-card{
   background:white;
-  border-radius:16px;
+  border-radius:18px;
   border:1px solid var(--border-soft);
 
-  padding:15px;
+  padding:16px;
 
   display:flex;
   flex-direction:column;
   gap:12px;
 
-  transition:0.2s;
+  transition: all 0.25s ease;
+
+  box-shadow:0 6px 18px rgba(0,0,0,0.05);
 }
 
-.orderCard:hover{
-  transform:translateY(-3px);
-  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+.order-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 30px rgba(0,0,0,0.08);
 }
 
 /* HEADER */
@@ -1078,23 +1080,24 @@ body{
   padding:6px 10px;
   border-radius:20px;
   font-size:12px;
-  font-weight:500;
+  font-weight:600;
 }
 
 /* estados */
-.status.pending{
-  background:#fef3c7;
-  color:#92400e;
-}
 
-.status.completed{
+.status.vendido{
   background:#dcfce7;
   color:#166534;
 }
 
-.status.cancelled{
+.status.cancelado{
   background:#fee2e2;
   color:#991b1b;
+}
+
+.status.pendiente{
+  background:#fef3c7;
+  color:#92400e;
 }
 
 /* PRODUCTOS */
@@ -1138,14 +1141,6 @@ body{
 }
 
 /* botones */
-.order-actions button{
-  border:none;
-  padding:7px 12px;
-  border-radius:8px;
-  cursor:pointer;
-  font-size:12px;
-  transition:0.2s;
-}
 
 /* ver */
 .order-actions .view{
@@ -1294,4 +1289,64 @@ body{
   right: 0;
   background: white;
   z-index: 2;
+}
+
+
+.order-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.order-header strong{
+  font-size:16px;
+}
+
+.order-header span{
+  font-size:13px;
+  color:var(--text-muted);
+}
+
+
+.order-actions button{
+  border:none;
+  padding:8px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:13px;
+  font-weight:500;
+
+  transition:0.2s;
+}
+
+/* VER */
+.order-actions button:first-child{
+  background:#e0f2fe;
+  color:#0369a1;
+}
+
+.order-actions button:first-child:hover{
+  background:#bae6fd;
+}
+
+/* VENDER */
+.btn-success{
+  background:#22c55e;
+  color:white;
+}
+
+.btn-success:hover{
+  background:#16a34a;
+  transform:translateY(-1px);
+}
+
+/* CANCELAR */
+.btn-danger{
+  background:#ef4444;
+  color:white;
+}
+
+.btn-danger:hover{
+  background:#dc2626;
+  transform:translateY(-1px);
 }

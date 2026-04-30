@@ -310,7 +310,9 @@ function renderOrders(){
   // 🔍 buscar cliente
   if(search){
     filtered = filtered.filter(o =>
-      (o.customer_name || "").toLowerCase().includes(search)
+      (o.customer_name || "").toLowerCase().includes(search) ||
+      String(o.id).includes(search) ||
+      String(o.total).includes(search)
     );
   }
 
@@ -343,7 +345,7 @@ function renderOrders(){
       <div class="order-body hidden" id="order-${o.id}"></div>
 
       <div class="order-actions">
-        <button onclick="toggleOrder(${o.id})">Ver</button>
+        <button onclick="openOrderModal(${o.id})">Ver</button>
         <button class="btn-success" onclick="updateOrderStatus(${o.id}, 'vendido')">
           ✔ Vender
         </button>
@@ -359,6 +361,32 @@ function renderOrders(){
 
   });
 
+}
+
+async function openOrderModal(id){
+
+  const res = await fetch("/api/orders/" + id);
+  const order = await res.json();
+
+  const modal = document.getElementById("orderModal");
+  const content = document.getElementById("orderModalContent");
+
+  content.innerHTML = order.items.map(i => `
+    <div class="order-item">
+      <img src="${i.image}">
+      <div>
+        <strong>${i.name}</strong>
+        <span>x${i.qty}</span>
+      </div>
+      <div>$${i.price * i.qty}</div>
+    </div>
+  `).join("");
+
+  modal.style.display = "flex";
+}
+
+function closeOrderModal(){
+  document.getElementById("orderModal").style.display = "none";
 }
 
 async function toggleOrder(id){
@@ -1126,6 +1154,14 @@ function loadTopProducts(){
 
 
 
+window.addEventListener("click", (e) => {
+  const modal = document.getElementById("orderModal");
+
+  if(e.target === modal){
+    modal.style.display = "none";
+  }
+});
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -1172,5 +1208,8 @@ document.getElementById("bannerImage").addEventListener("change", e => {
     container.innerHTML = "<span style='color:#999'>Vista previa</span>";
   }
 });
+
+document.getElementById("searchOrder").addEventListener("input", renderOrders);
+document.getElementById("filterStatus").addEventListener("change", renderOrders);
 
 
