@@ -31,10 +31,20 @@ router.get("/", async (req, res) => {
 // GET por ID
 router.get("/:id", async (req, res) => {
   try {
-    const result = await db.query(
-      "SELECT * FROM products WHERE id = $1",
-      [req.params.id]
-    );
+    const result = await db.query(`
+      SELECT 
+        p.*, 
+        c.name AS category,
+        (
+          SELECT pi.image 
+          FROM product_images pi 
+          WHERE pi.product_id = p.id 
+          LIMIT 1
+        ) AS image
+      FROM products p
+      LEFT JOIN categories c ON p.category_id = c.id
+      WHERE p.visible = true
+    `);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "Producto no encontrado" });
@@ -62,6 +72,50 @@ router.get("/:id", async (req, res) => {
 
   } catch (err) {
     console.error("ERROR GET BY ID:", err);
+    res.status(500).json(err);
+  }
+});
+
+// TOGGLE VISIBILIDAD
+router.put("/admin/products/:id/visibility", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { visible } = req.body;
+
+    await db.query(
+      "UPDATE products SET visible = $1 WHERE id = $2",
+      [visible, id]
+    );
+
+    res.json({ success: true });
+
+  } catch (err) {
+    console.error("ERROR TOGGLE VISIBILITY:", err);
+    res.status(500).json(err);
+  }
+});
+
+// GET TODOS (ADMIN - sin filtro)
+router.get("/admin/products", async (req, res) => {
+  try {
+    const result = await db.query(`
+      SELECT 
+        p.*, 
+        c.name AS category,
+        (
+          SELECT pi.image 
+          FROM product_images pi 
+          WHERE pi.product_id = p.id 
+          LIMIT 1
+        ) AS image
+      FROM products p
+      LEFT JOIN categories c ON p.category_id = c.id
+    `);
+
+    res.json(result.rows);
+
+  } catch (err) {
+    console.error("ERROR ADMIN GET:", err);
     res.status(500).json(err);
   }
 });

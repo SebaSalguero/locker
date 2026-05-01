@@ -96,7 +96,7 @@ async function addProduct(){
 
 function loadProducts(){
 
-  fetch("/api/products")
+  fetch("/api/admin/products")
 
   .then(res => res.json())
 
@@ -196,11 +196,15 @@ function renderProducts(products){
 
   <div class="productActions">
 
-    <button class="edit" onclick="editProductById(${p.id})">Editar</button>
+  <button class="edit" onclick="editProductById(${p.id})">Editar</button>
 
-    <button class="delete" onclick="deleteProduct(${p.id})">Eliminar</button>
+  <button onclick="toggleVisibility(${p.id}, ${p.visible})">
+    ${p.visible ? "👁 Ocultar" : "🙈 Mostrar"}
+  </button>
 
-  </div>
+  <button class="delete" onclick="deleteProduct(${p.id})">Eliminar</button>
+
+</div>
 
 </div>
 `;
@@ -209,6 +213,23 @@ function renderProducts(products){
 
   });
 
+}
+
+async function toggleVisibility(id, current){
+
+  await fetch("/api/admin/products/" + id + "/visibility", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      visible: !current
+    })
+  });
+
+  showToast("Visibilidad actualizada");
+
+  loadProducts();
 }
 
 function editProductById(id){
