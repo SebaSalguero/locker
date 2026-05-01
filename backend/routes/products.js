@@ -27,6 +27,30 @@ router.get("/", async (req, res) => {
   }
 });
 
+// GET TODOS (ADMIN - sin filtro)
+router.get("/admin", async (req, res) => {
+  try {
+    const result = await db.query(`
+      SELECT 
+        p.*, 
+        c.name AS category,
+        (
+          SELECT pi.image 
+          FROM product_images pi 
+          WHERE pi.product_id = p.id 
+          LIMIT 1
+        ) AS image
+      FROM products p
+      LEFT JOIN categories c ON p.category_id = c.id
+    `);
+
+    res.json(result.rows);
+
+  } catch (err) {
+    console.error("ERROR ADMIN GET:", err);
+    res.status(500).json(err);
+  }
+});
 
 // GET por ID
 router.get("/:id", async (req, res) => {
@@ -95,29 +119,6 @@ router.put("/:id/visibility", async (req, res) => {
   }
 });
 
-// GET TODOS (ADMIN - sin filtro)
-router.get("/admin", async (req, res) => {
-  try {
-    const result = await db.query(`
-      SELECT 
-        p.*, 
-        c.name AS category,
-        (
-          SELECT pi.image 
-          FROM product_images pi 
-          WHERE pi.product_id = p.id 
-          LIMIT 1
-        ) AS image
-      FROM products p
-      LEFT JOIN categories c ON p.category_id = c.id
-    `);
 
-    res.json(result.rows);
-
-  } catch (err) {
-    console.error("ERROR ADMIN GET:", err);
-    res.status(500).json(err);
-  }
-});
 
 module.exports = router;
