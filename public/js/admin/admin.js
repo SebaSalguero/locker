@@ -238,14 +238,19 @@ async function toggleVisibility(id, visible){
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-      visible: visible
-    })
+    body: JSON.stringify({ visible })
   });
 
-  showToast("Visibilidad actualizada");
+  // 🔥 actualizar SOLO en memoria
+  const product = productsCache.find(p => p.id === id);
+  if(product){
+    product.visible = visible;
+  }
 
-  loadProducts();
+  // 🔥 re-render SIN cambiar orden
+  renderProducts(productsCache);
+
+  showToast("Visibilidad actualizada");
 }
 
 function editProductById(id){
