@@ -596,14 +596,6 @@ body{
   font-weight:600;
 }
 
-.modalContent button:first-of-type{
-  background: var(--accent);
-  color:white;
-}
-
-.modalContent button:last-of-type{
-  background:#eee;
-}
 
 @keyframes fadeUp{
   from{
@@ -1586,4 +1578,12 @@ body{
 button.btn-primary,
 button.btn-secondary {
   opacity: 1;
+}
+
+.btn-primary{
+  box-shadow: 0 6px 18px rgba(188,133,163,0.35);
+}
+
+.btn-primary:hover{
+  box-shadow: 0 8px 22px rgba(188,133,163,0.45);
 }
