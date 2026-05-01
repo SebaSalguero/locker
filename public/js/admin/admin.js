@@ -96,7 +96,7 @@ async function addProduct(){
 
 function loadProducts(){
 
-  fetch("/api/admin/products")
+  fetch("/api/products")
 
   .then(res => res.json())
 
