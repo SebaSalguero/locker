@@ -5,6 +5,7 @@ let usersCache = [];
 let editingUserId = null;
 let editingBannerId = null;
 let ordersCache = [];
+let currentOrder = null;
 
 console.log("admin.js cargado");
 
@@ -368,6 +369,8 @@ async function openOrderModal(id){
   const res = await fetch("/api/orders/" + id);
   const order = await res.json();
 
+  currentOrder = order; // 🔥 GUARDAMOS EL PEDIDO
+
   const modal = document.getElementById("orderModal");
   const content = document.getElementById("orderModalContent");
 
@@ -383,6 +386,45 @@ async function openOrderModal(id){
   `).join("");
 
   modal.style.display = "flex";
+}
+
+function generateRemito(){
+
+  if(!currentOrder){
+    alert("No hay pedido cargado");
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  let y = 20;
+
+  doc.setFontSize(16);
+  doc.text("REMITO", 10, y);
+
+  y += 10;
+
+  doc.setFontSize(10);
+  doc.text(`Pedido #${currentOrder.id}`, 10, y);
+  y += 6;
+
+  doc.text(`Cliente: ${currentOrder.customer_name}`, 10, y);
+  y += 10;
+
+  doc.text("Productos:", 10, y);
+  y += 6;
+
+  currentOrder.items.forEach(i => {
+    doc.text(`${i.name} x${i.qty} - $${i.price * i.qty}`, 10, y);
+    y += 6;
+  });
+
+  y += 10;
+
+  doc.text(`TOTAL: $${currentOrder.total}`, 10, y);
+
+  doc.save(`remito_${currentOrder.id}.pdf`);
 }
 
 function closeOrderModal(){

@@ -1508,3 +1508,44 @@ body{
   padding:15px;
   border:1px solid var(--border-soft);
 }
+
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+  transition: 0.2s;
+}
+
+.closeBtn:hover {
+  color: #000;
+  transform: scale(1.2);
+}
+
+.modalActions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-primary {
+  background: #2d89ff;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #1b5fcc;
+}

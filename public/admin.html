@@ -409,9 +409,18 @@
 <!-- 🔥 MODAL PEDIDO -->
 <div id="orderModal" class="modal">
   <div class="modalContent">
-    <h3>Detalle del pedido</h3>
+
+    <div class="modalHeader">
+      <h3>Detalle del pedido</h3>
+      <button class="closeBtn" onclick="closeOrderModal()">✕</button>
+    </div>
+
     <div id="orderModalContent"></div>
-    <button onclick="closeOrderModal()">Cerrar</button>
+
+    <div class="modalActions">
+      <button class="btn-primary" onclick="generateRemito()">Generar remito</button>
+    </div>
+
   </div>
 </div>
 
@@ -420,6 +429,7 @@
 
 
 <script src="/js/admin/admin.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 
 
