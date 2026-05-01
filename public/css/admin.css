@@ -1517,35 +1517,73 @@ body{
   margin-bottom: 10px;
 }
 
-.closeBtn {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: #666;
-  transition: 0.2s;
-}
-
-.closeBtn:hover {
-  color: #000;
-  transform: scale(1.2);
-}
 
 .modalActions {
-  margin-top: 15px;
+  margin-top: 20px;
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
 }
 
+/* BOTON PRINCIPAL (REMlTO) */
+
 .btn-primary {
-  background: #2d89ff;
-  color: white;
+  background: var(--accent);
+  color: var(--text-light);
   border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
 }
 
 .btn-primary:hover {
-  background: #1b5fcc;
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+/* BOTON CERRAR (X) */
+.btn-secondary {
+  background: var(--bg-secondary);
+  color: var(--text-main);
+  border: 1px solid var(--border-soft);
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-dark);
+  color: var(--text-light);
+}
+
+.closeBtn {
+  background: var(--bg-secondary);
+  color: var(--text-main);
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.2s ease;
+}
+
+.closeBtn:hover {
+  background: var(--accent);
+  color: var(--text-light);
+}
+
+button.btn-primary,
+button.btn-secondary {
+  opacity: 1;
 }
