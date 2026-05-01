@@ -55,14 +55,23 @@ router.post("/", async (req, res) => {
 // 📋 LISTAR TODOS (admin)
 router.get("/", async (req, res) => {
   try {
-    const result = await db.query(`
-      SELECT o.*, u.name as user_name
-      FROM orders o
-      LEFT JOIN users u ON o.user_id = u.id
-      ORDER BY o.created_at DESC
+
+    const ordersResult = await db.query(`
+      SELECT * FROM orders ORDER BY created_at DESC
     `);
 
-    res.json(result.rows);
+    const orders = ordersResult.rows;
+
+    for (const o of orders) {
+      const items = await db.query(
+        "SELECT * FROM order_items WHERE order_id = $1",
+        [o.id]
+      );
+
+      o.items = items.rows;
+    }
+
+    res.json(orders);
 
   } catch (err) {
     res.status(500).json(err);
