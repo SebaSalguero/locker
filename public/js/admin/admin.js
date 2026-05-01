@@ -196,15 +196,31 @@ function renderProducts(products){
 
   <div class="productActions">
 
-  <button class="edit" onclick="editProductById(${p.id})">Editar</button>
+    <button class="edit" onclick="editProductById(${p.id})">
+      Editar
+    </button>
 
-  <button onclick="toggleVisibility(${p.id}, ${p.visible})">
-    ${p.visible ? "👁 Ocultar" : "🙈 Mostrar"}
-  </button>
+    <!-- 🔥 SWITCH + TEXTO -->
+    <div class="visibilityControl">
+      
+      <label class="switch">
+        <input type="checkbox" 
+          ${p.visible ? "checked" : ""} 
+          onchange="toggleVisibility(${p.id}, this.checked)">
+        <span class="slider"></span>
+      </label>
 
-  <button class="delete" onclick="deleteProduct(${p.id})">Eliminar</button>
+      <span class="visibility-label">
+        ${p.visible ? "Visible" : "Oculto"}
+      </span>
 
-</div>
+    </div>
+
+    <button class="delete" onclick="deleteProduct(${p.id})">
+      Eliminar
+    </button>
+
+  </div>
 
 </div>
 `;
@@ -215,7 +231,7 @@ function renderProducts(products){
 
 }
 
-async function toggleVisibility(id, current){
+async function toggleVisibility(id, visible){
 
   await fetch("/api/products/" + id + "/visibility", {
     method: "PUT",
@@ -223,7 +239,7 @@ async function toggleVisibility(id, current){
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      visible: !current
+      visible: visible
     })
   });
 
