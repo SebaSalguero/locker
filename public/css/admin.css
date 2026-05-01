@@ -1587,3 +1587,85 @@ button.btn-secondary {
 .btn-primary:hover{
   box-shadow: 0 8px 22px rgba(188,133,163,0.45);
 }
+
+
+.pageHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  background: var(--card-bg);
+  padding:16px 20px;
+  border-radius:14px;
+
+  border:1px solid var(--border-soft);
+  box-shadow:0 8px 25px rgba(0,0,0,0.06);
+
+  margin-bottom:20px;
+}
+
+/* título */
+.pageHeader h2{
+  margin:0;
+  font-size:20px;
+  font-weight:600;
+}
+
+/* acciones (botones) */
+.pageHeader .actions{
+  display:flex;
+  gap:10px;
+}
+
+
+.statCard{
+  background: linear-gradient(
+    135deg,
+    var(--bg-secondary),
+    var(--bg-main)
+  );
+
+  border-radius:16px;
+  padding:18px;
+
+  border:1px solid var(--border-soft);
+
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+
+  transition: all 0.25s ease;
+
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* hover más vivo */
+.statCard:hover{
+  transform:translateY(-4px) scale(1.02);
+  box-shadow:0 16px 35px rgba(0,0,0,0.12);
+}
+
+/* título chico */
+.statCard h4{
+  font-size:12px;
+  color:var(--text-muted);
+  margin:0;
+  letter-spacing:0.3px;
+}
+
+/* número principal */
+.statCard span{
+  font-size:24px;
+  font-weight:700;
+  color:var(--text-main);
+}
+
+
+
+
+.statsGrid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+  gap:18px;
+  margin-bottom:25px;
+}
