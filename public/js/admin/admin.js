@@ -618,8 +618,8 @@ function showSection(section){
   loadOrders(); //
   }
 
+  toggleMenu(true);
   
-  document.querySelector(".sidebar").classList.remove("active");
 }
 
 async function loadCategories(){
