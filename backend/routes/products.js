@@ -77,7 +77,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // TOGGLE VISIBILIDAD
-router.put("/admin/products/:id/visibility", async (req, res) => {
+router.put("/:id/visibility", async (req, res) => {
   try {
     const { id } = req.params;
     const { visible } = req.body;
@@ -96,7 +96,7 @@ router.put("/admin/products/:id/visibility", async (req, res) => {
 });
 
 // GET TODOS (ADMIN - sin filtro)
-router.get("/admin/products", async (req, res) => {
+router.get("/admin", async (req, res) => {
   try {
     const result = await db.query(`
       SELECT 

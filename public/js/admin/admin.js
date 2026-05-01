@@ -217,7 +217,7 @@ function renderProducts(products){
 
 async function toggleVisibility(id, current){
 
-  await fetch("/api/admin/products/" + id + "/visibility", {
+  await fetch("/api/products/" + id + "/visibility", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
