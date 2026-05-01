@@ -43,7 +43,7 @@ router.get("/:id", async (req, res) => {
         ) AS image
       FROM products p
       LEFT JOIN categories c ON p.category_id = c.id
-      WHERE p.visible = true
+      WHERE p.id = $1 AND p.visible = true
     `);
 
     if (result.rows.length === 0) {
