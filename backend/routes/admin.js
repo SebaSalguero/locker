@@ -39,13 +39,13 @@ router.post("/login", (req, res) => {
 // CREAR PRODUCTO
 router.post("/products", upload.array("images", 5), async (req, res) => {
   try {
-    const { name, description, price_minor, price_major, category_id, stock } = req.body;
+    const { name, description, price_minor, price_major, category_id, stock, code } = req.body;
     const stockValue = Number(stock) || 0;
 
     const result = await db.query(
-      `INSERT INTO products (name, description, price_minor, price_major, image, category_id, stock)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
-       RETURNING id`,
+      `INSERT INTO products (name, description, price_minor, price_major, image, category_id, stock, code)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        RETURNING id`,
       [
         name,
         description,
@@ -53,7 +53,8 @@ router.post("/products", upload.array("images", 5), async (req, res) => {
         price_major,
         req.files?.[0]?.path || null,
         Number(category_id),
-        stockValue
+        stockValue,
+        code || null
       ]
     );
 
@@ -118,7 +119,7 @@ router.delete("/products/:id", async (req, res) => {
 // UPDATE PRODUCTO
 router.put("/products/:id", upload.array("images", 5), async (req, res) => {
   try {
-    const { name, description, price_minor, price_major, category_id, stock } = req.body;
+    const { name, description, price_minor, price_major, category_id, stock, code } = req.body;
     const productId = req.params.id;
     const stockValue = Number(stock) || 0;
 
@@ -136,8 +137,8 @@ router.put("/products/:id", upload.array("images", 5), async (req, res) => {
 
     await db.query(
       `UPDATE products 
-       SET name=$1, description=$2, price_minor=$3, price_major=$4, image=$5, category_id=$6, stock=$7
-       WHERE id=$8`,
+        SET name=$1, description=$2, price_minor=$3, price_major=$4, image=$5, category_id=$6, stock=$7, code=$8
+        WHERE id=$9`,
       [
         name,
         description,
@@ -146,6 +147,7 @@ router.put("/products/:id", upload.array("images", 5), async (req, res) => {
         mainImage,
         Number(category_id),
         stockValue,
+        code || null,
         productId
       ]
     );

@@ -134,6 +134,7 @@ currentImage = product.image
 await loadCategoriesSelect()
 
 document.getElementById("name").value = product.name
+document.getElementById("code").value = product.code || "";
 document.getElementById("description").value = product.description
 document.getElementById("price_minor").value = product.price_minor
 document.getElementById("price_major").value = product.price_major
@@ -182,6 +183,8 @@ function renderProducts(products){
   <div class="productInfo">
 
     <strong>${p.name}</strong>
+
+    <span class="productCode">Cod: ${p.code || "-"}</span>
 
     <span class="desc">${p.description || ""}</span>
 
@@ -586,6 +589,7 @@ function openProductModal(){
   editingId = null
 
   document.getElementById("name").value=""
+  document.getElementById("code").value = "";
   document.getElementById("description").value=""
   document.getElementById("price_minor").value=""
   document.getElementById("price_major").value=""
@@ -613,6 +617,7 @@ async function saveProduct() {
   }
 
   formData.append("name", document.getElementById("name").value);
+  formData.append("code", document.getElementById("code").value);
   formData.append("description", document.getElementById("description").value);
   formData.append("price_minor", document.getElementById("price_minor").value);
   formData.append("price_major", document.getElementById("price_major").value);
