@@ -443,31 +443,76 @@ function generateRemito(){
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
 
-  let y = 20;
+  let y = 15;
 
-  doc.setFontSize(16);
-  doc.text("REMITO", 10, y);
+  // 🧾 HEADER
+  doc.setFontSize(18);
+  doc.text("REMITO", 105, y, { align: "center" });
 
   y += 10;
 
   doc.setFontSize(10);
-  doc.text(`Pedido #${currentOrder.id}`, 10, y);
-  y += 6;
+  doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 10, y);
+  doc.text(`Pedido #${currentOrder.id}`, 150, y);
+
+  y += 8;
 
   doc.text(`Cliente: ${currentOrder.customer_name}`, 10, y);
+
   y += 10;
 
-  doc.text("Productos:", 10, y);
+  // 🔲 LINEA
+  doc.line(10, y, 200, y);
   y += 6;
 
+  // 🧱 CABECERA TABLA
+  doc.setFontSize(10);
+  doc.text("Código", 10, y);
+  doc.text("Producto", 40, y);
+  doc.text("Cant.", 120, y);
+  doc.text("Precio", 140, y);
+  doc.text("Total", 170, y);
+
+  y += 4;
+  doc.line(10, y, 200, y);
+  y += 6;
+
+  // 📦 ITEMS
   currentOrder.items.forEach(i => {
-    doc.text(`${i.name} x${i.qty} - $${i.price * i.qty}`, 10, y);
+
+    const total = i.price * i.qty;
+
+    doc.text(String(i.code || "-"), 10, y);
+    doc.text(i.name.substring(0, 30), 40, y); // corta nombre largo
+    doc.text(String(i.qty), 120, y);
+    doc.text(`$${i.price}`, 140, y);
+    doc.text(`$${total}`, 170, y);
+
     y += 6;
+
+    // salto de página si se llena
+    if(y > 270){
+      doc.addPage();
+      y = 20;
+    }
+
   });
+
+  y += 6;
+  doc.line(10, y, 200, y);
 
   y += 10;
 
-  doc.text(`TOTAL: $${currentOrder.total}`, 10, y);
+  // 💰 TOTAL FINAL
+  doc.setFontSize(12);
+  doc.text(`TOTAL: $${currentOrder.total}`, 150, y);
+
+  y += 20;
+
+  // ✍️ FIRMA
+  doc.setFontSize(10);
+  doc.text("Firma:", 10, y);
+  doc.line(25, y, 100, y);
 
   doc.save(`remito_${currentOrder.id}.pdf`);
 }
