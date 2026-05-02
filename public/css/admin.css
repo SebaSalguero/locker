@@ -501,7 +501,7 @@ body{
 
 /* focus PRO */
 .searchBox:focus-within{
-  background:#333355;
+  background:white;
   box-shadow:0 0 0 2px rgba(90,90,255,0.3);
 }
 
