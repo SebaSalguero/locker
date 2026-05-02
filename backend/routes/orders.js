@@ -83,6 +83,15 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
 
+    const orderResult = await db.query(
+      "SELECT * FROM orders WHERE id = $1",
+      [req.params.id]
+    );
+
+    if (!orderResult.rows.length) {
+      return res.status(404).json({ error: "No encontrado" });
+    }
+
     const itemsResult = await db.query(`
       SELECT 
         oi.*,
@@ -92,21 +101,13 @@ router.get("/:id", async (req, res) => {
       WHERE oi.order_id = $1
     `, [req.params.id]);
 
-    if (!orderResult.rows.length) {
-      return res.status(404).json({ error: "No encontrado" });
-    }
-
-    const itemsResult = await db.query(
-      "SELECT * FROM order_items WHERE order_id = $1",
-      [req.params.id]
-    );
-
     res.json({
       ...orderResult.rows[0],
       items: itemsResult.rows
     });
 
   } catch (err) {
+    console.error(err);
     res.status(500).json(err);
   }
 });
