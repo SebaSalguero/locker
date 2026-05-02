@@ -346,7 +346,7 @@ function renderOrders(){
   container.innerHTML = "";
 
   const search = document.getElementById("searchOrder").value.toLowerCase();
-  const statusFilter = document.getElementById("filterStatus").value;
+  const statusFilter = document.getElementById("orderStatusFilter").value;
 
   let filtered = ordersCache;
 
@@ -1310,6 +1310,7 @@ document.getElementById("bannerImage").addEventListener("change", e => {
 });
 
 document.getElementById("searchOrder").addEventListener("input", renderOrders);
-document.getElementById("filterStatus").addEventListener("change", renderOrders);
+document.getElementById("orderStatusFilter")
+  .addEventListener("change", renderOrders);
 
 
