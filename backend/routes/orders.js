@@ -83,10 +83,14 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
 
-    const orderResult = await db.query(
-      "SELECT * FROM orders WHERE id = $1",
-      [req.params.id]
-    );
+    const itemsResult = await db.query(`
+      SELECT 
+        oi.*,
+        p.code
+      FROM order_items oi
+      LEFT JOIN products p ON p.id = oi.product_id
+      WHERE oi.order_id = $1
+    `, [req.params.id]);
 
     if (!orderResult.rows.length) {
       return res.status(404).json({ error: "No encontrado" });
