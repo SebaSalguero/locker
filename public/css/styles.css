@@ -12,6 +12,19 @@
   --texto: #333;
 }
 
+:root {
+  --color-primary: #f3c6d3;
+  --color-primary-hover: #e9a8bd;
+
+  --color-bg: #f6f6f6;
+  --color-surface: #ffffff;
+
+  --color-text: #333;
+  --color-text-muted: #777;
+
+  --color-border: #ddd;
+}
+
 
 
 body {
@@ -38,7 +51,7 @@ body {
 .header {
   
   background: #ffdada;
-  color: var(--texto);
+  color: var(--color-text);
   padding: 30px 0;
   text-align: center;
 
@@ -723,14 +736,14 @@ mark {
   width: 100%;
   padding: 14px 20px;
   border-radius: 30px;
-  border: 2px solid #f3c6d3; /* rosa pastel */
+  border: 2px solid var(--color-primary); /* rosa pastel */
   font-size: 16px;
   background: #fff;
 }
 
 /* EFECTO FOCO */
 #searchInput:focus {
-  border-color: #e9a8bd;
+  border-color: var(--color-primary-hover);
   box-shadow: 0 0 0 3px rgba(233,168,189,0.2);
 }
 
