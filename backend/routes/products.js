@@ -69,7 +69,7 @@ router.get("/:id", async (req, res) => {
       FROM products p
       LEFT JOIN categories c ON p.category_id = c.id
       WHERE p.id = $1 AND p.visible = true
-    `);
+    `, [req.params.id]); // 👈 ESTO FALTABA
 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "Producto no encontrado" });
